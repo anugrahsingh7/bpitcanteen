@@ -1,9 +1,9 @@
 function Snacks() {
-    return (
-        <div>
-            <h1>Snacks menu</h1>
-        </div>
-    )
+  return (
+    <div>
+      <h1>SNACKS MENU</h1>
+    </div>
+  );
 }
 
-export default Snacks
+export default Snacks;
