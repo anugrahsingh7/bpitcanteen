@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -8,39 +9,77 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-yellow-500 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="text-red-600 text-xl font-semibold flex items-center gap-2 cursor-pointer"><img className='w-10 h-10' src="https://images.shiksha.com/mediadata/images/1652095604phpLTdf0U.jpeg" alt="logo" />CANTEEN
-        <i className="fa-solid fa-utensils ms-[-5px]"></i>
+    <nav className="bg-white shadow-lg sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex justify-between items-center">
+          {/* Logo Section */}
+          <NavLink to="/" className="flex items-center space-x-3">
+           
+            <span className="text-gray-800 text-md font-bold tracking-tight ms-[-8px]">
+              BPIT CANTEEN
+              <i className="fa-solid fa-utensils ml-2 text-orange-500"></i>
+            </span>
+          </NavLink>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <NavLink 
+              to="snacks" 
+              className={({ isActive }) => 
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${isActive ? 'text-orange-500' : ''}`
+              }
+            >Snacks</NavLink>
+            <NavLink 
+              to="breakfast"
+              className={({ isActive }) => 
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${isActive ? 'text-orange-500' : ''}`
+              }
+            >Breakfast</NavLink>
+            <NavLink 
+              to="lunch"
+              className={({ isActive }) => 
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${isActive ? 'text-orange-500' : ''}`
+              }
+            >Lunch</NavLink>
+            <NavLink 
+              to="dinner"
+              className={({ isActive }) => 
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${isActive ? 'text-orange-500' : ''}`
+              }
+            >Dinner</NavLink>
+            <NavLink 
+              to="beverages"
+              className={({ isActive }) => 
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${isActive ? 'text-orange-500' : ''}`
+              }
+            >Beverages</NavLink>
+          </div>
+
+          {/* Cart and Mobile Menu Buttons */}
+          <div className="flex items-center space-x-4">
+            <NavLink to="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+              <i className="fa-solid fa-shopping-cart text-xl text-gray-600 hover:text-orange-500"></i>
+              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </NavLink>
+            
+            <button 
+              onClick={toggleMenu}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+            >
+              <i className={`fa-solid ${isOpen ? 'fa-times' : 'fa-bars'} text-xl text-gray-600`}></i>
+            </button>
+          </div>
         </div>
-        <div className="hidden md:flex space-x-4 font-semibold text-md">
-        <NavLink to="snacks" className="text-blue-600 hover:text-white">Snacks</NavLink>
-          <NavLink to="breakfast" className="text-blue-600 hover:text-white">Breakfast</NavLink>
-          <NavLink to="lunch" className="text-blue-600 hover:text-white">Lunch</NavLink>
-          <NavLink to="dinner" className="text-blue-600 hover:text-white">Dinner</NavLink>
-          
-          <NavLink to="beverages" className="text-blue-600 hover:text-white">Beverages</NavLink>
-        </div>
-        <div className="md:hidden">
-          <button 
-            onClick={toggleMenu}
-            className="text-blue-500 text-2xl hover:text-white focus:outline-none"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
-        </div>
-        {/* Mobile menu */}
+
+        {/* Mobile Menu */}
         {isOpen && (
-          <div className="absolute top-16 left-0 right-0 bg-yellow-500 md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-            <NavLink to="snacks" onClick={() => setIsOpen(false)} className="block text-blue-600 hover:text-white px-3 py-2">Snacks</NavLink>
-              <NavLink to="breakfast" onClick={() => setIsOpen(false)} className="block text-blue-600 hover:text-white px-3 py-2">Breakfast</NavLink>
-              <NavLink to="lunch" onClick={() => setIsOpen(false)} className="block text-blue-600 hover:text-white px-3 py-2">Lunch</NavLink>
-              <NavLink to="dinner" onClick={() => setIsOpen(false)} className="block text-blue-600 hover:text-white px-3 py-2">Dinner</NavLink>
-              
-              <NavLink to="beverages" onClick={() => setIsOpen(false)} className="block text-blue-600 hover:text-white px-3 py-2">Beverages</NavLink>
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t shadow-lg">
+            <div className="flex flex-col space-y-2 px-4 py-3">
+              <NavLink to="snacks" onClick={() => setIsOpen(false)} className="text-gray-600 hover:text-orange-500 py-2">Snacks</NavLink>
+              <NavLink to="breakfast" onClick={() => setIsOpen(false)} className="text-gray-600 hover:text-orange-500 py-2">Breakfast</NavLink>
+              <NavLink to="lunch" onClick={() => setIsOpen(false)} className="text-gray-600 hover:text-orange-500 py-2">Lunch</NavLink>
+              <NavLink to="dinner" onClick={() => setIsOpen(false)} className="text-gray-600 hover:text-orange-500 py-2">Dinner</NavLink>
+              <NavLink to="beverages" onClick={() => setIsOpen(false)} className="text-gray-600 hover:text-orange-500 py-2">Beverages</NavLink>
             </div>
           </div>
         )}
