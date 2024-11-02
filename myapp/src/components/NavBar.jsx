@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { cartItems } = useCart();
-
+console.log(cartItems);
   // Calculate total number of items in cart
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 

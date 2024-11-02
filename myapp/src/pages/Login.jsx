@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 // Add these keyframes to your global CSS or Tailwind config
@@ -267,14 +267,28 @@ function Login() {
     }
   };
 
-  const handleVerifyOTP = () => {
-    if (otp.join('') === '1234') {
-      setShowWelcome(true);
-      setTimeout(() => {
-        navigate('/snacks');
-      }, 2500);
+  const handleVerifyOTP = (e) => {
+    e.preventDefault();
+    const enteredOTP = otp.join('');
+    
+    if (enteredOTP === '1234') {
+        setIsLoading(true);
+        // Store user details in localStorage
+        const userDetails = {
+            name: name,
+            phone: `${countryCode}${mobile}`
+        };
+        localStorage.setItem('userDetails', JSON.stringify(userDetails));
+        
+        setTimeout(() => {
+            toast.success('Login successful!');
+            navigate('/snacks');
+            setIsLoading(false);
+        }, 1500);
+    } else {
+        toast.error('Invalid OTP');
     }
-  };
+};
 
   // Add these new helper functions
   const isValidMobile = mobile.length === 10;
@@ -299,12 +313,20 @@ function Login() {
             onSubmit={handleSubmit} 
             className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1"
           >
-            <h2 className="text-2xl font-bold text-center mb-4 animate-[fadeIn_0.6s_ease-out]">
-              <span className="text-blue-600">BPIT</span>{' '}
-              <span className="text-red-500">COLLEGE CANTEEN
-                <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
-              </span>
-            </h2>
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold mb-3 animate-[fadeIn_0.6s_ease-out]">
+                <span className="text-blue-600">BPIT</span>{' '}
+                <span className="text-red-500">COLLEGE CANTEEN
+                  <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
+                </span>
+              </h2>
+              <Link 
+                to="/vendor-login"
+                className="text-sm text-blue-600 hover:text-blue-800 transition-colors duration-300"
+              >
+                Login as a Vendor →
+              </Link>
+            </div>
 
             <div className="space-y-2 mb-4 animate-[fadeIn_0.7s_ease-out]">
               <label className="block text-gray-700 font-medium">Name</label>

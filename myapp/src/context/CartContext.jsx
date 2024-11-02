@@ -2,52 +2,65 @@ import React, { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext();
 
-export function CartProvider({ children }) {
+export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [instructions, setInstructions] = useState({});
 
-  const addToCart = (item, quantity) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(i => i.id === item.id);
+  const addToCart = (item) => {
+    setCartItems(currentItems => {
+      const existingItem = currentItems.find(cartItem => cartItem.id === item.id);
+      
       if (existingItem) {
-        return prev.map(i => 
-          i.id === item.id 
-            ? {...i, quantity: Math.min(10, i.quantity + quantity)}
-            : i
+        return currentItems.map(cartItem =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
         );
       }
-      return [...prev, { ...item, quantity }];
+      
+      return [...currentItems, { ...item, quantity: 1 }];
     });
   };
 
-  const updateQuantity = (itemId, quantity) => {
-    setCartItems(prev => 
-      prev.map(item => 
-        item.id === itemId 
-          ? { ...item, quantity }
-          : item
-      ).filter(item => item.quantity > 0)
-    );
-  };
-
-  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-
   const clearCart = () => {
     setCartItems([]);
+    setInstructions({});
+  };
+
+  const updateQuantity = (itemId, newQuantity) => {
+    if (newQuantity === 0) {
+      setCartItems(cartItems.filter(item => item.id !== itemId));
+      const newInstructions = { ...instructions };
+      delete newInstructions[itemId];
+      setInstructions(newInstructions);
+    } else {
+      setCartItems(cartItems.map(item => 
+        item.id === itemId ? { ...item, quantity: newQuantity } : item
+      ));
+    }
+  };
+
+  const updateInstructions = (itemId, value) => {
+    setInstructions(prev => ({
+      ...prev,
+      [itemId]: value
+    }));
   };
 
   return (
     <CartContext.Provider value={{ 
       cartItems, 
+      instructions,
       addToCart, 
       updateQuantity, 
-      cartCount,
-      clearCart
+      clearCart,
+      updateInstructions 
     }}>
       {children}
     </CartContext.Provider>
   );
-}
+};
 
 export function useCart() {
   return useContext(CartContext);
-} 
+}
