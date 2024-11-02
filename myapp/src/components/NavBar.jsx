@@ -18,7 +18,7 @@ const NavBar = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
-          <NavLink to="/" className="flex items-center space-x-3">
+          <NavLink to="/snacks" className="flex items-center space-x-3">
            
             <span className="text-gray-800 text-md font-bold tracking-tight ms-[-8px]">
               BPIT CANTEEN
@@ -29,7 +29,7 @@ const NavBar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <NavLink 
-              to="" 
+              to="snacks" 
               className={({ isActive }) => 
                 `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${isActive ? 'text-orange-500' : ''}`
               }
