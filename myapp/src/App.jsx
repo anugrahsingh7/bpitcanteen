@@ -1,42 +1,48 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
-import AppLayout from './ui/AppLayout'
-import './App.css'
-import Breakfast from './pages/Breakfast'
-import Lunch from './pages/Lunch'
-import Dinner from './pages/Dinner'
-import Snacks from './pages/Snacks'
-import Beverages from './pages/Beverages'
-import Login from './pages/Login'
-import Cart from './pages/Cart'
-import { Toaster } from 'react-hot-toast';
-import { Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Login from './pages/Login';
+import Snacks from './pages/Snacks';
+import Cart from './pages/Cart';
+
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <BrowserRouter>
-      <Toaster />
-       <Routes>
-
-       <Route index path='/' element={<Login/>}/>
-       
-        <Route  element={<AppLayout/>}> 
-        {/* <Route index path='/' element={<Navigate replace to="snacks"/>}/> */}
-        <Route index path='/snacks' element={<Snacks/>}/>
-          <Route path='/breakfast' element={<Breakfast/>}/>
-          <Route path='/lunch' element={<Lunch/>}/>
-          <Route path='/dinner' element={<Dinner/>}/>
-         <Route path='/beverages' element={<Beverages/>}/>
-          
-        </Route>
-       
-        <Route path='/cart' element={<Cart/>}/>
-
-</Routes>
-
-    </BrowserRouter>
-  )
+    <CartProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col bg-gray-50">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/snacks"
+              element={
+                <>
+                  <Navbar />
+                  <main className="flex-grow">
+                    <Snacks />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <>
+                  <Navbar />
+                  <main className="flex-grow">
+                    <Cart />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </div>
+      </Router>
+    </CartProvider>
+  );
 }
 
-export default App
+export default App;
