@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
+// Add these keyframes to your global CSS or Tailwind config
+// ... at the top of the file after imports ...
+const fadeInAnimation = {
+  '@keyframes fadeIn': {
+    '0%': { opacity: 0, transform: 'translateY(20px)' },
+    '100%': { opacity: 1, transform: 'translateY(0)' }
+  }
+};
+
 const COUNTRY_CODES = [
   { code: '+91', country: 'IN', name: 'India' },
   { code: '+93', country: 'AF', name: 'Afghanistan' },
@@ -267,42 +276,48 @@ function Login() {
     }
   };
 
+  // Add these new helper functions
+  const isValidMobile = mobile.length === 10;
+  const isValidOTP = otp.every(digit => digit !== '');
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-200 to-orange-100 flex justify-center items-center p-4">
       {showWelcome ? (
-        <div className="text-center p-8 backdrop-blur-sm rounded-2xl">
+        <div className="text-center p-8 backdrop-blur-sm rounded-2xl animate-[fadeIn_0.5s_ease-out]">
           <div className="flex flex-col items-center">
-            <h1 className="text-2xl md:text-3xl text-blue-600 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] opacity-0 animate-fadeIn">
-              BPIT COLLEGE CANTEEN<i className="fa-solid fa-utensils  ms-2"></i>
+            <h1 className="text-2xl md:text-3xl text-blue-600 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] animate-[fadeIn_0.5s_ease-out]">
+              BPIT COLLEGE CANTEEN<i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
             </h1>
-            <h2 className="text-2xl md:text-3xl text-red-500 mt-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] opacity-0 animate-fadeInDelay">
-              WELCOMES YOU <span className="font-bold">{name}!</span>
+            <h2 className="text-2xl md:text-3xl text-red-500 mt-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] animate-[fadeIn_0.8s_ease-out]">
+              WELCOMES YOU <span className="font-bold animate-pulse">{name}!</span>
             </h2>
           </div>
         </div>
       ) : (
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md animate-[fadeIn_0.5s_ease-out]">
           <form 
             onSubmit={handleSubmit} 
-            className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl"
+            className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1"
           >
-            <h2 className="text-2xl font-bold text-center mb-4">
+            <h2 className="text-2xl font-bold text-center mb-4 animate-[fadeIn_0.6s_ease-out]">
               <span className="text-blue-600">BPIT</span>{' '}
-              <span className="text-red-500">COLLEGE CANTEEN<i className="fa-solid fa-utensils ms-2"></i></span>
+              <span className="text-red-500">COLLEGE CANTEEN
+                <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
+              </span>
             </h2>
 
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2 mb-4 animate-[fadeIn_0.7s_ease-out]">
               <label className="block text-gray-700 font-medium">Name</label>
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none focus:border-transparent transition-all duration-300"
+                onChange={(e) => setName(e.target.value.toUpperCase().replace(/[^A-Za-z\s]/g, ''))}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none focus:border-transparent transition-all duration-300 hover:shadow-md"
                 required
               />
             </div>
 
-            <div className="space-y-2 mb-6">
+            <div className="space-y-2 mb-6 animate-[fadeIn_0.8s_ease-out]">
               <label className="block text-gray-700 font-medium">Mobile No</label>
               <div className="flex flex-col gap-3">
                 <select
@@ -354,7 +369,10 @@ function Login() {
                 <button
                   type="button"
                   onClick={handleVerifyOTP}
-                  className="w-full bg-yellow-500  hover:bg-yellow-600 text-white py-3 rounded-lg font-medium  transform hover:scale-[1.02] transition-all duration-300 focus:ring-2  focus:ring-offset-2"
+                  disabled={!isValidOTP}
+                  className={`w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium ${
+                    isValidOTP ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
+                  }`}
                 >
                   Verify OTP
                 </button>
@@ -362,8 +380,10 @@ function Login() {
             ) : (
               <button 
                 type="submit" 
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium  transform hover:scale-[1.02] transition-all duration-300 focus:ring-2  focus:ring-offset-2 flex items-center justify-center"
-                disabled={isLoading}
+                disabled={!isValidMobile || isLoading}
+                className={`w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium flex items-center justify-center ${
+                  isValidMobile && !isLoading ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
+                }`}
               >
                 {isLoading ? (
                   <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
