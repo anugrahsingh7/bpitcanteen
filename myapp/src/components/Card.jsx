@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 
+
 const Card = ({ id, image, name, price, description, bestseller, isVeg }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const { cartItems, addToCart, updateQuantity } = useCart();
