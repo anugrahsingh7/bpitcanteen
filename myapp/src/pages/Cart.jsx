@@ -47,7 +47,12 @@ function Cart() {
         totalAmount: total,
         status: 'pending',
         paymentStatus: 'completed',
-        orderTime: new Date().toISOString()
+        orderTime: new Date().toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: true 
+        }),
+        timestamp: new Date().toISOString(),
       };
 
       const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');

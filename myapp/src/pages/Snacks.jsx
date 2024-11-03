@@ -1,6 +1,18 @@
 import Card from '../components/Card';
+import { useState, useEffect } from 'react';
 
 function Snacks() {
+  const [loading, setLoading] = useState(true);
+  const [showCards, setShowCards] = useState(false);
+
+  useEffect(() => {
+    // Simulate loading time
+    setTimeout(() => {
+      setLoading(false);
+      setShowCards(true);
+    }, 1500);
+  }, []);
+
   const snackItems = [
     {
       id: 'burger-1',
@@ -62,20 +74,36 @@ function Snacks() {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
       <h1 className="text-3xl font-bold text-center mb-8">SNACKS MENU</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 justify-items-center">
-        {snackItems.map(item => (
-          <Card 
-            key={item.id}
-            id={item.id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-            description={item.description}
-            bestseller={item.bestseller}
-            isVeg={item.isVeg}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="animate-spin">
+            <i className="fas fa-hamburger text-6xl text-orange-500"></i>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 justify-items-center">
+          {snackItems.map((item, index) => (
+            <div
+              key={item.id}
+              className="opacity-0 animate-fadeIn"
+              style={{
+                animationDelay: `${index * 150}ms`,
+                animationFillMode: 'forwards'
+              }}
+            >
+              <Card 
+                id={item.id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                description={item.description}
+                bestseller={item.bestseller}
+                isVeg={item.isVeg}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
