@@ -20,20 +20,16 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-white">Devlopers</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/menu" className="text-black  text-sm transition-colors duration-300">
+                <Link to="/menu" className="text-black font-bold text-sm transition-colors duration-300">
                   Vaibhav Sinha
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-black  text-sm transition-colors duration-300">
+                <Link to="/about" className="text-black font-bold  text-sm transition-colors duration-300">
                  Anugrah Singh
                 </Link>
               </li>
-              <li>
-                <Link to="/contact" className="text-black  text-sm transition-colors duration-300">
-                  Vansh Agarwal
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
