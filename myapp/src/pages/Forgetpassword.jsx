@@ -115,15 +115,23 @@ function ForgetPassword() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-200 to-orange-100 flex justify-center items-center p-4">
       <div className="w-full max-w-md animate-[fadeIn_0.5s_ease-out]">
-        <h1 className="text-3xl font-bold text-center mb-8">
-          <span className="text-blue-600">BPIT</span>{" "}
-          <span className="text-red-500">COLLEGE CANTEEN</span>
-        </h1>
+      <h2 className="text-2xl font-bold  animate-[fadeIn_0.6s_ease-out] text-center ">
+                <span className="text-blue-600">BPIT</span>{" "}
+                <span className="text-red-500">
+                  COLLEGE CANTEEN
+                  <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
+                </span>
+              </h2>
+              <div className="text-center mb-3">
+              
+             
+              </div>
 
         <form onSubmit={showResetForm ? handleResetPassword : handleSendToken}
         className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl">
             <h2 className=" text-center text-2xl font-bold">Change your Password</h2>
-            <h3 className="text-center opacity-50 text-sm mb-4"></h3>
+            <h3 className="text-center opacity-50 text-sm mb-4">& make your account more secure.</h3>
+            
           {!showResetForm ? (
             // Email Input Form
             <div className="space-y-4">
