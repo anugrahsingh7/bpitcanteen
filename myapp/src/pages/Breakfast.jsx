@@ -87,7 +87,7 @@ function Breakfast() {
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
-            <h1 className="text-3xl font-bold text-center mb-8">BREAKFAST MENU</h1>
+            
             
             {loading ? (
                 <div className="flex justify-center items-center min-h-[60vh]">
