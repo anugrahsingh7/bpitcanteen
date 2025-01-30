@@ -1,6 +1,7 @@
 import Card from "../components/Card";
 import { useState, useEffect } from "react";
 import { getMenuItem } from "../lib/menuApi";
+
 function Lunch() {
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +17,7 @@ function Lunch() {
       }
     };
 
-    fetchMenuItems(); //
+    fetchMenuItems();
   }, []);
 
   const lunchItems = [
@@ -84,8 +85,6 @@ function Lunch() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
-      <h1 className="text-3xl font-bold text-center mb-8">LUNCH MENU</h1>
-
       {loading ? (
         <div className="flex justify-center items-center min-h-[60vh]">
           <div className="animate-spin">
