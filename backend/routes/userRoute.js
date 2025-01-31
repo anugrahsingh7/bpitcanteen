@@ -12,5 +12,7 @@ router
   .route("/:id")
   .get(userController.getUser)
   .delete(userController.deleteUser);
+router.post("/forgotPassword", authController.forgotPassword);
+router.post("/resetPassword/:token", authController.resetPassword);
 router.get("/me", authController.protect, userController.getMe);
 module.exports = router;

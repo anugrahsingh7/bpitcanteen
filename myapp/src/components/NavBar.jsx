@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { motion } from "framer-motion";
-
+import Cookie from "js-cookie";
+import { useUser } from "../context/userContext";
+import toast from "react-hot-toast";
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { cartItems } = useCart();
   const [shake, setShake] = useState(false);
-
+  const { setIsLoggedIn } = useUser();
+  const navigate = useNavigate();
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -31,13 +34,22 @@ const NavBar = () => {
     }
   }, [cartItems.length]);
 
-  console.log(cartItems);
+  // console.log(cartItems);
 
   // Calculate total number of items in cart
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Add the logic for logout, such as clearing user data (excluding Cookies.remove)
+    // You can also clear any other state or context if needed
+    Cookie.remove("token");
+    toast.success("Successfully logged out");
+    navigate("/");
+    // setIsLoggedIn(false);
   };
 
   return (
@@ -113,6 +125,12 @@ const NavBar = () => {
 
           {/* Cart and Mobile Menu Buttons */}
           <div className="flex items-center space-x-4">
+            <button
+              onClick={handleLogout}
+              className="bg-orange-300 p-2 rounded-md text-white font-medium"
+            >
+              Log Out
+            </button>
             <Link to="/cart" className="relative">
               <motion.div
                 animate={{
