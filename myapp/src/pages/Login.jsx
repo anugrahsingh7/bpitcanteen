@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useLogin } from "../lib/login";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
@@ -8,35 +9,19 @@ function Login() {
   const [password, setPassword] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
   const [showWelcome, setShowWelcome] = useState(false);
+  const { mutate: login, isLoading } = useLogin();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Simple validation with password "12345678"
-    if (email === "test@example.com" && password === "12345678") {
+    if (isValidEmail && password) {
       const userDetails = {
-        name: name,
         email: email,
+        password: password,
       };
-      localStorage.setItem("userDetails", JSON.stringify(userDetails));
-
-      toast.success("Login successful!");
-      navigate("/snacks");
-    } else {
-      toast.error("Invalid email or password");
+      login(userDetails);
     }
-
-    setIsLoading(false);
   };
-
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -49,13 +34,8 @@ function Login() {
   };
 
   const handlePasswordChange = (e) => {
-    // Remove spaces from the input value
     const noSpacePassword = e.target.value.replace(/\s/g, "");
     setPassword(noSpacePassword);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
@@ -123,7 +103,7 @@ function Login() {
                 />
                 <button
                   type="button"
-                  onClick={togglePasswordVisibility}
+                  onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                 >
                   {showPassword ? (
