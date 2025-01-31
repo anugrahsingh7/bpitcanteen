@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
-      toast.error("Please log in to access this page.");
+      toast.error("Please log in !");
       setRedirecting(true);
     }
   }, [loading, isLoggedIn]);

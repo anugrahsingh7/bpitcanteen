@@ -18,3 +18,19 @@ export async function signup(formData) {
   );
   return res.data;
 }
+
+export async function forgotPassword(email) {
+  const res = await axios.post(
+    "http://localhost:3000/api/users/forgotPassword",
+    { email }
+  );
+  return res.data;
+}
+
+export async function resetPassword({ email, token, newPassword }) {
+  const res = await axios.post(
+    `http://localhost:3000/api/users/resetPassword/${token}`,
+    { email, newPassword }
+  );
+  return res.data;
+}
