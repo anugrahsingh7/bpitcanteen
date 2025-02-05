@@ -16,7 +16,7 @@ const menuSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["Beverage", "Snack", "Lunch", "Dinner"],
+    enum: ["Beverages", "Meal Plan", "Chinese","Momos", "Snacks", "Dessert"],
     required: [true, "Menu item must have a category"],
   },
   image: {
@@ -27,6 +27,12 @@ const menuSchema = new mongoose.Schema({
     type: Boolean,
     default: true, // Whether the item is currently available
   },
+  availableDays:{
+    type: [String],
+    enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","All"],
+    required: [true, "Menu item must have available days"],
+    default: ["All"]
+  }
 });
 
 const Menu = mongoose.model("Menu", menuSchema);
