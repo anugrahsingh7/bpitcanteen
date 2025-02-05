@@ -10,7 +10,7 @@ const userRouter = require("./routes/userRoute");
 connectDb();
 app.use(
   cors({
-    origin: "http://localhost:5173", // ✅ Set to frontend URL
+    origin: "http://localhost:5174", // ✅ Set to frontend URL
     credentials: true, // ✅ Allow cookies & authorization headers
     methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allowed headers
