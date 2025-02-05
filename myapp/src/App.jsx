@@ -18,8 +18,8 @@ import { useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
 import IndianItems from "./pages/IndianItems";
 import Deserts from "./pages/Deserts";
-
 import Mess from "./pages/Mess";
+import OrderHistory from "./pages/OrderHistory"
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -78,6 +78,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/OrderHistory" element={<OrderHistory />} />
           <Route path="/createaccount" element={<CreateAccount />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
