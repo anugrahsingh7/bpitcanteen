@@ -112,17 +112,6 @@ const NavBar = () => {
             Indian
             </NavLink>
             <NavLink
-              to="Mess"
-              onClick={handleNavClick}
-              className={({ isActive }) =>
-                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
-                  isActive ? "text-orange-500" : ""
-                }`
-              }
-            >
-            Mess
-            </NavLink>
-            <NavLink
               to="Deserts"
               onClick={handleNavClick}
               className={({ isActive }) =>
