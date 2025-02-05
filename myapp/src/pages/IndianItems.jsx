@@ -70,7 +70,7 @@ function IndianItems() {
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
-           
+           <div className="w-full justify-center font-semibold items-center flex text-4xl pb-7">INDIAN ITEMS</div>
             
             {loading ? (
                 <div className="flex justify-center items-center min-h-[60vh]">

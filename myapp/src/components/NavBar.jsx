@@ -77,17 +77,7 @@ const NavBar = () => {
             >
               Snacks
             </NavLink>
-            <NavLink
-              to="Momos"
-              onClick={handleNavClick}
-              className={({ isActive }) =>
-                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
-                  isActive ? "text-orange-500" : ""
-                }`
-              }
-            >
-              Momos
-            </NavLink>
+           
             <NavLink
               to="Chinese"
               onClick={handleNavClick}
@@ -119,10 +109,10 @@ const NavBar = () => {
                 }`
               }
             >
-            Indian Items
+            Indian
             </NavLink>
             <NavLink
-              to="Meals"
+              to="Mess"
               onClick={handleNavClick}
               className={({ isActive }) =>
                 `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
@@ -130,7 +120,7 @@ const NavBar = () => {
                 }`
               }
             >
-            Meals
+            Mess
             </NavLink>
             <NavLink
               to="Deserts"
@@ -217,13 +207,7 @@ const NavBar = () => {
               >
                 Snacks
               </NavLink>
-              <NavLink
-                to="Momos"
-                onClick={handleNavClick}
-                className="text-gray-600 hover:text-orange-500 py-2"
-              >
-                Momos
-              </NavLink>
+              
               <NavLink
                 to="Chinese"
                 onClick={handleNavClick}
@@ -243,14 +227,14 @@ const NavBar = () => {
                 onClick={handleNavClick}
                 className="text-gray-600 hover:text-orange-500 py-2"
               >
-                Indian Items
+                Indian
               </NavLink>
               <NavLink
-                to="Meals"
+                to="Mess"
                 onClick={handleNavClick}
                 className="text-gray-600 hover:text-orange-500 py-2"
               >
-                Meals
+                Mess
               </NavLink>
               <NavLink
                 to="Deserts"
