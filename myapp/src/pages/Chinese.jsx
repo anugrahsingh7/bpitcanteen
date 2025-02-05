@@ -2,7 +2,7 @@ import Card from "../components/Card";
 import { useState, useEffect } from "react";
 import { getMenuItem } from "../lib/menuApi";
 
-function Lunch() {
+function Chinese() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Lunch() {
     fetchMenuItems();
   }, []);
 
-  const lunchItems = [
+  const ChineseItems = [
     {
       id: "d1",
       name: "Roti",
@@ -93,7 +93,7 @@ function Lunch() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 justify-items-center">
-          {lunchItems.map((item, index) => (
+          {ChineseItems.map((item, index) => (
             <div
               key={item.id}
               className="opacity-0 animate-fadeIn"
@@ -119,4 +119,4 @@ function Lunch() {
   );
 }
 
-export default Lunch;
+export default Chinese;

@@ -1,7 +1,7 @@
 import Card from '../components/Card';
 import { useState, useEffect } from 'react';
 
-function Breakfast() {
+function Momos() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -10,7 +10,7 @@ function Breakfast() {
         }, 1500);
     }, []);
 
-    const breakfastItems = [
+    const MomosItems = [
         {
             id: 'b1',
             name: 'Idli Sambar',
@@ -97,7 +97,7 @@ function Breakfast() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 justify-items-center">
-                    {breakfastItems.map((item, index) => (
+                    {MomosItems.map((item, index) => (
                         <div
                             key={item.id}
                             className="opacity-0 animate-fadeIn"
@@ -123,4 +123,4 @@ function Breakfast() {
     );
 }
 
-export default Breakfast;
+export default Momos;

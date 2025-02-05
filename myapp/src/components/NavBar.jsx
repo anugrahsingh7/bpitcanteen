@@ -65,12 +65,12 @@ const NavBar = () => {
           </NavLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-5">
             <NavLink
               to="snacks"
               onClick={handleNavClick}
               className={({ isActive }) =>
-                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
+                `text-gray-600 hover:text-orange-500  transition-colors duration-200 font-medium ${
                   isActive ? "text-orange-500" : ""
                 }`
               }
@@ -78,7 +78,7 @@ const NavBar = () => {
               Snacks
             </NavLink>
             <NavLink
-              to="breakfast"
+              to="Momos"
               onClick={handleNavClick}
               className={({ isActive }) =>
                 `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
@@ -86,10 +86,10 @@ const NavBar = () => {
                 }`
               }
             >
-              Breakfast
+              Momos
             </NavLink>
             <NavLink
-              to="lunch"
+              to="Chinese"
               onClick={handleNavClick}
               className={({ isActive }) =>
                 `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
@@ -97,10 +97,10 @@ const NavBar = () => {
                 }`
               }
             >
-              Lunch
+              Chinese
             </NavLink>
             <NavLink
-              to="dinner"
+              to="SouthIndian"
               onClick={handleNavClick}
               className={({ isActive }) =>
                 `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
@@ -108,8 +108,42 @@ const NavBar = () => {
                 }`
               }
             >
-              Dinner
+              South Indian
             </NavLink>
+            <NavLink
+              to="IndianItems"
+              onClick={handleNavClick}
+              className={({ isActive }) =>
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
+                  isActive ? "text-orange-500" : ""
+                }`
+              }
+            >
+            Indian Items
+            </NavLink>
+            <NavLink
+              to="Meals"
+              onClick={handleNavClick}
+              className={({ isActive }) =>
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
+                  isActive ? "text-orange-500" : ""
+                }`
+              }
+            >
+            Meals
+            </NavLink>
+            <NavLink
+              to="Deserts"
+              onClick={handleNavClick}
+              className={({ isActive }) =>
+                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
+                  isActive ? "text-orange-500" : ""
+                }`
+              }
+            >
+            Deserts
+            </NavLink>
+            
             <NavLink
               to="beverages"
               onClick={handleNavClick}
@@ -127,7 +161,7 @@ const NavBar = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={handleLogout}
-              className="bg-orange-300 p-2 rounded-md text-white font-medium"
+              className="bg-red-500 hover:bg-red-600 p-2 rounded-md text-white text-sm font-medium"
             >
               Log Out
             </button>
@@ -184,26 +218,48 @@ const NavBar = () => {
                 Snacks
               </NavLink>
               <NavLink
-                to="breakfast"
+                to="Momos"
                 onClick={handleNavClick}
                 className="text-gray-600 hover:text-orange-500 py-2"
               >
-                Breakfast
+                Momos
               </NavLink>
               <NavLink
-                to="lunch"
+                to="Chinese"
                 onClick={handleNavClick}
                 className="text-gray-600 hover:text-orange-500 py-2"
               >
-                Lunch
+                Chinese
               </NavLink>
               <NavLink
-                to="dinner"
+                to="SouthIndian"
                 onClick={handleNavClick}
                 className="text-gray-600 hover:text-orange-500 py-2"
               >
-                Dinner
+                South Indian
               </NavLink>
+              <NavLink
+                to="IndianItems"
+                onClick={handleNavClick}
+                className="text-gray-600 hover:text-orange-500 py-2"
+              >
+                Indian Items
+              </NavLink>
+              <NavLink
+                to="Meals"
+                onClick={handleNavClick}
+                className="text-gray-600 hover:text-orange-500 py-2"
+              >
+                Meals
+              </NavLink>
+              <NavLink
+                to="Deserts"
+                onClick={handleNavClick}
+                className="text-gray-600 hover:text-orange-500 py-2"
+              >
+                Deserts
+              </NavLink>
+              
               <NavLink
                 to="beverages"
                 onClick={handleNavClick}

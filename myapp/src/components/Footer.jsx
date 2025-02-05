@@ -20,14 +20,19 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-white">Devlopers</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/menu" className="text-black font-bold text-sm transition-colors duration-300">
+                <a href="" className="text-black font-bold text-sm transition-colors duration-300">
                   Vaibhav Sinha
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/about" className="text-black font-bold  text-sm transition-colors duration-300">
+                <a href="" className="text-black font-bold  text-sm transition-colors duration-300">
                  Anugrah Singh
-                </Link>
+                </a>
+              </li>
+              <li>
+                <a href="" className="text-black font-bold  text-sm transition-colors duration-300">
+                 Sumit Joshi
+                </a>
               </li>
               
             </ul>
