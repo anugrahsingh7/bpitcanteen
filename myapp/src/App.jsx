@@ -3,10 +3,10 @@ import Login from "./pages/Login";
 import VendorLogin from "./pages/VendorLogin";
 import VendorDashboard from "./pages/VendorDashboard";
 import Snacks from "./pages/Snacks";
-import Dinner from "./pages/Dinner";
+import SouthIndian from "./pages/SouthIndian";
 import Cart from "./pages/Cart";
-import Breakfast from "./pages/Breakfast";
-import Lunch from "./pages/Lunch";
+import Momos from "./pages/Momos";
+import Chinese from "./pages/Chinese";
 import Beverages from "./pages/Beverages";
 import AppLayout from "./ui/AppLayout";
 import PageNotFound from "./pages/PageNotFound";
@@ -16,6 +16,12 @@ import ForgetPassword from "./pages/ForgetPassword";
 import CreateAccount from "./pages/CreateAccount";
 import { useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
+import IndianItems from './pages/IndianItems';
+import Deserts from './pages/Deserts';
+import MilkShakes from './pages/MilkShakes';
+import Meals from './pages/Meals';
+
+
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -60,10 +66,14 @@ function App() {
             }
           >
             <Route path="/snacks" element={<Snacks />} />
-            <Route path="/dinner" element={<Dinner />} />
+            <Route path="/SouthIndian" element={<SouthIndian />} />
 
-            <Route path="/breakfast" element={<Breakfast />} />
-            <Route path="/lunch" element={<Lunch />} />
+            <Route path="/Momos" element={<Momos />} />
+            <Route path="/Chinese" element={<Chinese />} />
+            <Route path="/IndianItems" element={<IndianItems />} />
+            <Route path="/Meals" element={<Meals />} />
+            <Route path="/Deserts" element={<Deserts />} />
+            <Route path="/MilkShakes" element={<MilkShakes />} />
             <Route path="/beverages" element={<Beverages />} />
           </Route>
 

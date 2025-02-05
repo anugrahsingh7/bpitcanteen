@@ -1,7 +1,7 @@
 import Card from '../components/Card';
 import { useState, useEffect } from 'react';
 
-function Dinner() {
+function MilkShakes() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -11,7 +11,7 @@ function Dinner() {
         }, 1500);
     }, []);
 
-    const dinnerItems = [
+    const MilkShakes = [
         {
             id: 'd1',
             name: 'Roti',
@@ -80,7 +80,7 @@ function Dinner() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 justify-items-center">
-                    {dinnerItems.map((item, index) => (
+                    {MilkShakes.map((item, index) => (
                         <div
                             key={item.id}
                             className="opacity-0 animate-fadeIn"
@@ -106,4 +106,4 @@ function Dinner() {
     );
 }
 
-export default Dinner;
+export default MilkShakes;
