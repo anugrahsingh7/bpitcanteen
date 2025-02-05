@@ -16,7 +16,7 @@ const menuSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["Beverages", "Meal Plan", "Chinese","Momos", "Snacks", "Dessert"],
+    enum: ["Beverage", "Meal Plan", "Chinese","South Indian", "Snacks", "Dessert"],
     required: [true, "Menu item must have a category"],
   },
   image: {
