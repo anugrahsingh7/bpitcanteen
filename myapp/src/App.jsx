@@ -5,7 +5,7 @@ import VendorDashboard from "./pages/VendorDashboard";
 import Snacks from "./pages/Snacks";
 import SouthIndian from "./pages/SouthIndian";
 import Cart from "./pages/Cart";
-import Momos from "./pages/Momos";
+
 import Chinese from "./pages/Chinese";
 import Beverages from "./pages/Beverages";
 import AppLayout from "./ui/AppLayout";
@@ -16,12 +16,10 @@ import ForgetPassword from "./pages/ForgetPassword";
 import CreateAccount from "./pages/CreateAccount";
 import { useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
-import IndianItems from './pages/IndianItems';
-import Deserts from './pages/Deserts';
+import IndianItems from "./pages/IndianItems";
+import Deserts from "./pages/Deserts";
 
-import Meals from './pages/Meals';
-
-
+import Mess from "./pages/Mess";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -68,12 +66,12 @@ function App() {
             <Route path="/snacks" element={<Snacks />} />
             <Route path="/SouthIndian" element={<SouthIndian />} />
 
-            <Route path="/Momos" element={<Momos />} />
+            
             <Route path="/Chinese" element={<Chinese />} />
             <Route path="/IndianItems" element={<IndianItems />} />
-            <Route path="/Meals" element={<Meals />} />
+            <Route path="/Mess" element={<Mess />} />
             <Route path="/Deserts" element={<Deserts />} />
-            
+
             <Route path="/beverages" element={<Beverages />} />
           </Route>
 
