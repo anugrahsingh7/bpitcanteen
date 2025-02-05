@@ -51,7 +51,7 @@ const NavBar = () => {
             <NavLink to="Chinese" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Chinese</NavLink>
             <NavLink to="SouthIndian" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">South Indian</NavLink>
             <NavLink to="IndianItems" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Indian</NavLink>
-            <NavLink to="Mess" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Mess</NavLink>
+            
             <NavLink to="Deserts" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Deserts</NavLink>
             <NavLink to="beverages" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Beverages</NavLink>
           </div>
@@ -127,7 +127,7 @@ const NavBar = () => {
             <NavLink to="Chinese" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Chinese</NavLink>
             <NavLink to="SouthIndian" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">South Indian</NavLink>
             <NavLink to="IndianItems" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Indian</NavLink>
-            <NavLink to="Mess" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Mess</NavLink>
+            
             <NavLink to="Deserts" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Deserts</NavLink>
             <NavLink to="beverages" onClick={handleNavClick} className="text-gray-600 hover:text-orange-500 font-medium">Beverages</NavLink>
           </div>
