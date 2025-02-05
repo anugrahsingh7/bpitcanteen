@@ -2,7 +2,13 @@ const Menu = require("../models/MenuItem");
 
 const getMenuItems = async function (req, res) {
   try {
-    const menuItems = await Menu.find();
+    const { category } = req.query; // Extract category from query string
+
+    let query = {};
+    if (category) {
+      query.category = category; // Add category filter if it exists in the query string
+    }
+    const menuItems = await Menu.find(query);
     return res.status(200).json({
       status: "success",
       data: menuItems,
