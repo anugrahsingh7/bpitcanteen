@@ -18,7 +18,7 @@ import { useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
 import IndianItems from './pages/IndianItems';
 import Deserts from './pages/Deserts';
-import MilkShakes from './pages/MilkShakes';
+
 import Meals from './pages/Meals';
 
 
@@ -73,7 +73,7 @@ function App() {
             <Route path="/IndianItems" element={<IndianItems />} />
             <Route path="/Meals" element={<Meals />} />
             <Route path="/Deserts" element={<Deserts />} />
-            <Route path="/MilkShakes" element={<MilkShakes />} />
+            
             <Route path="/beverages" element={<Beverages />} />
           </Route>
 

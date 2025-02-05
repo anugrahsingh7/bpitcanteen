@@ -143,17 +143,7 @@ const NavBar = () => {
             >
             Deserts
             </NavLink>
-            <NavLink
-              to="MilkShakes"
-              onClick={handleNavClick}
-              className={({ isActive }) =>
-                `text-gray-600 hover:text-orange-500 transition-colors duration-200 font-medium ${
-                  isActive ? "text-orange-500" : ""
-                }`
-              }
-            >
-            Milk Shakes
-            </NavLink>
+            
             <NavLink
               to="beverages"
               onClick={handleNavClick}
@@ -269,13 +259,7 @@ const NavBar = () => {
               >
                 Deserts
               </NavLink>
-              <NavLink
-                to="MilkShakes"
-                onClick={handleNavClick}
-                className="text-gray-600 hover:text-orange-500 py-2"
-              >
-                Milk Shakes
-              </NavLink>
+              
               <NavLink
                 to="beverages"
                 onClick={handleNavClick}
