@@ -15,6 +15,8 @@ export const useLogin = () => {
       const { password, ...userWithoutPassword } = data.data.user;
       setUser(userWithoutPassword);
       setIsLoggedIn(true);
+
+      localStorage.setItem("user", JSON.stringify(userWithoutPassword));
       navigate("/snacks"); // Redirect after successful login
     },
     onError: (error) => {

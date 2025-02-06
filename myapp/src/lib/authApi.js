@@ -11,7 +11,6 @@ export async function login(userDetails) {
   return res.data;
 }
 export async function signup(formData) {
-  console.log(formData);
   const res = await axios.post(
     "http://localhost:3000/api/users/signup",
     formData

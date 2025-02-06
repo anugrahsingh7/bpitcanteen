@@ -1,7 +1,10 @@
-import React from "react";
+import  { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { useOrderApi } from "../lib/useOrderApi";
+import { useUser } from "../context/userContext";
+import Loading from "../components/Loading";
 
 
 // Dummy order data (Replace with API data)
@@ -40,6 +43,28 @@ const orders = [
 ];
 
 const OrderHistory = () => {
+  const { user } = useUser();
+
+  // ✅ Call useOrderApi as a hook inside the component
+  const { data, isLoading, isError, error } = useOrderApi(user?._id);
+  const  [orders,setOrders] = useState([]);
+  
+  useEffect(() => {
+    if(data){
+      setOrders(data);
+    }
+  },[data])
+  console.log(data);
+  if (!user) return <Loading />;
+  
+  // ✅ Show loading until user is available
+  if (isLoading) return <Loading />;
+  if (isError) return <p>Error: {error.message}</p>;
+
+   
+
+ 
+  
   return (
     <div className="bg-white min-h-screen p-6 relative">
       {/* Page Title */}
@@ -74,7 +99,7 @@ const OrderHistory = () => {
         {/* Orders */}
         {orders.map((order, index) => (
           <motion.div
-            key={order.id}
+            key={order._id}
             className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -82,21 +107,18 @@ const OrderHistory = () => {
           >
             {/* Order ID */}
             <p className="text-sm font-semibold text-orange-500">
-              Order ID: <span className="text-black">{order.id}</span>
+              Order ID: <span className="text-black">{order._id}</span>
             </p>
 
             {/* Order Details Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 text-black">
               <p>
-                <span className="font-semibold">Date:</span> {order.date}
+                <span className="font-semibold">Date:</span> {order.createdAt}
               </p>
               <p>
-                <span className="font-semibold">Time:</span> {order.time}
+                <span className="font-semibold">Time:</span> {order.createdAt}
               </p>
-              <p className="md:col-span-2">
-                <span className="font-semibold">Transaction ID:</span>{" "}
-                {order.transactionId}
-              </p>
+    
             </div>
 
             {/* Order Items */}

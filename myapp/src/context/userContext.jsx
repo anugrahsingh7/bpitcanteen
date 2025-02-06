@@ -1,6 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
 
 const UserContext = createContext();
 
@@ -11,13 +10,17 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const token = Cookies.get("token");
-    if (token) {
+    const storedUser = localStorage.getItem("user");
+
+    if (token && storedUser) {
+      setUser(JSON.parse(storedUser)); // ✅ Correctly retrieve user from localStorage
       setIsLoggedIn(true);
-      setLoading(false);
     } else {
       setIsLoggedIn(false);
-      setLoading(false);
+      setUser(null);
     }
+
+    setLoading(false);
   }, []);
 
   return (
