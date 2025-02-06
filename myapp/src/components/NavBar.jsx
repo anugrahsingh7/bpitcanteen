@@ -57,7 +57,7 @@ const NavBar = () => {
           </div>
 
           {/* Profile, Cart, and Menu Buttons */}
-          <div className="flex items-center space-x-3 relative">
+          <div className="flex items-center space-x-1 relative">
             {/* Profile Button */}
             <div className="relative flex justify-center items-center">
               <button

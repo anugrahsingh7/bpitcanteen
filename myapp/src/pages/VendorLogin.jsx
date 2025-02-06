@@ -2,84 +2,51 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
-const COUNTRY_CODES = ['+91'];
-const VENDOR_MOBILE = '8433145171'; // This will be replaced with API data later
+const VALID_CREDENTIALS = {
+    email: 'anugrahyashsingh2014@gmail.com', // Replace with actual vendor email
+    password: 'Yash@1234',                   // Replace with actual vendor password
+    vendorId: 'YASH@1234'                     // Replace with actual vendor ID
+};
 
 function VendorLogin() {
-    const [name, setName] = useState('');
-    const [mobile, setMobile] = useState('');
-    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [vendorId, setVendorId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [showOTP, setShowOTP] = useState(false);
-    const [otp, setOtp] = useState(['', '', '', '']);
-    const [countryCode, setCountryCode] = useState('+91');
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!name.trim() || !mobile.trim()) {
+
+        if (!email.trim() || !password.trim() || !vendorId.trim()) {
             toast.error('Please fill all fields');
             return;
         }
-        if (mobile.length !== 10) {
-            toast.error('Please enter valid mobile number');
+
+        if (
+            email !== VALID_CREDENTIALS.email || 
+            password !== VALID_CREDENTIALS.password || 
+            vendorId !== VALID_CREDENTIALS.vendorId
+        ) {
+            toast.error('Invalid login credentials');
             return;
         }
-        
-        if (mobile !== VENDOR_MOBILE) {
-            toast.error('Please enter registered vendor mobile number');
-            return;
-        }
-        
-        toast.success(`OTP sent to +91 ${mobile}`, {
-            duration: 4000,
-            position: 'top-center',
-            style: {
-                background: '#4B5563',
-                color: '#fff',
-            },
-            icon: '📱'
-        });
-        
-        setShowOTP(true);
-    };
 
-    const handleOTPChange = (index, value) => {
-        if (value.length <= 1 && /^[0-9]*$/.test(value)) {
-            const newOTP = [...otp];
-            newOTP[index] = value;
-            setOtp(newOTP);
-
-            if (value && index < 3) {
-                const nextInput = document.querySelector(`input[name=otp${index + 1}]`);
-                nextInput?.focus();
-            }
-        }
-    };
-
-    const handleVerifyOTP = (e) => {
-        e.preventDefault();
-        const enteredOTP = otp.join('');
-        
-        if (enteredOTP === '1234') {
-            setIsLoading(true);
-            setTimeout(() => {
-                localStorage.setItem('vendorName', name);
-                toast.success('Vendor Login successful!');
-                setTimeout(() => {
-                    navigate('/vendor-dashboard', { replace: true });
-                }, 0);
-                setIsLoading(false);
-            }, 1500);
-        } else {
-            toast.error('Invalid OTP');
-        }
+        setIsLoading(true);
+        setTimeout(() => {
+            localStorage.setItem('vendorEmail', email);
+            toast.success('Vendor Login successful!');
+            navigate('/vendor-dashboard', { replace: true });
+            setIsLoading(false);
+        }, 1500);
     };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-yellow-200 to-orange-100 flex justify-center items-center p-4">
             <div className="w-full max-w-md animate-[fadeIn_0.5s_ease-out]">
                 <form 
-                    onSubmit={showOTP ? handleVerifyOTP : handleSubmit}
+                    onSubmit={handleSubmit}
                     className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                     <div className="text-center mb-6">
@@ -97,61 +64,56 @@ function VendorLogin() {
                         </Link>
                     </div>
 
-                    {!showOTP ? (
-                        <>
-                            <div className="space-y-2 mb-4 animate-[fadeIn_0.7s_ease-out]">
-                                <label className="block text-gray-700 text-sm font-semibold">
-                                    Vendor Name
-                                </label>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value.toUpperCase())}
-                                    className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
-                                    placeholder="Enter your name"
-                                />
-                            </div>
+                    {/* Vendor Email */}
+                    <div className="space-y-2 mb-4 animate-[fadeIn_0.7s_ease-out]">
+                       
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                            placeholder="Enter your email"
+                        />
+                    </div>
 
-                            <div className="space-y-2 mb-6 animate-[fadeIn_0.8s_ease-out]">
-                                <label className="block text-gray-700 text-sm font-semibold">
-                                    Mobile Number
-                                </label>
-                                <div className="flex">
-                                    <div className="px-3 py-2 rounded-lg border bg-gray-50 text-gray-700 mr-2">
-                                        +91
-                                    </div>
-                                    <input
-                                        type="tel"
-                                        value={mobile}
-                                        onChange={(e) => setMobile(e.target.value)}
-                                        className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
-                                        placeholder="Enter mobile number"
-                                        maxLength={10}
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <div className="space-y-4 mb-6 animate-[fadeIn_0.7s_ease-out]">
-                            <label className="block text-gray-700 text-sm font-semibold text-center">
-                                Enter OTP sent to +91 {mobile}
-                            </label>
-                            <div className="flex justify-center space-x-3">
-                                {otp.map((digit, index) => (
-                                    <input
-                                        key={index}
-                                        type="text"
-                                        name={`otp${index}`}
-                                        value={digit}
-                                        onChange={(e) => handleOTPChange(index, e.target.value)}
-                                        className="w-12 h-12 text-center border rounded-lg text-lg focus:outline-none focus:border-blue-500"
-                                        maxLength={1}
-                                    />
-                                ))}
-                            </div>
+                    {/* Vendor ID */}
+                    <div className="space-y-2 mb-4 animate-[fadeIn_0.7s_ease-out]">
+                        
+                        <input
+                            type="text"
+                            
+                            value={vendorId}
+                            onChange={(e) => setVendorId(e.target.value.toUpperCase())}
+                            className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                            placeholder="Enter Vendor ID"
+                        />
+                    </div>
+
+                    {/* Password with Eye Icon */}
+                    <div className="space-y-2 mb-6 animate-[fadeIn_0.8s_ease-out]">
+                        
+                        <div className="relative">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                                placeholder="Enter your password"
+                            />
+                            <span 
+                                className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                   <i className="fa-solid fa-eye text-gray-600"></i> 
+                                ) : (
+                                    <i className="fa-solid fa-eye-slash text-gray-600"></i>
+                                )}
+                            </span>
                         </div>
-                    )}
+                    </div>
 
+                    {/* Login Button */}
                     <button
                         type="submit"
                         className="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-300 flex items-center justify-center"
@@ -160,7 +122,7 @@ function VendorLogin() {
                         {isLoading ? (
                             <div className="w-6 h-6 border-t-2 border-white border-solid rounded-full animate-spin"></div>
                         ) : (
-                            showOTP ? 'Verify OTP' : 'Get OTP'
+                            'Login'
                         )}
                     </button>
                 </form>
@@ -169,4 +131,4 @@ function VendorLogin() {
     );
 }
 
-export default VendorLogin; 
+export default VendorLogin;
