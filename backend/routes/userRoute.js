@@ -15,4 +15,5 @@ router
 router.post("/forgotPassword", authController.forgotPassword);
 router.post("/resetPassword/:token", authController.resetPassword);
 router.get("/me", authController.protect, userController.getMe);
+router.get('/:userId/orders', userController.orderCreatedByUser);
 module.exports = router;

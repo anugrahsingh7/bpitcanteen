@@ -15,10 +15,8 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   // Dummy user data (Replace with actual user data from context or API)
-  const user = {
-    fullName: "Anugrah Singh",
-    email: "anugrah@example.com",
-  };
+  const {user} = useUser();
+  console.log(user);
 
   const handleNavClick = () => {
     setIsOpen(false); // Close mobile menu when a link is clicked
@@ -70,7 +68,7 @@ const NavBar = () => {
               {/* Profile Dropdown Menu */}
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-56 top-7 bg-white shadow-lg rounded-lg p-4 border">
-                  <p className="text-gray-800 font-semibold">{user.fullName}</p>
+                  <p className="text-gray-800 font-semibold">{user.name}</p>
                   <p className="text-gray-600 text-sm">{user.email}</p>
                   <hr className="my-2" />
                   <Link to="OrderHistory">

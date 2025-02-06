@@ -9,6 +9,7 @@ const app = express();
 const menuRouter = require("./routes/menuRoute");
 const userRouter = require("./routes/userRoute");
 const authRouter = require("./routes/authRoute");
+const orderRouter = require("./routes/orderRoute");
 connectDb();
 app.use(
   cors({
@@ -24,6 +25,7 @@ app.use(passport.initialize());
 app.use("/api/menu", menuRouter);
 app.use("/api/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/api/order",orderRouter)
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });

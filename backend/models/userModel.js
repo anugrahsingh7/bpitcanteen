@@ -25,10 +25,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     sparse: true, // Allows unique values but also allows null
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }] ,
+},{timestamps: true});
 
 module.exports = mongoose.model("User", userSchema);
