@@ -151,6 +151,12 @@ function Login() {
             >
               Login as a Vendor →
             </Link>
+            <a
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-medium flex items-center justify-center bg-opacity-70 hover:bg-opacity-100 mt-5"
+              href="http://localhost:3000/auth/google"
+            >
+              Login with Google
+            </a>
           </form>
         </div>
       )}
