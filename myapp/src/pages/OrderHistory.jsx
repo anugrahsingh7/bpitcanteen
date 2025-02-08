@@ -5,42 +5,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useOrderApi } from "../lib/useOrderApi";
 import { useUser } from "../context/userContext";
 import Loading from "../components/Loading";
+import {parseISO,format} from "date-fns";
 
-
-// Dummy order data (Replace with API data)
-const orders = [
-  {
-    id: "ORD123456",
-    date: "2025-02-06",
-    time: "12:45 PM",
-    amount: 499.99,
-    transactionId: "TXN987654321",
-    items: [
-      { name: "Burger", quantity: 2, price: 150 },
-      { name: "French Fries", quantity: 1, price: 100 },
-      { name: "Coke", quantity: 1, price: 50 },
-    ],
-  },
-  {
-    id: "ORD789012",
-    date: "2025-02-04",
-    time: "03:15 PM",
-    amount: 299.99,
-    transactionId: "TXN123456789",
-    items: [
-      { name: "Pizza", quantity: 1, price: 200 },
-      { name: "Garlic Bread", quantity: 2, price: 50 },
-    ],
-  },
-  {
-    id: "ORD345678",
-    date: "2025-02-02",
-    time: "06:30 PM",
-    amount: 199.99,
-    transactionId: "TXN456789123",
-    items: [{ name: "Pasta", quantity: 1, price: 199.99 }],
-  },
-];
 
 const OrderHistory = () => {
   const { user } = useUser();
@@ -62,8 +28,6 @@ const OrderHistory = () => {
   if (isError) return <p>Error: {error.message}</p>;
 
    
-
- 
   
   return (
     <div className="bg-white min-h-screen p-6 relative">
@@ -113,10 +77,10 @@ const OrderHistory = () => {
             {/* Order Details Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 text-black">
               <p>
-                <span className="font-semibold">Date:</span> {order.createdAt}
+                <span className="font-semibold">Date:</span> {format(parseISO(order.createdAt), "eeee , dd-MM-yyyy") }
               </p>
               <p>
-                <span className="font-semibold">Time:</span> {order.createdAt}
+                <span className="font-semibold">Time:</span> {format(parseISO(order.createdAt), "hh:mm a") }
               </p>
     
             </div>

@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getOrderByUser } from "./orderApi";
+import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createOrder, getOrderByUser } from "./orderApi";
 
 export const useOrderApi = (id) => {
   const { data, isLoading, isError, error } = useQuery({
@@ -15,3 +15,11 @@ export const useOrderApi = (id) => {
     error,
   };
 }
+
+export const useCreateOrderByUser = () => {
+  const queryClient = useQueryClient(); 
+  return useMutation({
+    mutationFn: (order) => createOrder(order), // ✅ Pass order dynamically
+    onSettled: (_, __, variables) => queryClient.invalidateQueries(["orders", variables.userId]),
+  });
+};

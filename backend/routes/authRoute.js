@@ -13,10 +13,22 @@ router.get(
   passport.authenticate("google", { session: false }),
   (req, res) => {
     const { user, token } = req.user;
+    
+    if (!user) {
+      return res.status(401).json({ message: "Authentication failed" });
+    }
 
+    // Remove password field if it exists
+    const userWithoutPassword = { ...user.toObject() };
+    delete userWithoutPassword.password;
     // Return JWT token to the client
     res.cookie("token", token, { secure: false, httpOnly: false });
-    res.redirect("http://localhost:5173/snacks");
+    res.redirect(
+      `http://localhost:5173/snacks?user=${encodeURIComponent(
+        JSON.stringify(userWithoutPassword)
+      )}`
+    );
+  
   }
 );
 

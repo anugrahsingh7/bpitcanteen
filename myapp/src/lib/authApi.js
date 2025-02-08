@@ -33,3 +33,14 @@ export async function resetPassword({ email, token, newPassword }) {
   );
   return res.data;
 }
+
+export async function fetchUser() {
+  const res = await axios.get("http://localhost:3000/auth/google/callback", {
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function googleLogin() {
+  window.location.href = "http://localhost:3000/auth/google"; // Redirect to Google OAuth
+}

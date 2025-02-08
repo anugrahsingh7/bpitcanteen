@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useUser } from "../context/userContext";
+import { useCreateOrderByUser } from "../lib/useOrderApi";
 
 const generateTransactionId = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -25,10 +27,17 @@ function Cart() {
     clearCart,
     updateInstructions,
   } = useCart();
+  const {user} =useUser();
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const [showReceipt, setShowReceipt] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
+  const updatedCartItems = cartItems.map(({ image, ...rest }) => rest);
+  const newItems = {
+    items: [...updatedCartItems], // Keep it as an array
+    userId: user?._id
+  };
+  const {mutate: createOrder} = useCreateOrderByUser();
 
   const handleInstructionChange = (itemId, value) => {
     updateInstructions(itemId, value);
@@ -38,6 +47,18 @@ function Cart() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  const handleOrder = async ()=>{
+    try {
+      await createOrder(newItems);
+      toast.success("Order placed successfully!");
+      navigate("/OrderHistory")
+    } catch (error) {
+      console.error("Order Error:", error);
+      toast.error("Order failed. Try again.");
+    }
+  
+  }
 
   const handlePaymentAndOrder = async () => {
     setIsProcessing(true);
@@ -82,6 +103,7 @@ function Cart() {
       setShowReceipt(true);
 
       toast.success("Order placed successfully! 🎉");
+
     } catch (error) {
       console.error("Order placement error:", error);
       toast.error("Failed to place order. Please try again.");
@@ -242,6 +264,7 @@ function Cart() {
                   ₹{orderDetails?.totalAmount}
                 </span>
               </div>
+
             </div>
 
             <div className="border-t pt-3">
@@ -541,8 +564,20 @@ function Cart() {
           <span className="font-bold text-green-600">₹{total}</span>
         </div>
         <div className="space-y-3">
+          <motion.button 
+            onClick={handleOrder}
+            className={`w-full ${
+              isProcessing
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600"
+            } text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200`}
+            whileHover={{ scale: isProcessing ? 1 : 1.02 }}
+            whileTap={{ scale: isProcessing ? 1 : 0.98 }}
+          >
+            create button
+          </motion.button>
           <motion.button
-            onClick={handlePaymentAndOrder}
+            onClick={() => handlePaymentAndOrder()}
             disabled={isProcessing}
             className={`w-full ${
               isProcessing

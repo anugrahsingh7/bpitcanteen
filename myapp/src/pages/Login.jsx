@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { useLogin } from "../lib/login";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "../lib/useGoogleLogin";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const { mutate: login, isLoading } = useLogin();
+  const { mutate: googleLogin } = useGoogleLogin();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,12 +77,12 @@ function Login() {
               & order delicious food.
             </h3>
             
-            <a
+            <button
               className="w-full    py-3 rounded-lg font-medium flex items-center justify-center bg-opacity-70 hover:bg-opacity-100 "
-              href="http://localhost:3000/auth/google"
+              onClick={() => googleLogin()}
             >
               Login with<FcGoogle className="text-3xl ms-1"/>
-            </a>
+            </button>
 
             <div className="space-y-2 mb-4 animate-[fadeIn_0.8s_ease-out]">
               <input
