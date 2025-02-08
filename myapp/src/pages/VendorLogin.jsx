@@ -4,8 +4,8 @@ import { toast } from 'react-hot-toast';
 
 const VALID_CREDENTIALS = {
     email: 'anugrahyashsingh2014@gmail.com', // Replace with actual vendor email
-    password: 'Yash@1234',                   // Replace with actual vendor password
-    vendorId: 'YASH@1234'                     // Replace with actual vendor ID
+    vendorId: 'YASH@1234',                 // Replace with actual vendor ID
+    password: 'Yash@1234'                   // Replace with actual vendor password
 };
 
 function VendorLogin() {

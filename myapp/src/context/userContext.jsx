@@ -1,18 +1,30 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
+import {useLocation, useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const token = Cookies.get("token");
-    const storedUser = localStorage.getItem("user");
+    const params = new URLSearchParams(location.search);
+    const userData = params.get("user");
 
-    if (token && storedUser) {
+    if (userData) {
+      const parsedUser = JSON.parse(decodeURIComponent(userData));
+      localStorage.setItem("user", JSON.stringify(parsedUser));
+      navigate("/snacks");
+    }
+    const storedUser = localStorage.getItem("user");
+   
+   if (token && storedUser) {
       setUser(JSON.parse(storedUser)); // ✅ Correctly retrieve user from localStorage
       setIsLoggedIn(true);
     } else {

@@ -30,7 +30,7 @@ function Deserts() {
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 justify-items-center">
                     {Deserts.map((item, index) => (
                         <div
-                            key={item.id}
+                            key={item._id}
                             className="opacity-0 animate-fadeIn"
                             style={{
                                 animationDelay: `${index * 150}ms`,

@@ -16,7 +16,6 @@ const NavBar = () => {
 
   // Dummy user data (Replace with actual user data from context or API)
   const {user} = useUser();
-  console.log(user);
 
   const handleNavClick = () => {
     setIsOpen(false); // Close mobile menu when a link is clicked

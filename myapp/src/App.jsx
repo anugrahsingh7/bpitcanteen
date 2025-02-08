@@ -14,7 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { CartProvider } from "./context/CartContext";
 import ForgetPassword from "./pages/ForgetPassword";
 import CreateAccount from "./pages/CreateAccount";
-import { useUser } from "./context/userContext";
+import { UserProvider, useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
 import IndianItems from "./pages/IndianItems";
 import Deserts from "./pages/Deserts";
@@ -51,6 +51,8 @@ function App() {
     <CartProvider>
       <Toaster />
       <BrowserRouter>
+      <UserProvider>
+
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/vendor-login" element={<VendorLogin />} />
@@ -82,6 +84,7 @@ function App() {
           <Route path="/createaccount" element={<CreateAccount />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+      </UserProvider>
       </BrowserRouter>
     </CartProvider>
   );

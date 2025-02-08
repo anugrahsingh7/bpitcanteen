@@ -11,7 +11,7 @@ export const getOrders = async () => {
 
 export const createOrder = async (order) => {
   try {
-    const response = await axios.post("/api/orders", order);
+    const response = await axios.post("http://127.0.0.1:3000/api/order/create-order", order);
     return response.data;
   } catch (error) {
     console.error(error);
