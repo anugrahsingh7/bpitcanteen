@@ -565,7 +565,7 @@ function Cart() {
         </div>
         <div className="space-y-3">
           <motion.button 
-            onClick={handleOrder}
+            onClick={() => { handleOrder(); clearCart(); }}
             className={`w-full ${
               isProcessing
                 ? "bg-gray-400 cursor-not-allowed"
@@ -574,9 +574,9 @@ function Cart() {
             whileHover={{ scale: isProcessing ? 1 : 1.02 }}
             whileTap={{ scale: isProcessing ? 1 : 0.98 }}
           >
-            create button
+            PAY & PLACE ORDER
           </motion.button>
-          <motion.button
+          {/* <motion.button
             onClick={() => handlePaymentAndOrder()}
             disabled={isProcessing}
             className={`w-full ${
@@ -595,7 +595,7 @@ function Cart() {
             ) : (
               "Proceed to Payment"
             )}
-          </motion.button>
+          </motion.button> */}
 
           <motion.button
             onClick={clearCart}
