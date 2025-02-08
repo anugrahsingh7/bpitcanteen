@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
-import {useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
@@ -10,7 +10,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -20,11 +19,11 @@ export const UserProvider = ({ children }) => {
     if (userData) {
       const parsedUser = JSON.parse(decodeURIComponent(userData));
       localStorage.setItem("user", JSON.stringify(parsedUser));
-      navigate("/snacks");
+      navigate("/snacks", { replace: true });
     }
     const storedUser = localStorage.getItem("user");
-   
-   if (token && storedUser) {
+
+    if (token && storedUser) {
       setUser(JSON.parse(storedUser)); // ✅ Correctly retrieve user from localStorage
       setIsLoggedIn(true);
     } else {
