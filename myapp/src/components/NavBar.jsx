@@ -74,7 +74,7 @@ const NavBar = () => {
 
               {/* Profile Dropdown Menu */}
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-68 top-8 bg-[#f9fafb] bg-opacity-95 backdrop-blur-sm shadow-lg rounded-lg p-4 overflow-hidden transition-all duration-300 ease-in-out">
+                <div className="absolute right-0 mt-2 w-68 top-8 bg-[#ffffff] bg-opacity-95 backdrop-blur-sm shadow-lg rounded-lg p-4 overflow-hidden transition-all duration-300 ease-in-out">
                 <p className="text-[#502214] font-bold text-lg break-words">{user.name}</p>
                 <p className="text-[#502214] font-medium text-opacity-70 text-sm break-words">{user.email}</p>
                   <hr className="my-4 border-[#502214]  border-opacity-30" />
@@ -111,7 +111,7 @@ const NavBar = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 {cartItems.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-[#502214] text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-[#502214] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                     {cartItems.length}
                   </span>
                 )}
@@ -127,7 +127,7 @@ const NavBar = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className=" lg:hidden flex flex-col space-y-2 mt-4 bg-[#f9fafb] shadow-lg rounded-lg p-4 ps-7 pe-16  absolute left-0 right-0">
+          <div className=" lg:hidden flex flex-col space-y-2 mt-4 m-4 bg-[#ffffff] shadow-lg rounded-lg py-8  ps-7 pe-16  absolute left-0 right-0">
             <NavLink to="snacks" onClick={handleNavClick} className="text-[#502214] text-opacity-85 hover:text-opacity-100  text-xl pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"><IoFastFood className="me-[0.1rem] text-2xl"/>SNACKS</NavLink>
             <NavLink to="Chinese" onClick={handleNavClick} className="text-[#502214] text-opacity-85 hover:text-opacity-100 text-xl pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"><GiNoodles className="me-[0.1rem] text-2xl" />CHINESE</NavLink>
             <NavLink to="SouthIndian" onClick={handleNavClick} className="text-[#502214] text-opacity-85 hover:text-opacity-100 text-xl  pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"><GiBread className="me-[0.1rem] text-2xl"/>SOUTH INDIAN</NavLink>

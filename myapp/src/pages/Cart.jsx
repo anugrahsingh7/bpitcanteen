@@ -405,17 +405,17 @@ function Cart() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold mb-4">Your Cart is Empty</h2>
-          <p className="text-gray-600 mb-8">
+          <h2 className="text-3xl font-bold text-[#502214] mb-2">Your Cart is Empty</h2>
+          <p className="text-[#502214] text-opacity-75 text-lg mb-8">
             Add some delicious items to your cart!
           </p>
           <Link
             to="/snacks"
-            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+            className="group inline-flex items-center gap-2 border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] shadow-sm font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-5 w-5 "
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -438,7 +438,7 @@ function Cart() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
         <motion.h2
-          className="text-3xl font-bold text-gray-800"
+          className="text-3xl font-bold text-[#502214]"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -453,7 +453,7 @@ function Cart() {
         >
           <Link
             to="/snacks"
-            className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-[#502214] cursor-pointer hover:opacity-80 font-semibold transition-colors duration-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -478,7 +478,7 @@ function Cart() {
         {cartItems.map((item, index) => (
           <motion.div
             key={item.id}
-            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+            className="bg-[#ffffff] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -493,8 +493,8 @@ function Cart() {
               />
 
               <div className="flex-grow ml-6">
-                <h3 className="font-bold text-lg text-gray-800">{item.name}</h3>
-                <p className="text-green-600 font-semibold">₹{item.price}</p>
+                <h3 className="font-bold text-lg text-[#502214]">{item.name}</h3>
+                <p className="text-[#502214] font-semibold">₹{item.price}</p>
 
                 <div className="mt-2 max-w-[250px]">
                   <motion.div
@@ -509,13 +509,13 @@ function Cart() {
                       onChange={(e) =>
                         handleInstructionChange(item.id, e.target.value)
                       }
-                      className="w-full text-sm px-3 py-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors duration-200 placeholder-gray-400"
+                      className="w-full text-sm px-3 py-1.5 border border-[#502214] border-opacity-25 placeholder:text-[#502214] placeholder:text-opacity-55 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors duration-200 text-[#502214]"
                     />
                     {instructions[item.id] && (
                       <motion.button
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-[#502214] hover:text-opacity-75"
                         onClick={() => handleInstructionChange(item.id, "")}
                       >
                         <svg
@@ -538,12 +538,12 @@ function Cart() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-lg">
+               <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-lg">
                 <motion.button
                   onClick={() =>
                     updateQuantity(item.id, Math.max(0, item.quantity - 1))
                   }
-                  className="bg-white text-gray-600 h-8 w-8 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200"
+                  className="bg-[#ffffff] text-[#502214] h-8 w-8 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -563,7 +563,7 @@ function Cart() {
                   </svg>
                 </motion.button>
 
-                <span className="w-8 text-center font-semibold text-gray-800">
+                <span className="w-8 text-center font-semibold text-[#502214]">
                   {item.quantity}
                 </span>
 
@@ -574,8 +574,8 @@ function Cart() {
                   className={`h-8 w-8 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200
                     ${
                       item.quantity >= 10
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-white text-gray-600"
+                        ? "bg-gray-100 text-[#502214] text-opacity-75 cursor-not-allowed"
+                        : "bg-white text-[#502214]"
                     }`}
                   whileHover={item.quantity < 10 ? { scale: 1.1 } : {}}
                   whileTap={item.quantity < 10 ? { scale: 0.95 } : {}}
@@ -599,7 +599,7 @@ function Cart() {
               </div>
 
               <div className="ml-6 text-right min-w-[100px]">
-                <div className="font-bold text-lg text-gray-800">
+                <div className="font-bold text-lg text-[#502214]">
                   ₹{item.price * item.quantity}
                 </div>
               </div>
@@ -615,21 +615,24 @@ function Cart() {
         transition={{ duration: 0.5, delay: cartItems.length * 0.1 }}
       >
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-md font-semibold text-[#502214]">
             Mobile Number
           </label>
           <input
-            type="tel"
+          
+            type="number"
+            maxLength="10"
+            pattern="[0-9]" inputMode="numeric"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder="Enter your mobile number"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+            placeholder="Enter your mobile number to order"
+            className="mt-1 block w-full px-3 py-2 border border-[#502214] border-opacity-25 placeholder:text-[#502214] text-[#502214] placeholder:text-opacity-55 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
             required
           />
         </div>
         <div className="flex justify-between items-center text-xl mb-6">
-          <span className="font-semibold text-gray-800">Total Amount</span>
-          <span className="font-bold text-green-600">₹{total}</span>
+          <span className="font-bold text-2xl text-[#502214]">Total Amount</span>
+          <span className="font-bold text-2xl text-green-600">₹{total}</span>
         </div>
         <div className="space-y-3">
           <motion.button

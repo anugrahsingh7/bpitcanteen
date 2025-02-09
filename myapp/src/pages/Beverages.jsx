@@ -16,14 +16,14 @@ function Beverages() {
     if (isLoading) return <Loading />;
 
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
-            <div className="w-full justify-center font-semibold items-center flex text-4xl pb-7">BEVERAGES</div>
+        <div className="container  mx-auto px-4 sm:px-6 lg:px-8 py-1 pb-4 max-w-7xl">
+            <div className="w-full text-[#502214] text-opacity-95 justify-center font-semibold items-center flex text-4xl pb-7">BEVERAGES</div>
            
             
             {loading ? (
                 <div className="flex justify-center items-center min-h-[60vh]">
                     <div className="animate-spin">
-                        <i className="fas fa-hamburger text-6xl text-orange-500"></i>
+                        <i className="fas fa-hamburger text-6xl text-[#502214] "></i>
                     </div>
                 </div>
             ) : (
