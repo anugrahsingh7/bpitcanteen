@@ -7,29 +7,23 @@ const crypto = require("crypto");
 
 // Initialize Razorpay instance
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID, // Add these in your .env file
+  key_id: process.env.RAZORPAY_KEY_ID, 
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 // Create an order
 exports.createOrder = async (req, res) => {
-  const { userId, items } = req.body;
+  const { items } = req.body;
 
   try {
-    const order = new Order({ items, user: userId });
-    await order.save();
+    const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const razorpayOrder = await razorpay.orders.create({
-      amount: order.totalAmount * 100, // Convert to paise (INR)
+      amount: totalAmount * 100,
       currency: "INR",
-      receipt: `receipt_${order._id}`,
+      receipt: `receipt_${Date.now()}`,
     });
-    order.razorpayOrderId = razorpayOrder.id;
-    await order.save();
-
-    // Update the user with the new order reference
-    await User.findByIdAndUpdate(userId, { $push: { orders: order._id } });
-
     res.status(201).json({
+
       message: "Order created successfully",
       orderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
@@ -48,8 +42,7 @@ exports.getOrders = async (req, res) => {
   }
 };
 exports.verifyPayment = async (req, res) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
-    req.body;
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, userId, items } = req.body;
 
   const secret = process.env.RAZORPAY_KEY_SECRET;
   const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -60,12 +53,23 @@ exports.verifyPayment = async (req, res) => {
     .digest("hex");
 
   if (expectedSignature === razorpay_signature) {
-    // Update order status in the database
-    await Order.findOneAndUpdate({ razorpayOrderId: razorpay_order_id });
+    try {
 
-    res
-      .status(200)
-      .json({ success: true, message: "Payment verified successfully" });
+      const order = new Order({
+        items,
+        user: userId,
+        razorpayOrderId: razorpay_order_id,
+      });
+
+      await order.save();
+
+      // Link order to user
+      await User.findByIdAndUpdate(userId, { $push: { orders: order._id } });
+
+      res.status(200).json({ success: true, message: "Payment verified, order saved", order });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Error saving order", error });
+    }
   } else {
     res.status(400).json({ success: false, message: "Invalid signature" });
   }

@@ -9,16 +9,16 @@ import { useUser } from "../context/userContext";
 import { useCreateOrderByUser } from "../lib/useOrderApi";
 import axios from "axios";
 
-const generateTransactionId = () => {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const length = 10;
-  return (
-    "TXN" +
-    Array.from({ length }, () =>
-      chars.charAt(Math.floor(Math.random() * chars.length))
-    ).join("")
-  );
-};
+// const generateTransactionId = () => {
+//   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+//   const length = 10;
+//   return (
+//     "TXN" +
+//     Array.from({ length }, () =>
+//       chars.charAt(Math.floor(Math.random() * chars.length))
+//     ).join("")
+//   );
+// };
 
 function Cart() {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -78,6 +78,7 @@ function Cart() {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
+              ...newItems,
             }
           );
 
@@ -114,56 +115,56 @@ function Cart() {
     }
   };
 
-  const handlePaymentAndOrder = async () => {
-    setIsProcessing(true);
-    try {
-      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  // const handlePaymentAndOrder = async () => {
+  //   setIsProcessing(true);
+  //   try {
+  //     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
-      const orderData = {
-        id: `ORD${Date.now()}`,
-        transactionId: generateTransactionId(),
-        customerName: userDetails?.name || "Customer",
-        phoneNumber: userDetails?.phone || "1234567890",
-        items: cartItems.map((item) => ({
-          id: item.id,
-          name: item.name,
-          quantity: item.quantity,
-          instructions: instructions[item.id] || "",
-          price: item.price,
-        })),
-        totalAmount: total,
-        status: "pending",
-        paymentStatus: "completed",
-        orderDate: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-        orderTime: new Date().toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }),
-        timestamp: new Date().toISOString(),
-      };
+  //     const orderData = {
+  //       id: `ORD${Date.now()}`,
+  //       transactionId: generateTransactionId(),
+  //       customerName: userDetails?.name || "Customer",
+  //       phoneNumber: userDetails?.phone || "1234567890",
+  //       items: cartItems.map((item) => ({
+  //         id: item.id,
+  //         name: item.name,
+  //         quantity: item.quantity,
+  //         instructions: instructions[item.id] || "",
+  //         price: item.price,
+  //       })),
+  //       totalAmount: total,
+  //       status: "pending",
+  //       paymentStatus: "completed",
+  //       orderDate: new Date().toLocaleDateString("en-US", {
+  //         year: "numeric",
+  //         month: "long",
+  //         day: "numeric",
+  //       }),
+  //       orderTime: new Date().toLocaleTimeString("en-US", {
+  //         hour: "2-digit",
+  //         minute: "2-digit",
+  //         hour12: true,
+  //       }),
+  //       timestamp: new Date().toISOString(),
+  //     };
 
-      const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
-      localStorage.setItem(
-        "orders",
-        JSON.stringify([...existingOrders, orderData])
-      );
+  //     const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+  //     localStorage.setItem(
+  //       "orders",
+  //       JSON.stringify([...existingOrders, orderData])
+  //     );
 
-      setOrderDetails(orderData);
-      setShowReceipt(true);
+  //     setOrderDetails(orderData);
+  //     setShowReceipt(true);
 
-      toast.success("Order placed successfully! 🎉");
-    } catch (error) {
-      console.error("Order placement error:", error);
-      toast.error("Failed to place order. Please try again.");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+  //     toast.success("Order placed successfully! 🎉");
+  //   } catch (error) {
+  //     console.error("Order placement error:", error);
+  //     toast.error("Failed to place order. Please try again.");
+  //   } finally {
+  //     setIsProcessing(false);
+  //   }
+  // };
 
   const downloadReceipt = async (format = "pdf") => {
     const receiptElement = document.getElementById("receipt-content");
@@ -184,7 +185,6 @@ function Cart() {
         });
 
         const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
         const padding = 20;
 
         const imgWidth = pageWidth - padding * 2;
