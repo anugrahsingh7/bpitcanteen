@@ -31,7 +31,7 @@ function Beverages() {
                     
                     {beveragesAndSnacksItems.map((item, index) => (
                         <div
-                            key={item.id}
+                            key={item._id}
                             className="opacity-0 animate-fadeIn"
                             style={{
                                 animationDelay: `${index * 150}ms`,

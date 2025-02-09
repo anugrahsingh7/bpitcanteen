@@ -20,7 +20,6 @@ const OrderHistory = () => {
       setOrders(data);
     }
   },[data])
-  console.log(data);
   if (!user) return <Loading />;
   
   // ✅ Show loading until user is available

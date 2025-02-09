@@ -16,7 +16,6 @@ export const createOrder = async (order) => {
       "http://127.0.0.1:3000/api/order/create-order",
       order
     );
-    console.log(response.data);
     return response.data; // Return response data
   } catch (error) {
     console.error("Order creation failed:", error);
