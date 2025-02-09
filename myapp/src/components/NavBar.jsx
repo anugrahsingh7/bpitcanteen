@@ -42,7 +42,7 @@ const NavBar = () => {
 
   return (
     <nav className="bg-[#f8f1e7] shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-1 py-1">
+      <div className="container mx-auto px-2 py-1">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
           <NavLink to="/snacks" className="flex items-center space-x-3">
@@ -52,7 +52,7 @@ const NavBar = () => {
           </NavLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4 font-hello">
+          <div className="hidden lg:flex items-center space-x-7 font-hello">
             <NavLink to="snacks" onClick={handleNavClick} className="text-[#502214]   flex justify-center text-opacity-85 hover:text-opacity-100 items-center hover:scale-105  font-semibold transition-all duration-300 ease-in-out "><IoFastFood className="me-[0.1rem] text-2xl"/>SNACKS</NavLink>
             <NavLink to="Chinese" onClick={handleNavClick} className="text-[#502214] flex justify-center text-opacity-85 hover:text-opacity-100  items-center  hover:scale-105 font-bold transition-all duration-300 ease-in-out"><GiNoodles className="me-[0.1rem] text-2xl" />CHINESE</NavLink>
             <NavLink to="SouthIndian" onClick={handleNavClick} className="text-[#502214]  flex justify-center  text-opacity-85 hover:text-opacity-100 items-center hover:scale-105 font-bold transition-all duration-300 ease-in-out"><GiBread className="me-[0.1rem] text-2xl"/>SOUTH INDIAN</NavLink>
@@ -119,7 +119,7 @@ const NavBar = () => {
             </Link>
 
             {/* Mobile Menu Button */}
-            <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-[0.35rem] rounded-full hover:bg-opacity-10 hover:bg-black transition-colors duration-200">
+            <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-[0.35rem] rounded-full hover:bg-opacity-10 hover:bg-black transition-colors duration-200">
               <i className=" text-[1.85rem] text-[#502214] transition-all duration-300 ease-in-out"> {isOpen ? <FaTimes /> : <MdRestaurantMenu />}</i>
             </button>
           </div>
@@ -127,7 +127,7 @@ const NavBar = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className="md:hidden flex flex-col space-y-2 mt-4 bg-[#f9fafb] shadow-lg rounded-lg p-4 ps-7 pe-16  absolute left-0 right-0">
+          <div className=" lg:hidden flex flex-col space-y-2 mt-4 bg-[#f9fafb] shadow-lg rounded-lg p-4 ps-7 pe-16  absolute left-0 right-0">
             <NavLink to="snacks" onClick={handleNavClick} className="text-[#502214] text-opacity-85 hover:text-opacity-100  text-xl pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"><IoFastFood className="me-[0.1rem] text-2xl"/>SNACKS</NavLink>
             <NavLink to="Chinese" onClick={handleNavClick} className="text-[#502214] text-opacity-85 hover:text-opacity-100 text-xl pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"><GiNoodles className="me-[0.1rem] text-2xl" />CHINESE</NavLink>
             <NavLink to="SouthIndian" onClick={handleNavClick} className="text-[#502214] text-opacity-85 hover:text-opacity-100 text-xl  pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"><GiBread className="me-[0.1rem] text-2xl"/>SOUTH INDIAN</NavLink>

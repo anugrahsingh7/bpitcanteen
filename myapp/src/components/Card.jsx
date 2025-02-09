@@ -50,7 +50,7 @@ const Card = ({ id, image, name, price, description, bestseller, isVeg }) => {
             </div>
           ) : (
             // Non-Veg Icon
-            <div className="bg-white rounded-md shadow-md p-1">
+            <div className="bg-[#f2eee9] rounded-md shadow-md p-1">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z" 
                   stroke="#EF4444" 
@@ -86,24 +86,24 @@ const Card = ({ id, image, name, price, description, bestseller, isVeg }) => {
 
       {/* Content Container */}
       <div className="p-4">
-        <h2 className="text-lg font-bold text-gray-900 mb-1">{name}</h2>
-        <p className="text-gray-600 text-xs mb-2">
+        <h2 className="text-lg font-bold text-[#502214] mb-1">{name}</h2>
+        <p className="text-[#502214] text-opacity-75 text-xs mb-2">
           {shortDescription}
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="text-green-600 hover:text-green-700 font-medium ml-1 focus:outline-none"
+            className="text-[#502214] hover:text-opacity-75 font-semibold ml-1 focus:outline-none"
           >
             Read more
           </button>
         </p>
         
         <div className="flex items-center justify-between mt-auto">
-          <span className="text-xl font-bold text-gray-900">₹{price}</span>
+          <span className="text-xl font-bold text-[#502214]">₹{price}</span>
           
           {quantity === 0 ? (
             <button 
               onClick={handleAddToCart}
-              className="bg-green-500 hover:bg-green-600 text-white font-semibold py-1.5 px-3 rounded-lg transition-colors duration-200 flex items-center gap-1.5 text-sm"
+              className="border border-[#502214] bg-transparent border-opacity-90 text-[#502214] hover:bg-[#f8f1e7] font-semibold py-1.5 px-3 rounded-lg transition-colors duration-200 flex items-center gap-1.5 text-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -114,14 +114,14 @@ const Card = ({ id, image, name, price, description, bestseller, isVeg }) => {
             <div className="flex items-center gap-1.5">
               <button 
                 onClick={handleRemoveFromCart}
-                className="bg-green-100 hover:bg-green-200 text-green-600 h-7 w-7 rounded-lg flex items-center justify-center transition-colors duration-200"
+                className="bg-[#f8f1e7] text-[#502214] border-[#502214] border border-opacity-80 hover:opacity-75 h-7 w-7 rounded-lg flex items-center justify-center transition-colors duration-200"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                 </svg>
               </button>
               
-              <span className="w-6 text-center font-semibold text-gray-800 text-sm">
+              <span className="w-6 text-center font-semibold text-[#502214] text-sm">
                 {quantity}
               </span>
               
@@ -130,8 +130,8 @@ const Card = ({ id, image, name, price, description, bestseller, isVeg }) => {
                 disabled={quantity >= 10}
                 className={`h-7 w-7 rounded-lg flex items-center justify-center transition-colors duration-200 
                   ${quantity >= 10 
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                    : 'bg-green-100 hover:bg-green-200 text-green-600'
+                    ? 'bg-[#f8f1e7] text-[#502214] border-[#502214] border border-opacity-10 cursor-not-allowed' 
+                    : 'bg-[#502214] bg-opacity-90 hover:bg-opacity-100 text-white'
                   }`}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -145,17 +145,17 @@ const Card = ({ id, image, name, price, description, bestseller, isVeg }) => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="absolute top-1/4 left-8 right-8 backdrop-blur-sm bg-orange-50/95 z-10 p-4 rounded-lg shadow-lg">
+        <div className="absolute top-1/4 left-8 right-8 backdrop-blur-sm bg-[#f8f1e7] z-10 p-4 rounded-lg shadow-lg">
           <button 
             onClick={() => setIsModalOpen(false)}
-            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            className="absolute top-2 right-2 text-[#502214] hover:text-opacity-75"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <h2 className="text-lg font-bold mb-2">{name}</h2>
-          <p className="text-gray-600 text-sm max-h-32 overflow-y-auto">{description}</p>
+          <h2 className="text-lg font-bold mb-2 text-[#502214]">{name}</h2>
+          <p className="text-[#502214] text-opacity-75 font-medium text-sm max-h-32 overflow-y-auto">{description}</p>
         </div>
       )}
     </div>
