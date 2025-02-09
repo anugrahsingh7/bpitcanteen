@@ -6,7 +6,14 @@ import { toast } from "react-hot-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useUser } from "../context/userContext";
+
+
+
 import { useCreateOrderByUser } from "../lib/useOrderApi";
+
+
+
+
 
 const generateTransactionId = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -20,6 +27,9 @@ const generateTransactionId = () => {
 };
 
 function Cart() {
+  const [mobileNumber, setMobileNumber] = useState("");
+  const isMobileValid = mobileNumber.length === 10 && /^\d+$/.test(mobileNumber);
+
   const {
     cartItems,
     instructions,
@@ -254,6 +264,8 @@ function Cart() {
                 ))}
               </div>
             </div>
+            
+         
 
             <div className="border-t pt-3">
               <div className="flex justify-between items-center">
@@ -559,23 +571,39 @@ function Cart() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: cartItems.length * 0.1 }}
       >
+         <div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">
+    Mobile Number
+  </label>
+  <input
+    type="tel"
+    value={mobileNumber}
+    onChange={(e) => setMobileNumber(e.target.value)}
+    placeholder="Enter your mobile number"
+    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+    required
+  />
+     </div>
         <div className="flex justify-between items-center text-xl mb-6">
           <span className="font-semibold text-gray-800">Total Amount</span>
           <span className="font-bold text-green-600">₹{total}</span>
         </div>
         <div className="space-y-3">
           <motion.button 
+          
             onClick={() => { handleOrder(); clearCart(); }}
+            disabled={!isMobileValid} 
             className={`w-full ${
               isProcessing
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-green-500 hover:bg-green-600"
-            } text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200`}
+            } text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-65`}
             whileHover={{ scale: isProcessing ? 1 : 1.02 }}
             whileTap={{ scale: isProcessing ? 1 : 0.98 }}
           >
             PAY & PLACE ORDER
           </motion.button>
+          
           {/* <motion.button
             onClick={() => handlePaymentAndOrder()}
             disabled={isProcessing}
