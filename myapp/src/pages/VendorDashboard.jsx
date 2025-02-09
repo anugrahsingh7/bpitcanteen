@@ -37,11 +37,15 @@ function VendorDashboard() {
   const { data: getOrders, isLoading } = useGetAllOrders();
   useEffect(() => {
     if (getOrders) {
-      setOrders(getOrders);
+      const sortedOrders = getOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setOrders(sortedOrders);
       console.log(getOrders.map((order) => console.log(order.user)));
     }
     setLoading(false);
   }, [getOrders]);
+
+
+
   const audioRef = useRef(new Audio(notificationSound));
   const previousOrdersRef = useRef(new Set());
   if (isLoading) return <Loading />;
@@ -323,13 +327,7 @@ function VendorDashboard() {
                 </svg>
                 <span className="whitespace-nowrap">Download Report</span>
               </motion.button>
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={handleClearAllOrders}
-                className="flex-1 sm:flex-none bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium shadow-sm transition-colors duration-200"
-              >
-                Clear All Orders
-              </motion.button>
+             
             </div>
           </div>
         </div>
@@ -435,26 +433,13 @@ function VendorDashboard() {
                           ))}
                         </div>
 
-                        {order.items.some((item) => item.instructions) && (
+                        {order.instructions && (
                           <div className="border-t pt-2">
-                            <div className="font-medium mb-1">
-                              Instructions:
-                            </div>
-                            {order.items.map(
-                              (item) =>
-                                item.instructions && (
-                                  <div key={item.id} className="text-sm py-1">
-                                    <span className="font-medium">
-                                      {item.name}:
-                                    </span>
-                                    <span className="text-gray-600 italic ml-2">
-                                      {item.instructions || undefined}
-                                    </span>
-                                  </div>
-                                )
-                            )}
+                            <div className="font-medium mb-1">Instructions:</div>
+                            <div className="text-sm py-1 text-gray-600 italic">{order.instructions}</div>
                           </div>
-                        )}
+)}
+
 
                         <div className="flex justify-between items-center border-t pt-2">
                           <div>
@@ -612,24 +597,8 @@ function VendorDashboard() {
                             </td>
                             <td className="px-2 py-4 border-b">
                               <div className="space-y-1">
-                                {order.items.map(
-                                  (item) =>
-                                    item.instructions && (
-                                      <div key={item.id} className="text-sm">
-                                        <div className="flex items-start gap-2">
-                                          <span className="font-medium min-w-[100px] truncate">
-                                            {item.name}:
-                                          </span>
-                                          <span className="text-gray-600 italic">
-                                            {item.instructions}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )
-                                )}
-                                {!order.items.some(
-                                  (item) => item.instructions
-                                ) && (
+                                  
+                               {order.instructions || (
                                   <span className="text-gray-400 italic text-sm">
                                     No special instructions
                                   </span>
