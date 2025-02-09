@@ -25,7 +25,8 @@ app.use(passport.initialize());
 app.use("/api/menu", menuRouter);
 app.use("/api/users", userRouter);
 app.use("/auth", authRouter);
-app.use("/api/order",orderRouter)
+app.use("/api/order", orderRouter);
+
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
