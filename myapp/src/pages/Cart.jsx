@@ -8,6 +8,9 @@ import jsPDF from "jspdf";
 import { useUser } from "../context/userContext";
 import { useCreateOrderByUser } from "../lib/useOrderApi";
 import axios from "axios";
+//TODO:  PHONE NUMBER ADD database
+
+//BUG: cart items screen displayed before razorpay
 
 // const generateTransactionId = () => {
 //   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -60,14 +63,12 @@ function Cart() {
       const response = await createOrder(newItems);
       const { amount, orderId } = response.data || response;
 
-      console.log("Order created:", response);
-
       // Step 2: Initialize Razorpay Checkout
       const options = {
         key: "rzp_test_Kko9Iq18fapOjW", // Razorpay Key ID
         amount: amount,
         currency: "INR",
-        name: "My Shop",
+        name: "BPIT CANTEEN",
         description: "Test Transaction",
         order_id: orderId,
         handler: async function (response) {
@@ -79,12 +80,15 @@ function Cart() {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
               ...newItems,
+              mobileNumber,
+              instructions: Object.values(instructions)[0],
             }
           );
 
           if (verificationResponse.data.success) {
             toast.success("Payment successful!");
-            setShowReceipt(true); // Show receipt
+            // setShowReceipt(true); // Show receipt
+            navigate("/Bill");
             clearCart(); // Clear the cart
           } else {
             toast.error("Payment verification failed!");
@@ -96,7 +100,7 @@ function Cart() {
           contact: mobileNumber || "9999999999",
         },
         theme: {
-          color: "#3399cc",
+          color: "#faa038",
         },
       };
 
@@ -631,7 +635,6 @@ function Cart() {
           <motion.button
             onClick={() => {
               handleOrder();
-              clearCart();
             }}
             disabled={!isMobileValid}
             className={`w-full ${

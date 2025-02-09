@@ -12,6 +12,9 @@ const OrderSchema = new mongoose.Schema(
       enum: ["pending", "completed", "cancelled"],
       default: "pending",
     },
+    phoneNumber: { type: String },
+    transactionId: { type: String },
+    instructions: { type: String },
   },
   { timestamps: true }
 );

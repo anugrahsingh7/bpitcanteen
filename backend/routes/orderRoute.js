@@ -6,6 +6,7 @@ const orderController = require("../controllers/orderController");
 // Create an order
 router.post("/create-order", orderController.createOrder);
 router.get("/get-orders", orderController.getOrders);
+router.get("/:id", orderController.getOrder);
 router.post("/verify-payment", orderController.verifyPayment);
 
 module.exports = router;

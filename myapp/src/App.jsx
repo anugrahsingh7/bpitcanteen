@@ -19,7 +19,8 @@ import { useEffect, useState } from "react";
 import IndianItems from "./pages/IndianItems";
 import Deserts from "./pages/Deserts";
 import Mess from "./pages/Mess";
-import OrderHistory from "./pages/OrderHistory"
+import OrderHistory from "./pages/OrderHistory";
+import Bill from "./pages/Bill";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -51,40 +52,60 @@ function App() {
     <CartProvider>
       <Toaster />
       <BrowserRouter>
-      <UserProvider>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/vendor-login" element={<VendorLogin />} />
+            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
 
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/vendor-login" element={<VendorLogin />} />
-          <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/snacks" element={<Snacks />} />
+              <Route path="/SouthIndian" element={<SouthIndian />} />
 
-          <Route
-            element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/snacks" element={<Snacks />} />
-            <Route path="/SouthIndian" element={<SouthIndian />} />
+              <Route path="/Chinese" element={<Chinese />} />
+              <Route path="/IndianItems" element={<IndianItems />} />
+              <Route path="/Mess" element={<Mess />} />
+              <Route path="/Deserts" element={<Deserts />} />
 
-            
-            <Route path="/Chinese" element={<Chinese />} />
-            <Route path="/IndianItems" element={<IndianItems />} />
-            <Route path="/Mess" element={<Mess />} />
-            <Route path="/Deserts" element={<Deserts />} />
+              <Route path="/beverages" element={<Beverages />} />
+            </Route>
+            <Route
+              path="bill"
+              element={
+                <ProtectedRoute>
+                  <Bill />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/OrderHistory"
+              element={
+                <ProtectedRoute>
+                  <OrderHistory />
+                </ProtectedRoute>
+              }
+            />
 
-            <Route path="/beverages" element={<Beverages />} />
-          </Route>
-
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgetpassword" element={<ForgetPassword />} />
-          <Route path="/OrderHistory" element={<OrderHistory />} />
-          <Route path="/createaccount" element={<CreateAccount />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </UserProvider>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgetpassword" element={<ForgetPassword />} />
+            <Route path="/createaccount" element={<CreateAccount />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </UserProvider>
       </BrowserRouter>
     </CartProvider>
   );
