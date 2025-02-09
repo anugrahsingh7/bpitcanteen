@@ -7,7 +7,7 @@ const AppLayout = () => {
   return (
     <div>
       <NavBar />
-      <main className="container mx-auto px-4 py-8 min-h-[100vh]">
+      <main className="bg-[#faf7f2] container mx-auto px-4 py-8 min-h-[100vh]">
         <Outlet />
       </main>
       <Footer />
