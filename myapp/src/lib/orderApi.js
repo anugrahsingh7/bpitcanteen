@@ -10,16 +10,17 @@ export const getOrders = async () => {
     console.error(error);
   }
 };
-
 export const createOrder = async (order) => {
   try {
     const response = await axios.post(
       "http://127.0.0.1:3000/api/order/create-order",
       order
     );
-    return response.data;
+    console.log(response.data);
+    return response.data; // Return response data
   } catch (error) {
-    console.error(error);
+    console.error("Order creation failed:", error);
+    throw new Error(error.response?.data?.message || "Order creation failed");
   }
 };
 

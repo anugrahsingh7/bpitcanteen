@@ -6,14 +6,8 @@ import { toast } from "react-hot-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useUser } from "../context/userContext";
-
-
-
 import { useCreateOrderByUser } from "../lib/useOrderApi";
-
-
-
-
+import axios from "axios";
 
 const generateTransactionId = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -28,7 +22,8 @@ const generateTransactionId = () => {
 
 function Cart() {
   const [mobileNumber, setMobileNumber] = useState("");
-  const isMobileValid = mobileNumber.length === 10 && /^\d+$/.test(mobileNumber);
+  const isMobileValid =
+    mobileNumber.length === 10 && /^\d+$/.test(mobileNumber);
 
   const {
     cartItems,
@@ -37,7 +32,7 @@ function Cart() {
     clearCart,
     updateInstructions,
   } = useCart();
-  const {user} =useUser();
+  const { user } = useUser();
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const [showReceipt, setShowReceipt] = useState(false);
@@ -45,9 +40,9 @@ function Cart() {
   const updatedCartItems = cartItems.map(({ image, ...rest }) => rest);
   const newItems = {
     items: [...updatedCartItems], // Keep it as an array
-    userId: user?._id
+    userId: user?._id,
   };
-  const {mutate: createOrder} = useCreateOrderByUser();
+  const { mutateAsync: createOrder } = useCreateOrderByUser();
 
   const handleInstructionChange = (itemId, value) => {
     updateInstructions(itemId, value);
@@ -58,17 +53,66 @@ function Cart() {
     0
   );
 
-  const handleOrder = async ()=>{
+  const handleOrder = async () => {
+    setIsProcessing(true);
     try {
-      await createOrder(newItems);
-      toast.success("Order placed successfully!");
-      navigate("/OrderHistory")
+      // Step 1: Create an order on the backend and get the Razorpay order ID
+      const response = await createOrder(newItems);
+      const { amount, orderId } = response.data || response;
+
+      console.log("Order created:", response);
+
+      // Step 2: Initialize Razorpay Checkout
+      const options = {
+        key: "rzp_test_Kko9Iq18fapOjW", // Razorpay Key ID
+        amount: amount,
+        currency: "INR",
+        name: "My Shop",
+        description: "Test Transaction",
+        order_id: orderId,
+        handler: async function (response) {
+          // Step 3: Verify payment on the backend
+          const verificationResponse = await axios.post(
+            "http://localhost:3000/api/order/verify-payment",
+            {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            }
+          );
+
+          if (verificationResponse.data.success) {
+            toast.success("Payment successful!");
+            setShowReceipt(true); // Show receipt
+            clearCart(); // Clear the cart
+          } else {
+            toast.error("Payment verification failed!");
+          }
+        },
+        prefill: {
+          name: user?.name || "Guest",
+          email: user?.email || "guest@example.com",
+          contact: mobileNumber || "9999999999",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+      rzp.on("payment.failed", function (response) {
+        console.error("Payment failed:", response.error);
+        toast.error("Payment failed. Please try again.");
+      });
     } catch (error) {
-      console.error("Order Error:", error);
-      toast.error("Order failed. Try again.");
+      console.error("Payment error:", error);
+      toast.error("Payment failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
-  
-  }
+  };
 
   const handlePaymentAndOrder = async () => {
     setIsProcessing(true);
@@ -113,7 +157,6 @@ function Cart() {
       setShowReceipt(true);
 
       toast.success("Order placed successfully! 🎉");
-
     } catch (error) {
       console.error("Order placement error:", error);
       toast.error("Failed to place order. Please try again.");
@@ -192,10 +235,9 @@ function Cart() {
       >
         <div id="receipt-content" className="bg-white p-4 sm:p-6">
           <div className="text-center  pb-3 mb-1">
-            
             <h1 className="text-2xl font-bold text-black mb-1 text-center">
-           BPIT CANTEEN
-           <i className="fa-solid fa-utensils ml-2 text-orange-500"></i>
+              BPIT CANTEEN
+              <i className="fa-solid fa-utensils ml-2 text-orange-500"></i>
             </h1>
             <p className="text-gray-500 text-xs">GST No: 29AADCB2230M1ZX</p>
             <div className="border-t my-2"></div>
@@ -264,8 +306,6 @@ function Cart() {
                 ))}
               </div>
             </div>
-            
-         
 
             <div className="border-t pt-3">
               <div className="flex justify-between items-center">
@@ -276,7 +316,6 @@ function Cart() {
                   ₹{orderDetails?.totalAmount}
                 </span>
               </div>
-
             </div>
 
             <div className="border-t pt-3">
@@ -571,28 +610,30 @@ function Cart() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: cartItems.length * 0.1 }}
       >
-         <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700">
-    Mobile Number
-  </label>
-  <input
-    type="tel"
-    value={mobileNumber}
-    onChange={(e) => setMobileNumber(e.target.value)}
-    placeholder="Enter your mobile number"
-    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-    required
-  />
-     </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Mobile Number
+          </label>
+          <input
+            type="tel"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            placeholder="Enter your mobile number"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+            required
+          />
+        </div>
         <div className="flex justify-between items-center text-xl mb-6">
           <span className="font-semibold text-gray-800">Total Amount</span>
           <span className="font-bold text-green-600">₹{total}</span>
         </div>
         <div className="space-y-3">
-          <motion.button 
-          
-            onClick={() => { handleOrder(); clearCart(); }}
-            disabled={!isMobileValid} 
+          <motion.button
+            onClick={() => {
+              handleOrder();
+              clearCart();
+            }}
+            disabled={!isMobileValid}
             className={`w-full ${
               isProcessing
                 ? "bg-gray-400 cursor-not-allowed"
@@ -603,7 +644,7 @@ function Cart() {
           >
             PAY & PLACE ORDER
           </motion.button>
-          
+
           {/* <motion.button
             onClick={() => handlePaymentAndOrder()}
             disabled={isProcessing}
