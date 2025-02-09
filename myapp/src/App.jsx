@@ -20,6 +20,7 @@ import IndianItems from "./pages/IndianItems";
 import Deserts from "./pages/Deserts";
 import Mess from "./pages/Mess";
 import OrderHistory from "./pages/OrderHistory"
+import Bill from "./pages/Bill"
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -67,6 +68,7 @@ function App() {
           >
             <Route path="/snacks" element={<Snacks />} />
             <Route path="/SouthIndian" element={<SouthIndian />} />
+            <Route path="/Bill" element={<Bill />} />
 
             
             <Route path="/Chinese" element={<Chinese />} />
