@@ -8,7 +8,9 @@ import { useGetAllOrders } from "../lib/useOrderApi";
 import Loading from "../components/Loading";
 
 // Helper function to get formatted time
+
 const getFormattedTime = (orderTime) => {
+  
   const date = orderTime ? new Date(orderTime) : new Date();
   return date.toLocaleTimeString("en-US", {
     hour: "2-digit",
@@ -121,7 +123,7 @@ function VendorDashboard() {
 
       const details = [
         [
-          `Order ID: ${order.id}`,
+          `Order No.: ${order.id}`,
           `Time: ${order.orderTime || getFormattedTime(order.timestamp)}`,
         ],
         [
@@ -175,6 +177,7 @@ function VendorDashboard() {
     // Save the PDF
     doc.save(`BPIT_Canteen_Orders_${new Date().toLocaleDateString()}.pdf`);
   };
+  
 
   return (
     <motion.div
@@ -264,159 +267,134 @@ function VendorDashboard() {
             </div>
           ) : (
             <>
+             
+             
               {/* Mobile View - Card Layout */}
-              <div className="lg:hidden space-y-4">
-                <AnimatePresence>
-                  {orders.map((order) => (
-                    <motion.div
-                      key={order._id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="bg-white rounded-lg shadow-md p-4 sm:p-6"
-                    >
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <div className="font-medium text-sm text-black">
-                            Order ID
-                          </div>
-                          <div className="font-bold break-all">{order.id}</div>
+              <div className="lg:hidden m-2 mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+  <AnimatePresence>
+    {orders.map((order) => (
+      <motion.div
+        key={order._id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="bg-white rounded-md shadow p-2 sm:p-3 text-[10px] sm:text-xs"
+      >
+        <div className="flex justify-between items-start mb-1 sm:mb-2">
+          <div>
+            <div className="font-medium text-black">Order No.</div>
+            <div className="font-bold break-all">{order.id}</div>
 
-                          <div className="mt-1">
-                            <div className="font-medium text-sm text-black">
-                              Order Time
-                            </div>
-                            <div className="text-sm text-gray-700 group relative cursor-help">
-                              {getFormattedTime(order.createdAt)}
-                              <div
-                                className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
-                                                                whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                              >
-                                {order.createdAt ||
-                                  new Date(order.timestamp).toLocaleString()}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm font-medium
-                                                    ${
-                                                      order.status ===
-                                                      "prepared"
-                                                        ? "bg-green-100 text-green-800"
-                                                        : order.status ===
-                                                          "Received"
-                                                        ? "bg-yellow-100 text-yellow-800"
-                                                        : "bg-blue-100 text-blue-800"
-                                                    }`}
-                        >
-                          {order.status}
-                        </span>
-                      </div>
-
-                      <div className="space-y-4 sm:space-y-5">
-                        <div className="flex items-center gap-2">
-                          <FaUser className="text-black" />
-                          <span className="font-medium">
-                            {order.customerName || undefined}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <FaPhone className="text-black" />
-                          <span className="group relative cursor-help">
-                            {order?.phoneNumber?.slice(0, 5)}***
-                            <div
-                              className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
-                                                            whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                            >
-                              {order.phoneNumber || undefined}
-                            </div>
-                          </span>
-                        </div>
-
-                        <div className="border-t pt-2">
-                          <div className="font-medium mb-1">Items:</div>
-                          {order.items.map((item) => (
-                            <div
-                              key={item._id}
-                              className="flex justify-between text-sm py-1"
-                            >
-                              <span>{item.name}</span>
-                              <span className="text-black">
-                                x{item.quantity}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-
-                        {order.instructions && (
-                          <div className="border-t pt-2">
-                            <div className="font-medium mb-1">Instructions:</div>
-                            <div className="text-sm py-1 text-red-500 italic">{order.instructions}</div>
-                          </div>
-)}
-
-
-                        <div className="flex justify-between items-center border-t pt-2">
-                          <div>
-                            <div className="text-sm text-black">
-                              Total Amount
-                            </div>
-                            <div className="font-bold">
-                              ₹{order.totalAmount}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex gap-2 pt-2 border-t">
-                          {order.status === "pending" && (
-                            <motion.button
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handleReceiveOrder(order.id)}
-                              className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-md text-sm sm:text-sm font-medium shadow-sm"
-                            >
-                              Received
-                            </motion.button>
-                          )}
-                          {order.status === "Received" && (
-                            <motion.button
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handlePreparedOrder(order.id)}
-                              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-md text-sm sm:text-sm font-medium shadow-sm"
-                            >
-                              Prepared
-                            </motion.button>
-                          )}
-                          {order.status === "prepared" && (
-                            <motion.button
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handleDeleteOrder(order.id)}
-                              className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-md text-sm sm:text-sm font-medium shadow-sm flex items-center justify-center gap-1 sm:gap-2"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-3 w-3 sm:h-4 sm:w-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                              Delete Order
-                            </motion.button>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+            <div className="mt-1">
+              <div className="font-medium text-black">Order Time</div>
+              <div className="text-gray-700 group relative cursor-help">
+                {getFormattedTime(order.createdAt)}
+                <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  {order.createdAt || new Date(order.timestamp).toLocaleString()}
+                </div>
               </div>
+            </div>
+          </div>
+          <span
+            className={`px-2 py-[2px] rounded-full text-[10px] sm:text-xs font-medium ${
+              order.status === "prepared"
+                ? "bg-green-100 text-green-800"
+                : order.status === "Received"
+                ? "bg-yellow-100 text-yellow-800"
+                : "bg-blue-100 text-blue-800"
+            }`}
+          >
+            {order.status}
+          </span>
+        </div>
+
+        <div className="space-y-1 sm:space-y-2">
+          <div className="flex items-center gap-1">
+            <FaUser className="text-black text-xs" />
+            <span className="font-medium">{order.customerName || undefined}</span>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <FaPhone className="text-black text-xs" />
+            <span className="group relative cursor-help">
+              {order?.phoneNumber?.slice(0, 10)}
+              <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                {order.phoneNumber || undefined}
+              </div>
+            </span>
+          </div>
+
+          <div className="border-t pt-1">
+            <div className="font-medium mb-1">Items:</div>
+            {order.items.map((item) => (
+              <div key={item._id} className="text-[10px] sm:text-xs py-1">
+                <div className="flex justify-between">
+                  <span>{item.name}</span>
+                  <span className="text-black">x{item.quantity}</span>
+                </div>
+                {item.instructions && (
+                  <div className="text-red-500 italic">➤ {item.instructions}</div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-between items-center border-t pt-1">
+            <div>
+              <div className="text-black">Total Amount</div>
+              <div className="font-bold">₹{order.totalAmount}</div>
+            </div>
+          </div>
+
+          <div className="flex gap-1 pt-1 border-t">
+            {order.status === "pending" && (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleReceiveOrder(order.id)}
+                className="flex-1 bg-blue-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
+              >
+                Received
+              </motion.button>
+            )}
+            {order.status === "Received" && (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handlePreparedOrder(order.id)}
+                className="flex-1 bg-green-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
+              >
+                Prepared
+              </motion.button>
+            )}
+            {order.status === "prepared" && (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleDeleteOrder(order.id)}
+                className="flex-1 bg-red-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm flex items-center justify-center gap-1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 sm:h-4 sm:w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                Delete
+              </motion.button>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    ))}
+  </AnimatePresence>
+</div>
+
 
               {/* Desktop View - Table Layout */}
               <div className="hidden lg:block rounded-lg shadow-lg overflow-hidden bg-white">
@@ -424,7 +402,7 @@ function VendorDashboard() {
                   <table className="w-full table-fixed min-w-[900px]">
                     <thead>
                       <tr className="bg-[#502214] text-[#e9b52a] ">
-                        <th className="px-2 py-4 text-left w-20">Order ID</th>
+                        <th className="px-2 py-4 text-left w-20">Order No.</th>
                         <th className="px-2 py-4 text-left w-20">Time</th>
                         <th className="px-2 py-4 text-left w-24">
                           <FaUser className="inline mr-1" />
