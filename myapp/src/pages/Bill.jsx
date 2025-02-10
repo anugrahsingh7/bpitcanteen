@@ -1,12 +1,58 @@
-import React, { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import  { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import html2pdf from 'html2pdf.js';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { parseISO, format } from "date-fns";
+import Loading from '../components/Loading';
+
+const orderIdHasher = {
+  hashOrderId: (orderId) => {
+    let hash = 0;
+
+    // Generate hash from string
+    for (let i = 0; i < orderId.length; i++) {
+      const char = orderId.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+
+    // Ensure positive number and limit to 4 digits
+    hash = Math.abs(hash) % 10000;
+
+    // Pad with leading zeros if less than 4 digits
+    return hash.toString().padStart(4, "0");
+  },
+};
 
 const Invoice = () => {
+
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate(); // For navigation
   const invoiceRef = useRef(null); // Reference for invoice content
+  const [order, setOrder] = useState({});
+  
+ const id = searchParams.get('id'); // Get the orderId from the URL
+  
+  useEffect(() => {
+    const getOrder = async () => {
+      if (!id) return;
+      try {
+        const res = await axios.get(`http://localhost:3000/api/order/${id}`);
+        
+        setOrder(res.data);
+      } catch (error) {
+        console.error("Error fetching order:", error);
+      }
+    };
+
+    getOrder();
+  }, [id]);
+
+  if(order.length === 0 ) return <Loading/>;
+  console.log(order);
+  const orderDate= order.order?.createdAt;
 
   const downloadPDF = () => {
     const element = invoiceRef.current;
@@ -61,58 +107,50 @@ const Invoice = () => {
           </div>
           <div className="text-[#502214] sm:text-right">
             <div className="font-bold mb-0 text-lg sm:text-xl">INVOICE</div>
-            <div className="text-sm">Date: 01/05/2023</div>
-            <div className="text-sm">Order No: INV12345</div>
+            <div className="text-sm">Date: {order?.order?.createdAt ? format(parseISO(order.order.createdAt), "eeee , dd-MM-yyyy") : "N/A"}</div>
+            <div className="text-sm">Order No: {order.order?._id ? orderIdHasher.hashOrderId(order.order._id) : "0000"}</div>
             <div className="text-sm">GST No: INV123456789</div>
+
+            
           </div>
         </div>
 
         {/* Bill To Section */}
         <div className="flex flex-col sm:flex-row items-start justify-between mb-4 sm:mb-4">
-          <div className="w-full sm:w-1/2">
+          <div className="w-full sm:w-full">
             <h2 className="font-bold text-[#502214] text-lg sm:text-xl">Bill To:</h2>
-            <div className="text-[#502214] text-sm sm:text-base">Vaibhav Sinha</div>
-            <div className="text-[#502214] text-sm sm:text-base">+91 1234567890</div>
-            <div className="text-[#502214] text-sm sm:text-base">johndoe@example.com</div>
-            <div className="text-[#502214] text-sm sm:text-base">Transaction Id: gjhgjhgjh</div>
+            <div className="text-[#502214] text-sm sm:text-base">{order.order?.user?.name}</div>
+            <div className="text-[#502214] text-sm sm:text-base">{order.order?.phoneNumber}</div>
+            <div className="text-[#502214] text-sm sm:text-base">{order.order?.user?.email}</div>
+            <div className="text-[#502214] text-sm sm:text-base">Transaction Id: {order.order?.transactionId}</div>
           </div>
         </div>
 
-        {/* Invoice Items Table */}
         <table className="w-full text-left mb-2">
-          <thead>
-            <tr>
-              <th className="text-[#502214] font-bold uppercase py-2">Description</th>
-              <th className="text-[#502214] font-bold uppercase py-2">Quantity</th>
-              <th className="text-[#502214] font-bold uppercase py-2">Price</th>
-              <th className="text-[#502214] font-bold uppercase py-2">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="py-2 text-[#502214]">Product 1</td>
-              <td className="py-2 text-[#502214]">1</td>
-              <td className="py-2 text-[#502214]">$100.00</td>
-              <td className="py-2 text-[#502214]">$100.00</td>
-            </tr>
-            <tr>
-              <td className="py-2 text-[#502214]">Product 2</td>
-              <td className="py-2 text-[#502214]">2</td>
-              <td className="py-2 text-[#502214]">$50.00</td>
-              <td className="py-2 text-[#502214]">$100.00</td>
-            </tr>
-            <tr>
-              <td className="py-2 text-[#502214]">Product 3</td>
-              <td className="py-2 text-[#502214]">3</td>
-              <td className="py-2 text-[#502214]">$75.00</td>
-              <td className="py-2 text-[#502214]">$225.00</td>
-            </tr>
-          </tbody>
-        </table>
+  <thead>
+    <tr>
+      <th className="text-[#502214] font-bold uppercase py-2">Name</th>
+      <th className="text-[#502214] font-bold uppercase py-2">Quantity</th>
+      <th className="text-[#502214] font-bold uppercase py-2">Price</th>
+      <th className="text-[#502214] font-bold uppercase py-2">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {order.order?.items?.map((item, index) => (
+      <tr key={index}>
+        <td className="py-2 text-[#502214]">{item.name}</td>
+        <td className="py-2 text-[#502214]">{item.quantity}</td>
+        <td className="py-2 text-[#502214]">₹{item.price}</td>
+        <td className="py-2 text-[#502214]">₹{item.quantity * item.price}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
 
         <div className="flex justify-end mb-2">
           <div className="text-[#502214] mr-2">Total:</div>
-          <div className="text-[#502214] font-bold text-xl">$450.50</div>
+          <div className="text-[#502214] font-bold text-xl">{order.order?.totalAmount} Rs</div>
         </div>
 
         <div className="border-t border-[#502214] border-opacity-25 pt-4 mb-4">
