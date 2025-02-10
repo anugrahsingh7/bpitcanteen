@@ -23,6 +23,7 @@ import Deserts from "./pages/Deserts";
 import Mess from "./pages/Mess";
 import OrderHistory from "./pages/OrderHistory";
 import Bill from "./pages/Bill";
+import CanteenClosed from "./pages/CanteenClosed";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -106,6 +107,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/forgetpassword" element={<ForgetPassword />} />
             <Route path="/SignUp" element={<SignUp />} />
+            <Route path="/CanteenClosed" element={<CanteenClosed />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </UserProvider>

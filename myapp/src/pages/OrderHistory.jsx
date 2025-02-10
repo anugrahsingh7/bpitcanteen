@@ -29,17 +29,13 @@ const OrderHistory = () => {
   if (isError) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="bg-white min-h-screen p-6 relative">
+    <div className=" min-h-screen p-6 relative">
       {/* Page Title */}
-      <h2 className="text-2xl font-bold animate-[fadeIn_0.6s_ease-out] text-center mb-3">
-        <span className="text-blue-600">BPIT</span>{" "}
-        <span className="text-red-500">
-          COLLEGE CANTEEN
-          <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
-        </span>
-      </h2>
+      <div className="flex justify-center mx-auto">
+          <img className="w-auto h-16 sm:h-16" src="/logo/logo-removebg.png" alt="" />
+        </div>
       <Link to="/Snacks" className="justify-start items-center flex">
-        <button className="absolute flex justify-center items-center top-16  text-2xl p-3 bg-black bg-opacity-5 hover:bg-opacity-10 opacity-80 rounded-full ">
+        <button className="absolute flex text-[#502214] justify-center items-center top-16  text-2xl p-3 bg-black bg-opacity-5 hover:bg-opacity-10 opacity-80 rounded-full ">
           {" "}
           <FaArrowLeft />
         </button>
@@ -47,7 +43,7 @@ const OrderHistory = () => {
 
       {/* Order History Heading */}
       <motion.h1
-        className="text-2xl md:text-3xl font-bold text-black text-opacity-70 text-center mb-4"
+        className="text-3xl md:text-4xl font-bold text-[#502214] text-opacity-90 mt-3 text-center mb-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -66,18 +62,18 @@ const OrderHistory = () => {
         {orders.map((order, index) => (
           <motion.div
             key={order._id}
-            className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
+            className="border border-[#502214] border-opacity-30 rounded-lg p-4 hover:shadow-md transition-all duration-300"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             {/* Order ID */}
-            <p className="text-sm font-semibold text-orange-500">
-              Order ID: <span className="text-black">{order._id}</span>
+            <p className="text-sm font-semibold text-[#e9b52a]">
+              Order ID: <span className="text-[#502214] text-opacity-85">{order._id}</span>
             </p>
 
             {/* Order Details Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 text-black">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 text-[#502214] text-opacity-85">
               <p>
                 <span className="font-semibold">Date:</span>{" "}
                 {format(parseISO(order.createdAt), "eeee , dd-MM-yyyy")}
@@ -90,8 +86,8 @@ const OrderHistory = () => {
 
             {/* Order Items */}
             <div className="mt-3">
-              <p className="font-semibold text-orange-500">Items Ordered:</p>
-              <ul className="list-disc list-inside text-black">
+              <p className="font-semibold text-[#e9b52a]">Items Ordered:</p>
+              <ul className="list-disc list-inside text-[#502214] text-opacity-85">
                 {order.items.map((item, idx) => (
                   <li key={idx} className="ml-4">
                     {item.name} (x{item.quantity}) - ₹
@@ -103,9 +99,9 @@ const OrderHistory = () => {
 
             {/* Total Amount Calculation with Payment Success Icon */}
             <div className="mt-3 flex items-center justify-start">
-              <p className="font-semibold text-orange-500 me-1">Total:</p>
+              <p className="font-semibold text-[#e9b52a] me-1">Total:</p>
               <div className="flex items-center">
-                <p className="text-black font-bold">
+                <p className="text-[#502214] text-opacity-85 font-bold">
                   ₹
                   {order.items
                     .reduce(

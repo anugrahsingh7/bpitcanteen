@@ -30,7 +30,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="" className="  text-white text-opacity-75 hover:text-opacity-100 font-bold  text-sm transition-colors duration-300">
+                <a href="https://www.linkedin.com/in/sumit-joshi-417a91258?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" className="  text-white text-opacity-75 hover:text-opacity-100 font-bold  text-sm transition-colors duration-300">
                  Sumit Joshi
                 </a>
               </li>
