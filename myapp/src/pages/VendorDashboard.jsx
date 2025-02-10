@@ -261,9 +261,9 @@ function VendorDashboard() {
         <>
           {orders.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-black">
-              <FaShoppingCart className="text-6xl mb-4 text-gray-300" />
-              <p className="text-xl font-medium">No Orders Yet</p>
-              <p className="text-sm mt-2">New orders will appear here</p>
+              <FaShoppingCart className="text-6xl mb-4 opacity-60 text-[#502214]" />
+              <p className="text-2xl font-semibold text-[#502214]">No Orders Yet</p>
+              <p className="text-lg mt-0 font-medium text-[#502214] text-opacity-75 ">New orders will appear here</p>
             </div>
           ) : (
             <>
