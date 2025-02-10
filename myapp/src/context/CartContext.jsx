@@ -4,7 +4,7 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [instructions, setInstructions] = useState({});
+  const [instructions, setInstructions] = useState("");
 
   const addToCart = (item) => {
     setCartItems((currentItems) => {
@@ -26,15 +26,15 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCartItems([]);
-    setInstructions({});
+    setInstructions("");
   };
 
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity === 0) {
       setCartItems(cartItems.filter((item) => item.id !== itemId));
-      const newInstructions = { ...instructions };
-      delete newInstructions[itemId];
-      setInstructions(newInstructions);
+      // const newInstructions = { ...instructions };
+      // delete newInstructions[itemId];
+      // setInstructions(instructions);
     } else {
       setCartItems(
         cartItems.map((item) =>
@@ -44,11 +44,8 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const updateInstructions = (itemId, value) => {
-    setInstructions((prev) => ({
-      ...prev,
-      [itemId]: value,
-    }));
+  const updateInstructions = (value) => {
+    setInstructions(value);
   };
 
   return (

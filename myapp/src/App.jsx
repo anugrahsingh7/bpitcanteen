@@ -58,7 +58,7 @@ function App() {
         <UserProvider>
           <Routes>
             <Route path="/" element={<Login />} />
-           
+
             <Route path="/vendor-login" element={<VendorLogin />} />
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
 

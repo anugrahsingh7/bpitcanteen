@@ -10,7 +10,6 @@ import Loading from "../components/Loading";
 // Helper function to get formatted time
 
 const getFormattedTime = (orderTime) => {
-  
   const date = orderTime ? new Date(orderTime) : new Date();
   return date.toLocaleTimeString("en-US", {
     hour: "2-digit",
@@ -32,6 +31,25 @@ const pulseAnimation = {
   },
 };
 
+const orderIdHasher = {
+  hashOrderId: (orderId) => {
+    let hash = 0;
+
+    // Generate hash from string
+    for (let i = 0; i < orderId.length; i++) {
+      const char = orderId.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+
+    // Ensure positive number and limit to 4 digits
+    hash = Math.abs(hash) % 10000;
+
+    // Pad with leading zeros if less than 4 digits
+    return hash.toString().padStart(4, "0");
+  },
+};
+
 function VendorDashboard() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,14 +57,20 @@ function VendorDashboard() {
   const { data: getOrders, isLoading } = useGetAllOrders();
   useEffect(() => {
     if (getOrders) {
-      const sortedOrders = getOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-      setOrders(sortedOrders);
+      const sortedOrders = getOrders.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      const hashedOrders = sortedOrders.map((el) => {
+        return {
+          ...el,
+          _id: orderIdHasher.hashOrderId(el._id),
+        };
+      });
+      setOrders(hashedOrders);
       console.log(getOrders.map((order) => console.log(order.user)));
     }
     setLoading(false);
   }, [getOrders]);
-
-
 
   const audioRef = useRef(new Audio(notificationSound));
   const previousOrdersRef = useRef(new Set());
@@ -177,7 +201,6 @@ function VendorDashboard() {
     // Save the PDF
     doc.save(`BPIT_Canteen_Orders_${new Date().toLocaleDateString()}.pdf`);
   };
-  
 
   return (
     <motion.div
@@ -192,10 +215,13 @@ function VendorDashboard() {
       >
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <div className="flex items-end">
-          <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
-              <img className="w-auto h-20" src="/logo/logo-removebg.png" alt="logo" /> 
+            <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
+              <img
+                className="w-auto h-20"
+                src="/logo/logo-removebg.png"
+                alt="logo"
+              />
             </span>
-            
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
             {vendorName && (
@@ -215,15 +241,13 @@ function VendorDashboard() {
               </div>
             )}
             <div className="flex gap-2  w-full sm:w-auto">
-              
-              
-            <label className="inline-flex items-center cursor-pointer">
-  <input type="checkbox" value="" className="sr-only peer" />
-  <span className="hidden peer-checked:block ms-3 text-lg font-medium text-green-500 shadow-md me-2 bg-black bg-opacity-10 px-3 py-0 rounded-lg">
-    Live
-  </span>
-  <div className="relative w-11 h-6 shadow-md bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-</label>
+              <label className="inline-flex items-center cursor-pointer">
+                <input type="checkbox" value="" className="sr-only peer" />
+                <span className="hidden peer-checked:block ms-3 text-lg font-medium text-green-500 shadow-md me-2 bg-black bg-opacity-10 px-3 py-0 rounded-lg">
+                  Live
+                </span>
+                <div className="relative w-11 h-6 shadow-md bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+              </label>
 
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -247,7 +271,6 @@ function VendorDashboard() {
 
                 <span className="whitespace-nowrap">Download Report</span>
               </motion.button>
-             
             </div>
           </div>
         </div>
@@ -262,139 +285,156 @@ function VendorDashboard() {
           {orders.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-black">
               <FaShoppingCart className="text-6xl mb-4 opacity-60 text-[#502214]" />
-              <p className="text-2xl font-semibold text-[#502214]">No Orders Yet</p>
-              <p className="text-lg mt-0 font-medium text-[#502214] text-opacity-75 ">New orders will appear here</p>
+              <p className="text-2xl font-semibold text-[#502214]">
+                No Orders Yet
+              </p>
+              <p className="text-lg mt-0 font-medium text-[#502214] text-opacity-75 ">
+                New orders will appear here
+              </p>
             </div>
           ) : (
             <>
-             
-             
               {/* Mobile View - Card Layout */}
               <div className="lg:hidden m-2 mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
-  <AnimatePresence>
-    {orders.map((order) => (
-      <motion.div
-        key={order._id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="bg-white rounded-md shadow p-2 sm:p-3 text-[10px] sm:text-xs"
-      >
-        <div className="flex justify-between items-start mb-1 sm:mb-2">
-          <div>
-            <div className="font-medium text-black">Order No.</div>
-            <div className="font-bold break-all">{order.id}</div>
+                <AnimatePresence>
+                  {orders.map((order) => (
+                    <motion.div
+                      key={order._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="bg-white rounded-md shadow p-2 sm:p-3 text-[10px] sm:text-xs"
+                    >
+                      <div className="flex justify-between items-start mb-1 sm:mb-2">
+                        <div>
+                          <div className="font-medium text-black">
+                            Order No.
+                          </div>
+                          <div className="font-bold break-all">{order.id}</div>
 
-            <div className="mt-1">
-              <div className="font-medium text-black">Order Time</div>
-              <div className="text-gray-700 group relative cursor-help">
-                {getFormattedTime(order.createdAt)}
-                <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {order.createdAt || new Date(order.timestamp).toLocaleString()}
-                </div>
+                          <div className="mt-1">
+                            <div className="font-medium text-black">
+                              Order Time
+                            </div>
+                            <div className="text-gray-700 group relative cursor-help">
+                              {getFormattedTime(order.createdAt)}
+                              <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                {order.createdAt ||
+                                  new Date(order.timestamp).toLocaleString()}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <span
+                          className={`px-2 py-[2px] rounded-full text-[10px] sm:text-xs font-medium ${
+                            order.status === "prepared"
+                              ? "bg-green-100 text-green-800"
+                              : order.status === "Received"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                      </div>
+
+                      <div className="space-y-1 sm:space-y-2">
+                        <div className="flex items-center gap-1">
+                          <FaUser className="text-black text-xs" />
+                          <span className="font-medium">
+                            {order.customerName || undefined}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                          <FaPhone className="text-black text-xs" />
+                          <span className="group relative cursor-help">
+                            {order?.phoneNumber?.slice(0, 10)}
+                            <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              {order.phoneNumber || undefined}
+                            </div>
+                          </span>
+                        </div>
+
+                        <div className="border-t pt-1">
+                          <div className="font-medium mb-1">Items:</div>
+                          {order.items.map((item) => (
+                            <div
+                              key={item._id}
+                              className="text-[10px] sm:text-xs py-1"
+                            >
+                              <div className="flex justify-between">
+                                <span>{item.name}</span>
+                                <span className="text-black">
+                                  x{item.quantity}
+                                </span>
+                              </div>
+                              {item.instructions && (
+                                <div className="text-red-500 italic">
+                                  ➤ {item.instructions}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="flex justify-between items-center border-t pt-1">
+                          <div>
+                            <div className="text-black">Total Amount</div>
+                            <div className="font-bold">
+                              ₹{order.totalAmount}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-1 pt-1 border-t">
+                          {order.status === "pending" && (
+                            <motion.button
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleReceiveOrder(order.id)}
+                              className="flex-1 bg-blue-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
+                            >
+                              Received
+                            </motion.button>
+                          )}
+                          {order.status === "Received" && (
+                            <motion.button
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handlePreparedOrder(order.id)}
+                              className="flex-1 bg-green-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
+                            >
+                              Prepared
+                            </motion.button>
+                          )}
+                          {order.status === "prepared" && (
+                            <motion.button
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleDeleteOrder(order.id)}
+                              className="flex-1 bg-red-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm flex items-center justify-center gap-1"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-3 w-3 sm:h-4 sm:w-4"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
+                              Delete
+                            </motion.button>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
-            </div>
-          </div>
-          <span
-            className={`px-2 py-[2px] rounded-full text-[10px] sm:text-xs font-medium ${
-              order.status === "prepared"
-                ? "bg-green-100 text-green-800"
-                : order.status === "Received"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-blue-100 text-blue-800"
-            }`}
-          >
-            {order.status}
-          </span>
-        </div>
-
-        <div className="space-y-1 sm:space-y-2">
-          <div className="flex items-center gap-1">
-            <FaUser className="text-black text-xs" />
-            <span className="font-medium">{order.customerName || undefined}</span>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <FaPhone className="text-black text-xs" />
-            <span className="group relative cursor-help">
-              {order?.phoneNumber?.slice(0, 10)}
-              <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                {order.phoneNumber || undefined}
-              </div>
-            </span>
-          </div>
-
-          <div className="border-t pt-1">
-            <div className="font-medium mb-1">Items:</div>
-            {order.items.map((item) => (
-              <div key={item._id} className="text-[10px] sm:text-xs py-1">
-                <div className="flex justify-between">
-                  <span>{item.name}</span>
-                  <span className="text-black">x{item.quantity}</span>
-                </div>
-                {item.instructions && (
-                  <div className="text-red-500 italic">➤ {item.instructions}</div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div className="flex justify-between items-center border-t pt-1">
-            <div>
-              <div className="text-black">Total Amount</div>
-              <div className="font-bold">₹{order.totalAmount}</div>
-            </div>
-          </div>
-
-          <div className="flex gap-1 pt-1 border-t">
-            {order.status === "pending" && (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleReceiveOrder(order.id)}
-                className="flex-1 bg-blue-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
-              >
-                Received
-              </motion.button>
-            )}
-            {order.status === "Received" && (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handlePreparedOrder(order.id)}
-                className="flex-1 bg-green-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
-              >
-                Prepared
-              </motion.button>
-            )}
-            {order.status === "prepared" && (
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleDeleteOrder(order.id)}
-                className="flex-1 bg-red-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm flex items-center justify-center gap-1"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 sm:h-4 sm:w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-                Delete
-              </motion.button>
-            )}
-          </div>
-        </div>
-      </motion.div>
-    ))}
-  </AnimatePresence>
-</div>
-
 
               {/* Desktop View - Table Layout */}
               <div className="hidden lg:block rounded-lg shadow-lg overflow-hidden bg-white">
@@ -478,7 +518,10 @@ function VendorDashboard() {
                             <td className="px-2 py-4 border-b">
                               <div className="space-y-1">
                                 {order.items.map((item) => (
-                                  <div key={item._id} className="text-sm font-semibold text-red-500">
+                                  <div
+                                    key={item._id}
+                                    className="text-sm font-semibold text-red-500"
+                                  >
                                     <span className="font-medium">
                                       {item.name}
                                     </span>
@@ -491,8 +534,7 @@ function VendorDashboard() {
                             </td>
                             <td className="px-2 py-4 border-b">
                               <div className="space-y-1 font-medium text-red-500">
-                                  
-                               {order.instructions || (
+                                {order.instructions || (
                                   <span className="text-gray-500 italic text-sm">
                                     No special instructions
                                   </span>

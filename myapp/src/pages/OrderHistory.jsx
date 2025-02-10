@@ -6,7 +6,24 @@ import { useOrderApi } from "../lib/useOrderApi";
 import { useUser } from "../context/userContext";
 import Loading from "../components/Loading";
 import { parseISO, format } from "date-fns";
+const orderIdHasher = {
+  hashOrderId: (orderId) => {
+    let hash = 0;
 
+    // Generate hash from string
+    for (let i = 0; i < orderId.length; i++) {
+      const char = orderId.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+
+    // Ensure positive number and limit to 4 digits
+    hash = Math.abs(hash) % 10000;
+
+    // Pad with leading zeros if less than 4 digits
+    return hash.toString().padStart(4, "0");
+  },
+};
 const OrderHistory = () => {
   const { user } = useUser();
 
@@ -19,7 +36,13 @@ const OrderHistory = () => {
       const sortedOrders = data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
-      setOrders(sortedOrders);
+      const hashedOrders = sortedOrders.map((el) => {
+        return {
+          ...el,
+          _id: orderIdHasher.hashOrderId(el._id),
+        };
+      });
+      setOrders(hashedOrders);
     }
   }, [data]);
   if (!user) return <Loading />;
@@ -32,8 +55,12 @@ const OrderHistory = () => {
     <div className=" min-h-screen p-6 relative">
       {/* Page Title */}
       <div className="flex justify-center mx-auto">
-          <img className="w-auto h-16 sm:h-16" src="/logo/logo-removebg.png" alt="" />
-        </div>
+        <img
+          className="w-auto h-16 sm:h-16"
+          src="/logo/logo-removebg.png"
+          alt=""
+        />
+      </div>
       <Link to="/Snacks" className="justify-start items-center flex">
         <button className="absolute flex text-[#502214] justify-center items-center top-16  text-2xl p-3 bg-black bg-opacity-5 hover:bg-opacity-10 opacity-80 rounded-full ">
           {" "}
@@ -69,7 +96,10 @@ const OrderHistory = () => {
           >
             {/* Order ID */}
             <p className="text-sm font-semibold text-[#e9b52a]">
-              Order ID: <span className="text-[#502214] text-opacity-85">{order._id}</span>
+              Order ID:{" "}
+              <span className="text-[#502214] text-opacity-85">
+                {order._id}
+              </span>
             </p>
 
             {/* Order Details Grid */}
