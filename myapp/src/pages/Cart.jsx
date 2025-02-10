@@ -435,21 +435,22 @@ function Cart() {
         {cartItems.map((item, index) => (
           <motion.div
             key={item.id}
-            className="bg-[#ffffff] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden p-6 max-w-[100%] sm:max-w-[100%] md:max-w-full mx-auto"
+            className="bg-[#ffffff] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden p-4 max-w-[100%] sm:max-w-[100%] md:max-w-full mx-auto"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             {/* 🖼 Image + Name + Price (Same Line on Mobile) */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center justify-between gap-3 p-1  sm:gap-4">
+              
+              <div className="flex  space-x-3">
               <motion.img
                 src={item.image}
                 alt={item.name}
-                className="w-[60px] sm:w-[80px] md:w-[80px] aspect-square object-cover rounded-lg"
+                className="w-[60px] sm:w-[80px] md:w-[100px] aspect-square object-cover rounded-lg"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               />
-
               <div className="flex flex-col">
                 <h3 className="font-bold text-xl sm:text-2xl text-opacity-90 text-[#502214]">
                   {item.name}
@@ -458,36 +459,9 @@ function Cart() {
                   ₹{item.price}
                 </p>
               </div>
-            </div>
+              </div>
 
-            {/* ✍ Cooking Instructions */}
-            {/* <div className="mt-2 w-full">
-        <motion.div initial={false} animate={{ height: "auto" }} className="relative">
-          <input
-            type="text"
-            placeholder="Cooking instructions"
-            value={instructions[item.id] || ""}
-            onChange={(e) => handleInstructionChange(item.id, e.target.value)}
-            className="w-full bg-[#f8f1e7] text-xs sm:text-sm px-2 sm:px-3 py-1.5 border border-[#502214] border-opacity-25 placeholder:text-[#502214] placeholder:text-opacity-55 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors duration-200 text-[#502214]"
-          />
-          {instructions[item.id] && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#502214] hover:text-opacity-75"
-              onClick={() => handleInstructionChange(item.id, "")}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </motion.button>
-          )}
-        </motion.div>
-      </div> */}
-
-            {/* ➖➕ Quantity + Price (Same Line on Mobile) */}
-            <div className="flex justify-between items-center mt-3">
-              {/* ➖➕ Quantity Buttons */}
+              <div className=" h-full space-y-2">
               <div className="flex items-center gap-2 bg-[#f8f1e7] p-2 rounded-lg">
                 <motion.button
                   onClick={() =>
@@ -545,16 +519,29 @@ function Cart() {
                     />
                   </svg>
                 </motion.button>
+                
               </div>
-
-              {/* 💰 Total Price (Now in the Same Row) */}
               <div className="text-right font-bold text-xl sm:text-2xl text-[#502214]">
                 ₹{item.price * item.quantity}
               </div>
-            </div>
-          </motion.div>
+              </div>
+              </div>
+           </motion.div>
         ))}
-        <div className="mt-2 w-full">
+      
+      </div>
+      
+
+      <motion.div
+        className="mt-8 bg-white hover:shadow-md p-6 rounded-xl shadow-sm"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: cartItems.length * 0.1 }}
+      >
+         <label className="block text-md  font-semibold text-[#502214]">
+            Cooking Instruction
+          </label>
+        <div className="mt-2 mb-4 w-full">
           <motion.div
             initial={false}
             animate={{ height: "auto" }}
@@ -562,44 +549,13 @@ function Cart() {
           >
             <input
               type="text"
-              placeholder="Cooking instructions"
+              placeholder="Type any cooking instruction for chef"
               value={instructions || ""}
               onChange={(e) => handleInstructionChange(e.target.value)}
-              className="w-full bg-[#f8f1e7] text-xs sm:text-sm px-2 sm:px-3 py-1.5 border border-[#502214] border-opacity-25 placeholder:text-[#502214] placeholder:text-opacity-55 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors duration-200 text-[#502214]"
+              className="mt-1 block w-full bg-[#f8f1e7] px-3 py-2 border border-[#502214] border-opacity-25 placeholder:text-[#502214] text-[#502214] placeholder:text-opacity-55 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
             />
-            {/* {instructions[item.id] && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#502214] hover:text-opacity-75"
-                onClick={() => handleInstructionChange(item.id, "")}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3.5 w-3.5 sm:h-4 sm:w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </motion.button>
-            )} */}
           </motion.div>
         </div>
-      </div>
-
-      <motion.div
-        className="mt-8 bg-white p-6 rounded-xl shadow-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: cartItems.length * 0.1 }}
-      >
         <div className="mb-4">
           <label className="block text-md  font-semibold text-[#502214]">
             Mobile Number
@@ -613,6 +569,7 @@ function Cart() {
             onChange={(e) => setMobileNumber(e.target.value)}
             placeholder="Enter your mobile number to order"
             className="mt-1 block w-full bg-[#f8f1e7] px-3 py-2 border border-[#502214] border-opacity-25 placeholder:text-[#502214] text-[#502214] placeholder:text-opacity-55 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+            
             required
           />
           
