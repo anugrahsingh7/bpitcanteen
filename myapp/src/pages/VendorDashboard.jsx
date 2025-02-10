@@ -50,99 +50,6 @@ function VendorDashboard() {
   const previousOrdersRef = useRef(new Set());
   if (isLoading) return <Loading />;
 
-  // Modified loadOrders function without delay
-  //   const loadOrders = () => {
-  //     setLoading(true);
-
-  //     const storedOrders = ;
-
-  //     // Check for new orders by comparing IDs
-  //     const currentOrderIds = new Set(storedOrders.map((order) => order.id));
-  //     const newOrders = storedOrders.filter(
-  //       (order) => !previousOrdersRef.current.has(order.id)
-  //     );
-
-  //     // If there are new orders, play sound and show notification
-  //     if (newOrders.length > 0) {
-  //       // Play notification sound
-  //       audioRef.current.currentTime = 0;
-  //       audioRef.current
-  //         .play()
-  //         .catch((err) => console.log("Audio play failed:", err));
-
-  //       // Show notification for each new order
-  //       newOrders.forEach((order) => {
-  //         showNotification(order);
-  //       });
-  //     }
-
-  //     // Update previous orders reference
-  //     previousOrdersRef.current = currentOrderIds;
-
-  //     // Sort orders with newest first
-  //     const sortedOrders = storedOrders.sort((a, b) => {
-  //       if (a.timestamp && b.timestamp) {
-  //         return new Date(b.timestamp) - new Date(a.timestamp);
-  //       }
-  //       return b.id.localeCompare(a.id);
-  //     });
-
-  //     setOrders(sortedOrders);
-  //     setLoading(false);
-  //   };
-
-  //   // Enhanced notification function
-  //   const showNotification = (order) => {
-  //     if (!("Notification" in window)) {
-  //       alert("This browser does not support desktop notifications");
-  //       return;
-  //     }
-
-  //     Notification.requestPermission().then((permission) => {
-  //       if (permission === "granted") {
-  //         const notification = new Notification("New Order Received! 🔔", {
-  //           body: `Order ID: ${order.id}\nCustomer: ${order.customerName}\nTotal: ₹${order.totalAmount}`,
-  //           icon: "/your-logo.png", // Add your logo path
-  //           badge: "/your-badge.png", // Add your badge path
-  //           silent: true, // Important: prevents default notification sound
-  //           tag: order.id, // Prevents duplicate notifications
-  //           requireInteraction: true, // Notification persists until user interacts
-  //         });
-
-  //         // Handle notification click
-  //         notification.onclick = function () {
-  //           window.focus();
-  //           notification.close();
-  //         };
-  //       }
-  //     });
-  //   };
-
-  // //   useEffect(() => {
-  // //     // Get vendor name from localStorage
-  // //     const storedVendorName = localStorage.getItem("vendorName");
-  // //     if (storedVendorName) {
-  // //       setVendorName(storedVendorName);
-  // //     }
-
-  // //     // Request notification permission on component mount
-  // //     if ("Notification" in window) {
-  // //       Notification.requestPermission();
-  // //     }
-
-  // //     // Initial load
-  // //     loadOrders();
-
-  // //     // Poll for new orders every second
-  // //     const interval = setInterval(loadOrders, 1000);
-
-  // //     // Cleanup
-  // //     return () => {
-  // //       clearInterval(interval);
-  // //       previousOrdersRef.current.clear();
-  // //     };
-  // //   }, []);
-
   const handleReceiveOrder = (orderId) => {
     const updatedOrders = orders.map((order) =>
       order._id === orderId ? { ...order, status: "Received" } : order
@@ -273,25 +180,24 @@ function VendorDashboard() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="p-2 sm:p-4 md:p-6 lg:p-8 max-w-7xl mx-auto bg-gray-50 min-h-screen"
+      className="p-2 sm:p-4 md:p-6 lg:p-8 max-w-7xl mx-auto  min-h-screen"
     >
       <motion.h1
-        className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6 lg:mb-8 text-gray-800"
+        className="text-xl sm:text-2xl md:text-3xl font-bold mb-0 md:mb-1 lg:mb-2 text-gray-800"
         initial={{ y: -20 }}
         animate={{ y: 0 }}
       >
         <div className="flex flex-col sm:flex-row justify-between items-center">
-          <div>
-            <span className="text-orange-500">BPIT CANTEEN</span>
-            <span className="text-black text-lg sm:text-xl md:text-2xl">
-              {" "}
-              Dashboard
+          <div className="flex items-end">
+          <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
+              <img className="w-auto h-20" src="/logo/logo-removebg.png" alt="logo" /> 
             </span>
+            
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
             {vendorName && (
               <div className="text-base text-gray-700 flex items-center gap-2 mb-2 sm:mb-0">
-                <FaUser className="text-orange-500" />
+                <FaUser className="text-[#502214]" />
                 <span className="font-medium">{vendorName}</span>
                 <div className="flex items-center gap-1.5 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
                   <motion.div
@@ -299,17 +205,27 @@ function VendorDashboard() {
                     animate="animate"
                     className="w-2 h-2 rounded-full bg-green-500"
                   />
-                  <span className="text-green-700 text-xs font-medium">
+                  <span className="text-green-700 text-sm font-medium">
                     LIVE
                   </span>
                 </div>
               </div>
             )}
-            <div className="flex gap-2 w-full sm:w-auto">
+            <div className="flex gap-2  w-full sm:w-auto">
+              
+              
+            <label className="inline-flex items-center cursor-pointer">
+  <input type="checkbox" value="" className="sr-only peer" />
+  <span className="hidden peer-checked:block ms-3 text-lg font-medium text-green-500 shadow-md me-2 bg-black bg-opacity-10 px-3 py-0 rounded-lg">
+    Live
+  </span>
+  <div className="relative w-11 h-6 shadow-md bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+</label>
+
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={downloadPDF}
-                className="flex-1 sm:flex-none bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium shadow-sm transition-colors duration-200 flex items-center justify-center gap-1 sm:gap-2"
+                className="flex-1 sm:flex-none   text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 sm:px-4 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1 sm:gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -325,6 +241,7 @@ function VendorDashboard() {
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
+
                 <span className="whitespace-nowrap">Download Report</span>
               </motion.button>
              
@@ -335,12 +252,12 @@ function VendorDashboard() {
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-500"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#502214]"></div>
         </div>
       ) : (
         <>
           {orders.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+            <div className="flex flex-col items-center justify-center h-64 text-black">
               <FaShoppingCart className="text-6xl mb-4 text-gray-300" />
               <p className="text-xl font-medium">No Orders Yet</p>
               <p className="text-sm mt-2">New orders will appear here</p>
@@ -360,13 +277,13 @@ function VendorDashboard() {
                     >
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <div className="font-medium text-sm text-gray-500">
+                          <div className="font-medium text-sm text-black">
                             Order ID
                           </div>
                           <div className="font-bold break-all">{order.id}</div>
 
                           <div className="mt-1">
-                            <div className="font-medium text-sm text-gray-500">
+                            <div className="font-medium text-sm text-black">
                               Order Time
                             </div>
                             <div className="text-sm text-gray-700 group relative cursor-help">
@@ -399,14 +316,14 @@ function VendorDashboard() {
 
                       <div className="space-y-4 sm:space-y-5">
                         <div className="flex items-center gap-2">
-                          <FaUser className="text-gray-400" />
+                          <FaUser className="text-black" />
                           <span className="font-medium">
                             {order.customerName || undefined}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <FaPhone className="text-gray-400" />
+                          <FaPhone className="text-black" />
                           <span className="group relative cursor-help">
                             {order?.phoneNumber?.slice(0, 5)}***
                             <div
@@ -426,7 +343,7 @@ function VendorDashboard() {
                               className="flex justify-between text-sm py-1"
                             >
                               <span>{item.name}</span>
-                              <span className="text-gray-500">
+                              <span className="text-black">
                                 x{item.quantity}
                               </span>
                             </div>
@@ -436,14 +353,14 @@ function VendorDashboard() {
                         {order.instructions && (
                           <div className="border-t pt-2">
                             <div className="font-medium mb-1">Instructions:</div>
-                            <div className="text-sm py-1 text-gray-600 italic">{order.instructions}</div>
+                            <div className="text-sm py-1 text-red-500 italic">{order.instructions}</div>
                           </div>
 )}
 
 
                         <div className="flex justify-between items-center border-t pt-2">
                           <div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-black">
                               Total Amount
                             </div>
                             <div className="font-bold">
@@ -457,7 +374,7 @@ function VendorDashboard() {
                             <motion.button
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleReceiveOrder(order.id)}
-                              className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-md text-xs sm:text-sm font-medium shadow-sm"
+                              className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-md text-sm sm:text-sm font-medium shadow-sm"
                             >
                               Received
                             </motion.button>
@@ -466,7 +383,7 @@ function VendorDashboard() {
                             <motion.button
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handlePreparedOrder(order.id)}
-                              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-md text-xs sm:text-sm font-medium shadow-sm"
+                              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-md text-sm sm:text-sm font-medium shadow-sm"
                             >
                               Prepared
                             </motion.button>
@@ -475,7 +392,7 @@ function VendorDashboard() {
                             <motion.button
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleDeleteOrder(order.id)}
-                              className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-md text-xs sm:text-sm font-medium shadow-sm flex items-center justify-center gap-1 sm:gap-2"
+                              className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-md text-sm sm:text-sm font-medium shadow-sm flex items-center justify-center gap-1 sm:gap-2"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -506,9 +423,8 @@ function VendorDashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full table-fixed min-w-[900px]">
                     <thead>
-                      <tr className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                      <tr className="bg-[#502214] text-[#e9b52a] ">
                         <th className="px-2 py-4 text-left w-20">Order ID</th>
-
                         <th className="px-2 py-4 text-left w-20">Time</th>
                         <th className="px-2 py-4 text-left w-24">
                           <FaUser className="inline mr-1" />
@@ -541,14 +457,14 @@ function VendorDashboard() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
-                            className="hover:bg-blue-50 transition-colors duration-150"
+                            className="hover:bg-[#f8f1e7] transition-colors duration-150"
                           >
                             <td className="px-2 py-4 border-b group relative">
-                              <span className="cursor-help">
-                                {order._id.substring(0, 5)}...
+                              <span className="cursor-help text-red-500 font-bold">
+                                {order._id.substring(0, 5)}
                                 <div
                                   className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
-                                                                    whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                  whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 >
                                   {order._id}
                                 </div>
@@ -556,7 +472,7 @@ function VendorDashboard() {
                             </td>
 
                             <td className="px-2 py-4 border-b">
-                              <span className="text-gray-700 group relative cursor-help">
+                              <span className=" group relative cursor-help">
                                 {getFormattedTime(order.createdAt)}
                                 <div
                                   className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
@@ -567,12 +483,12 @@ function VendorDashboard() {
                                 </div>
                               </span>
                             </td>
-                            <td className="px-2 py-4 border-b font-medium">
+                            <td className="px-2 py-4 border-b text-sm font-medium">
                               {order.user.name}
                             </td>
                             <td className="px-2 py-4 border-b">
-                              <span className="group relative cursor-help">
-                                {order?.phoneNumber?.slice(0, 5)}***
+                              <span className="group text-sm relative cursor-help">
+                                {order?.phoneNumber?.slice(0, 10)}
                                 <div
                                   className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
                                                                     whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -584,11 +500,11 @@ function VendorDashboard() {
                             <td className="px-2 py-4 border-b">
                               <div className="space-y-1">
                                 {order.items.map((item) => (
-                                  <div key={item._id} className="text-sm">
+                                  <div key={item._id} className="text-sm font-semibold text-red-500">
                                     <span className="font-medium">
                                       {item.name}
                                     </span>
-                                    <span className="text-gray-500 ml-2">
+                                    <span className="text-black font-bold ml-2">
                                       x{item.quantity}
                                     </span>
                                   </div>
@@ -596,10 +512,10 @@ function VendorDashboard() {
                               </div>
                             </td>
                             <td className="px-2 py-4 border-b">
-                              <div className="space-y-1">
+                              <div className="space-y-1 font-medium text-red-500">
                                   
                                {order.instructions || (
-                                  <span className="text-gray-400 italic text-sm">
+                                  <span className="text-gray-500 italic text-sm">
                                     No special instructions
                                   </span>
                                 )}
@@ -611,7 +527,7 @@ function VendorDashboard() {
 
                             <td className="px-2 py-4 border-b">
                               <span
-                                className={`px-3 py-1 rounded-full text-sm font-medium
+                                className={`px-2 py-1 rounded-full text-sm font-medium
                                                                 ${
                                                                   order.status ===
                                                                   "prepared"
@@ -621,14 +537,14 @@ function VendorDashboard() {
                                                                     ? "bg-yellow-100 text-yellow-800"
                                                                     : order.status ===
                                                                       "pending"
-                                                                    ? "bg-blue-100 text-blue-800"
+                                                                    ? "bg-red-100 text-red-500"
                                                                     : "bg-gray-100 text-gray-800"
                                                                 }`}
                               >
                                 {order.status}
                               </span>
                             </td>
-                            <td className="px-2 py-4 border-b">
+                            <td className="px-1 py-4 border-b">
                               <div className="flex items-center gap-2">
                                 {order.status === "pending" && (
                                   <motion.button
@@ -637,7 +553,7 @@ function VendorDashboard() {
                                     onClick={() =>
                                       handleReceiveOrder(order._id)
                                     }
-                                    className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
+                                    className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
                                   >
                                     received
                                   </motion.button>
@@ -649,7 +565,7 @@ function VendorDashboard() {
                                     onClick={() =>
                                       handlePreparedOrder(order.id)
                                     }
-                                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
+                                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-2 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
                                   >
                                     Prepared
                                   </motion.button>
@@ -659,7 +575,7 @@ function VendorDashboard() {
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => handleDeleteOrder(order.id)}
-                                    className="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
+                                    className="bg-gradient-to-r from-red-500 to-red-600 text-white px-2 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
