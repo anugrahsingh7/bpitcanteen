@@ -1,12 +1,20 @@
-import { useState } from "react";
+import React, { useState } from 'react';
+import { FcGoogle } from "react-icons/fc";
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useLogin } from "../lib/login";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "../lib/useGoogleLogin";
+import { useEffect } from "react";
+import gsap from "gsap";
 
-function Login() {
+const Login = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -15,6 +23,7 @@ function Login() {
   const { mutate: login, isLoading } = useLogin();
   const { mutate: googleLogin } = useGoogleLogin();
 
+  const duration = 1;
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValidEmail && password) {
@@ -40,133 +49,114 @@ function Login() {
     const noSpacePassword = e.target.value.replace(/\s/g, "");
     setPassword(noSpacePassword);
   };
+  useEffect(() => {
+    // GSAP animation to fade in the content when the page loads
+    gsap.to(".fade-in", {
+      opacity: 1,
+      y: 0,
+      duration: duration, // Use the duration variable
+      delay: 0.3
+    });
+  }, []);
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-200 to-orange-100 flex justify-center items-center p-4">
-      {showWelcome ? (
-        <div className="text-center p-8 backdrop-blur-sm rounded-2xl animate-[fadeIn_0.5s_ease-out]">
-          <div className="flex flex-col items-center">
-            <h1 className="text-2xl md:text-3xl text-blue-600 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] animate-[fadeIn_0.5s_ease-out]">
-              BPIT COLLEGE CANTEEN
-              <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
-            </h1>
-            <h2 className="text-2xl md:text-3xl text-red-500 mt-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] animate-[fadeIn_0.8s_ease-out]">
-              WELCOMES YOU{" "}
-              <span className="font-bold animate-pulse">{name}!</span>
-            </h2>
-          </div>
+    <div className="w-screen h-screen flex bg-[#592e1f] justify-center items-center p-2 fade-in" style={{ opacity: 0, transform: 'translateY(50px)' }}>
+      <div className="w-full max-w-sm p-6 m-auto mx-auto bg-[#f8f1e7] rounded-lg shadow-md ">
+        <div className="flex justify-center mx-auto">
+          <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="" />
         </div>
-      ) : (
-        <div className="w-full max-w-md animate-[fadeIn_0.5s_ease-out]">
-          <h2 className="text-2xl font-bold mb-0 animate-[fadeIn_0.6s_ease-out] text-center">
-            <span className="text-blue-600">BPIT</span>{" "}
-            <span className="text-red-500">
-              COLLEGE CANTEEN
-              <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
-            </span>
-          </h2>
-          <div className="text-center mb-3"></div>
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300"
-          >
-            <h2 className=" text-center text-2xl font-bold">
-              Log into Canteen
-            </h2>
-            <h3 className="text-center opacity-50 text-sm ">
-              & order delicious food.
-            </h3>
-            
-            <button
-              className="w-full    py-3 rounded-lg font-medium flex items-center justify-center bg-opacity-70 hover:bg-opacity-100 "
-              onClick={() => googleLogin()}
-            >
-              Login with<FcGoogle className="text-3xl ms-1"/>
-            </button>
+        <p className="mt-1 -mb-5 text-xs font-light text-center text-[#592e1f]">
+          <Link to="/vendor-login" className="font-semibold opacity-85 hover:opacity-100 text-[#592e1f] hover:underline ">Vendor Login</Link>
+        </p>
 
-            <div className="space-y-2 mb-4 animate-[fadeIn_0.8s_ease-out]">
+        <form 
+        onSubmit={handleSubmit}
+        className="mt-6">
+          <div>
+            <label htmlFor="email" className="block text-md text-[#592e1f] ">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder='Enter your email address'
+              className="block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40 "
+            />
+          </div>
+
+          <div className="mt-4">
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="block text-md text-[#592e1f] ">Password</label>
+              <Link to="/forgetpassword" className="text-xs text-[#592e1f] opacity-75 hover:opacity-100 hover:underline">Forget Password?</Link>
+            </div>
+
+            <div className="relative">
               <input
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                placeholder="Email Address"
-                className={`w-full px-4 py-3 border rounded-lg outline-none transition-all duration-300 hover:shadow-md
-                  ${
-                    isValidEmail
-                      ? "border-green-500 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      : "border-gray-300 focus:ring-2 focus:ring-orange-400  focus:border-transparent"
-                  }`}
-                required
+                type={isPasswordVisible ? 'text' : 'password'}
+                value={password}
+                onChange={handlePasswordChange}
+                placeholder='Enter your password'
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40"
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#592e1f]">
+                {isPasswordVisible ? (
+                  <FiEyeOff className="w-5 h-5" />
+                ) : (
+                  <FiEye className="w-5 h-5" />
+                )}
+              </button>
             </div>
+          </div>
 
-            <div className="space-y-2 mb-6 animate-[fadeIn_0.9s_ease-out]">
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={handlePasswordChange}
-                  placeholder="Password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400  outline-none focus:border-transparent transition-all duration-300 hover:shadow-md pr-12"
-                  required
-                  minLength="8"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                >
-                  {showPassword ? (
-                    <FaEye size={20} />
-                  ) : (
-                    <FaEyeSlash size={20} />
-                  )}
-                </button>
-              </div>
-            </div>
-
+          <div className="mt-6">
             <button
               type="submit"
               disabled={isLoading || !isValidEmail}
-              className={`w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium flex items-center justify-center ${
-                !isLoading && isValidEmail
-                  ? "opacity-100"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
+              className={`w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b] 
+                ${
+                    !isLoading && isValidEmail
+                      ? "opacity-100"
+                      : "opacity-80 cursor-not-allowed"
+                  }`
+              }
             >
-              {isLoading ? (
+               {isLoading ? (
                 <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
               ) : (
-                "Login"
+                "Log In"
               )}
             </button>
+          </div>
+        </form>
 
-            <Link
-              to="/forgetpassword"
-              className="text-md text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-300 flex justify-center items-center border-b-2 border-b-black border-opacity-20 p-4"
-            >
-              Forgotten password?
-            </Link>
+        <div className="flex items-center justify-between mt-4">
+          <span className="w-1/5 border-b border-[#592e1f] lg:w-1/5"></span>
 
-            <Link
-              to="/createaccount"
-              className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium flex items-center justify-center bg-opacity-70 hover:bg-opacity-100 mt-5"
-            >
-              Create new account
-            </Link>
+          <div className="text-xs text-center  uppercase text-[#592e1f] opacity-75">
+            or continue with 
+          </div>
 
-            <Link
-              to="/vendor-login"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-medium flex items-center justify-center bg-opacity-70 hover:bg-opacity-100 mt-5"
-            >
-              Login as a Vendor →
-            </Link>
-           
-          </form>
+          <span className="w-1/5 border-b border-[#592e1f] lg:w-1/5 opacity-75"></span>
         </div>
-      )}
+
+        <div className="flex items-center mt-6 -mx-2">
+          <button
+          onClick={() => googleLogin()}
+           type="button" className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-[#592e1f] transition-colors duration-300 transform border border-[#592e1f] rounded-lg hover:bg-[#ffffff] border-opacity-75 ">
+            <FcGoogle className='text-lg' />
+            <span className="hidden mx-2 sm:inline">Sign in with Google</span>
+          </button>
+        </div>
+
+        <p className="mt-8 text-xs font-light text-center text-[#592e1f]">
+          Don't have an account? <Link to="/SignUp" className="font-medium text-[#592e1f] hover:underline">Create One</Link>
+        </p>
+      </div>
     </div>
   );
-}
+};
 
 export default Login;

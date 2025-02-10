@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+
 import VendorLogin from "./pages/VendorLogin";
 import VendorDashboard from "./pages/VendorDashboard";
 import Snacks from "./pages/Snacks";
@@ -13,7 +15,7 @@ import PageNotFound from "./pages/PageNotFound";
 import toast, { Toaster } from "react-hot-toast";
 import { CartProvider } from "./context/CartContext";
 import ForgetPassword from "./pages/ForgetPassword";
-import CreateAccount from "./pages/CreateAccount";
+
 import { UserProvider, useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
 import IndianItems from "./pages/IndianItems";
@@ -55,6 +57,7 @@ function App() {
         <UserProvider>
           <Routes>
             <Route path="/" element={<Login />} />
+           
             <Route path="/vendor-login" element={<VendorLogin />} />
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
 
@@ -102,7 +105,7 @@ function App() {
 
             <Route path="/login" element={<Login />} />
             <Route path="/forgetpassword" element={<ForgetPassword />} />
-            <Route path="/createaccount" element={<CreateAccount />} />
+            <Route path="/SignUp" element={<SignUp />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </UserProvider>

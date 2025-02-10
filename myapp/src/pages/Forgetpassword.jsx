@@ -4,8 +4,11 @@ import { FaEye, FaEyeSlash, FaExclamationCircle } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import { useForgotPassword } from "../lib/forgotPassword";
 import { useResetPassword } from "../lib/resetPassword";
+import { useEffect } from "react";
+import gsap from "gsap"; 
 
 function ForgetPassword() {
+  const duration = 1;
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
@@ -89,46 +92,47 @@ function ForgetPassword() {
   const handleTokenChange = (tokenValue) => {
     setToken(tokenValue);
   };
+  useEffect(() => {
+    // GSAP animation to fade in the content when the page loads
+    gsap.to(".fade-in", {
+      opacity: 1,
+      y: 0,
+      duration: duration, // Use the duration variable
+      delay: 0.3
+    });
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-200 to-orange-100 flex justify-center items-center p-4">
-      <div className="w-full max-w-md animate-[fadeIn_0.5s_ease-out]">
-        <h2 className="text-2xl font-bold  animate-[fadeIn_0.6s_ease-out] text-center ">
-          <span className="text-blue-600">BPIT</span>{" "}
-          <span className="text-red-500">
-            COLLEGE CANTEEN
-            <i className="fa-solid fa-utensils ms-2 animate-bounce"></i>
-          </span>
-        </h2>
-        <div className="text-center mb-3"></div>
+    <div className="w-screen h-screen flex bg-[#592e1f] justify-center items-center p-2 fade-in" style={{ opacity: 0, transform: 'translateY(50px)' }}>
+      <div className="w-full max-w-sm p-6 m-auto mx-auto bg-[#f8f1e7] rounded-lg shadow-md ">
+        
+      <div className="flex justify-center mx-auto">
+          <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="" />
+        </div>
+        
 
         <form
           onSubmit={showResetForm ? handleResetPassword : handleSendToken}
-          className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl"
+          className="mt-6"
         >
-          <h2 className=" text-center text-2xl font-bold">
-            Change your Password
-          </h2>
-          <h3 className="text-center opacity-50 text-sm mb-4">
-            & make your account more secure.
-          </h3>
 
           {!showResetForm ? (
             // Email Input Form
-            <div className="space-y-4">
+            <div className="">
+                <label htmlFor="email" className="block text-md text-[#592e1f] ">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40"
                 required
               />
-
+             <div className="mt-6">
               <button
                 type="submit"
                 disabled={!isValidEmail || isLoading}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium"
+                className="w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b]"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -139,23 +143,26 @@ function ForgetPassword() {
                   "Send Reset Token"
                 )}
               </button>
+              </div>
             </div>
           ) : (
             // Reset Password Form
             <div className="space-y-4">
+              
               <div className="relative group">
+                
                 <input
                   type="text"
                   value={token}
                   onChange={(e) => handleTokenChange(e.target.value)}
                   placeholder="Enter Reset Token"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none pr-12 `}
+                  className={`block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40 `}
                   required
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <div className="relative">
                     <FaExclamationCircle
-                      className="text-gray-500 hover:text-gray-700 cursor-help"
+                      className="text-[#592e1f] opacity-85 cursor-help"
                       size={16}
                     />
                     <div className="absolute bottom-full right-0 mb-2 w-64 bg-gray-800 bg-opacity-90 text-white text-sm rounded-lg p-2 hidden group-hover:block shadow-lg">
@@ -172,7 +179,7 @@ function ForgetPassword() {
                   value={newPassword}
                   onChange={(e) => handlePasswordChange(e.target.value, false)}
                   placeholder="New Password"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none pr-20 ${
+                  className={`block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40 ${
                     passwordsMatch && isValidPassword
                       ? "border-green-500"
                       : "border-gray-300"
@@ -183,7 +190,7 @@ function ForgetPassword() {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <div className="relative">
                     <FaExclamationCircle
-                      className="text-gray-500 hover:text-gray-700 cursor-help"
+                      className="text-[#592e1f] opacity-85 cursor-help"
                       size={16}
                     />
                     <div className="absolute bottom-full right-0 mb-2 w-64 bg-gray-800 bg-opacity-90 text-white text-sm rounded-lg p-2 hidden group-hover:block shadow-lg">
@@ -194,7 +201,7 @@ function ForgetPassword() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="text-[#592e1f]"
                   >
                     {showPassword ? (
                       <FaEye size={20} />
@@ -211,18 +218,14 @@ function ForgetPassword() {
                   value={confirmPassword}
                   onChange={(e) => handlePasswordChange(e.target.value, true)}
                   placeholder="Confirm New Password"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none pr-20 ${
-                    passwordsMatch && isValidPassword
-                      ? "border-green-500"
-                      : "border-gray-300"
-                  }`}
+                  className={`block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40 `}
                   required
                   minLength={8}
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <div className="relative">
                     <FaExclamationCircle
-                      className="text-gray-500 hover:text-gray-700 cursor-help"
+                      className="text-[#592e1f] opacity-85 cursor-help"
                       size={16}
                     />
                     <div className="absolute bottom-full right-0 mb-2 w-64 bg-gray-800 bg-opacity-90 text-white text-sm rounded-lg p-2 hidden group-hover:block shadow-lg">
@@ -233,7 +236,7 @@ function ForgetPassword() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="text-[#592e1f]"
                   >
                     {showConfirmPassword ? (
                       <FaEye size={20} />
@@ -247,7 +250,7 @@ function ForgetPassword() {
               <button
                 type="submit"
                 disabled={isLoading || !isValidPassword || !passwordsMatch}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b]"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -261,12 +264,9 @@ function ForgetPassword() {
             </div>
           )}
 
-          <Link
-            to="/login"
-            className="block text-center mt-4 text-blue-600 hover:text-blue-800"
-          >
-            Back to Login
-          </Link>
+         <p className="mt-4 text-xs font-light text-center text-[#592e1f]">
+          Don't want to change password? <Link to="/Login" className="font-medium text-[#592e1f] hover:underline">Log In</Link>
+        </p>
         </form>
       </div>
     </div>
