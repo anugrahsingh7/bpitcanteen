@@ -147,7 +147,7 @@ const Login = () => {
           onClick={() => googleLogin()}
            type="button" className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-[#592e1f] transition-colors duration-300 transform border border-[#592e1f] rounded-lg hover:bg-[#ffffff] border-opacity-75 ">
             <FcGoogle className='text-lg' />
-            <span className="hidden mx-2 sm:inline">Sign in with Google</span>
+            <span className=" mx-2 ">Sign in with Google</span>
           </button>
         </div>
 

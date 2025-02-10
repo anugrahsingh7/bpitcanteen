@@ -81,7 +81,7 @@ const NavBar = () => {
                   <Link to="OrderHistory">
                   <button
                     onClick={() => navigate("/order-history")}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md text-sm font-semibold"
+                    className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] py-2 rounded-md text-sm font-semibold"
                   >
                     View Order History
                   </button>
@@ -89,7 +89,7 @@ const NavBar = () => {
                   <Link to="ForgetPassword">
                   <button
                     
-                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-white mt-2 py-2 rounded-md text-sm font-semibold"
+                    className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] mt-2 py-2 rounded-md text-sm font-semibold"
                   >
                     Change Password
                   </button>

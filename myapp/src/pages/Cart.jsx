@@ -119,57 +119,6 @@ function Cart() {
     }
   };
 
-  // const handlePaymentAndOrder = async () => {
-  //   setIsProcessing(true);
-  //   try {
-  //     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-
-  //     const orderData = {
-  //       id: `ORD${Date.now()}`,
-  //       transactionId: generateTransactionId(),
-  //       customerName: userDetails?.name || "Customer",
-  //       phoneNumber: userDetails?.phone || "1234567890",
-  //       items: cartItems.map((item) => ({
-  //         id: item.id,
-  //         name: item.name,
-  //         quantity: item.quantity,
-  //         instructions: instructions[item.id] || "",
-  //         price: item.price,
-  //       })),
-  //       totalAmount: total,
-  //       status: "pending",
-  //       paymentStatus: "completed",
-  //       orderDate: new Date().toLocaleDateString("en-US", {
-  //         year: "numeric",
-  //         month: "long",
-  //         day: "numeric",
-  //       }),
-  //       orderTime: new Date().toLocaleTimeString("en-US", {
-  //         hour: "2-digit",
-  //         minute: "2-digit",
-  //         hour12: true,
-  //       }),
-  //       timestamp: new Date().toISOString(),
-  //     };
-
-  //     const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
-  //     localStorage.setItem(
-  //       "orders",
-  //       JSON.stringify([...existingOrders, orderData])
-  //     );
-
-  //     setOrderDetails(orderData);
-  //     setShowReceipt(true);
-
-  //     toast.success("Order placed successfully! 🎉");
-  //   } catch (error) {
-  //     console.error("Order placement error:", error);
-  //     toast.error("Failed to place order. Please try again.");
-  //   } finally {
-  //     setIsProcessing(false);
-  //   }
-  // };
-
   const downloadReceipt = async (format = "pdf") => {
     const receiptElement = document.getElementById("receipt-content");
 
@@ -474,139 +423,97 @@ function Cart() {
         </motion.div>
       </div>
 
-      <div className="space-y-4">
-        {cartItems.map((item, index) => (
-          <motion.div
-            key={item.id}
-            className="bg-[#ffffff] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <div className="flex items-center p-4">
-              <motion.img
-                src={item.image}
-                alt={item.name}
-                className="w-24 h-24 object-cover rounded-lg"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-              />
+      <div className="space-y-4 p-2 sm:p-0">
+  {cartItems.map((item, index) => (
+    <motion.div
+      key={item.id}
+      className="bg-[#ffffff] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden p-6 max-w-[100%] sm:max-w-[100%] md:max-w-full mx-auto"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      {/* 🖼 Image + Name + Price (Same Line on Mobile) */}
+      <div className="flex items-center gap-3 sm:gap-4">
+        <motion.img
+          src={item.image}
+          alt={item.name}
+          className="w-[60px] sm:w-[80px] md:w-[80px] aspect-square object-cover rounded-lg"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }}
+        />
 
-              <div className="flex-grow ml-6">
-                <h3 className="font-bold text-lg text-[#502214]">{item.name}</h3>
-                <p className="text-[#502214] font-semibold">₹{item.price}</p>
-
-                <div className="mt-2 max-w-[250px]">
-                  <motion.div
-                    initial={false}
-                    animate={{ height: "auto" }}
-                    className="relative"
-                  >
-                    <input
-                      type="text"
-                      placeholder="a cooking instructions"
-                      value={instructions[item.id] || ""}
-                      onChange={(e) =>
-                        handleInstructionChange(item.id, e.target.value)
-                      }
-                      className="w-full text-sm px-3 py-1.5 border border-[#502214] border-opacity-25 placeholder:text-[#502214] placeholder:text-opacity-55 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors duration-200 text-[#502214]"
-                    />
-                    {instructions[item.id] && (
-                      <motion.button
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-[#502214] hover:text-opacity-75"
-                        onClick={() => handleInstructionChange(item.id, "")}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </motion.button>
-                    )}
-                  </motion.div>
-                </div>
-              </div>
-
-               <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-lg">
-                <motion.button
-                  onClick={() =>
-                    updateQuantity(item.id, Math.max(0, item.quantity - 1))
-                  }
-                  className="bg-[#ffffff] text-[#502214] h-8 w-8 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M20 12H4"
-                    />
-                  </svg>
-                </motion.button>
-
-                <span className="w-8 text-center font-semibold text-[#502214]">
-                  {item.quantity}
-                </span>
-
-                <motion.button
-                  onClick={() =>
-                    updateQuantity(item.id, Math.min(10, item.quantity + 1))
-                  }
-                  className={`h-8 w-8 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200
-                    ${
-                      item.quantity >= 10
-                        ? "bg-gray-100 text-[#502214] text-opacity-75 cursor-not-allowed"
-                        : "bg-white text-[#502214]"
-                    }`}
-                  whileHover={item.quantity < 10 ? { scale: 1.1 } : {}}
-                  whileTap={item.quantity < 10 ? { scale: 0.95 } : {}}
-                  disabled={item.quantity >= 10}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                </motion.button>
-              </div>
-
-              <div className="ml-6 text-right min-w-[100px]">
-                <div className="font-bold text-lg text-[#502214]">
-                  ₹{item.price * item.quantity}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+        <div className="flex flex-col">
+          <h3 className="font-bold text-xl sm:text-2xl text-opacity-90 text-[#502214]">{item.name}</h3>
+          <p className="text-[#502214] font-bold text-opacity-90 text-lg sm:text-xl">₹{item.price}</p>
+        </div>
       </div>
+
+      {/* ✍ Cooking Instructions */}
+      <div className="mt-2 w-full">
+        <motion.div initial={false} animate={{ height: "auto" }} className="relative">
+          <input
+            type="text"
+            placeholder="Cooking instructions"
+            value={instructions[item.id] || ""}
+            onChange={(e) => handleInstructionChange(item.id, e.target.value)}
+            className="w-full bg-[#f8f1e7] text-xs sm:text-sm px-2 sm:px-3 py-1.5 border border-[#502214] border-opacity-25 placeholder:text-[#502214] placeholder:text-opacity-55 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors duration-200 text-[#502214]"
+          />
+          {instructions[item.id] && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#502214] hover:text-opacity-75"
+              onClick={() => handleInstructionChange(item.id, "")}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </motion.button>
+          )}
+        </motion.div>
+      </div>
+
+      {/* ➖➕ Quantity + Price (Same Line on Mobile) */}
+      <div className="flex justify-between items-center mt-3">
+        {/* ➖➕ Quantity Buttons */}
+        <div className="flex items-center gap-2 bg-[#f8f1e7] p-2 rounded-lg">
+          <motion.button
+            onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
+            className="bg-white text-[#502214] h-4 w-4 sm:h-4 sm:w-4 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+            </svg>
+          </motion.button>
+
+          <span className="w-4 sm:w-4 text-center font-semibold text-[#502214] text-sm sm:text-md">{item.quantity}</span>
+
+          <motion.button
+            onClick={() => updateQuantity(item.id, Math.min(10, item.quantity + 1))}
+            className={`h-4 w-4 sm:h-4 sm:w-4 rounded-lg flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-200 ${
+              item.quantity >= 10 ? "bg-gray-300 text-[#502214] opacity-50 cursor-not-allowed" : "bg-white text-[#502214]"
+            }`}
+            whileHover={item.quantity < 10 ? { scale: 1.1 } : {}}
+            whileTap={item.quantity < 10 ? { scale: 0.95 } : {}}
+            disabled={item.quantity >= 10}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </motion.button>
+        </div>
+
+        {/* 💰 Total Price (Now in the Same Row) */}
+        <div className="text-right font-bold text-xl sm:text-2xl text-[#502214]">
+          ₹{item.price * item.quantity}
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</div>
+
 
       <motion.div
         className="mt-8 bg-white p-6 rounded-xl shadow-sm"
@@ -615,7 +522,7 @@ function Cart() {
         transition={{ duration: 0.5, delay: cartItems.length * 0.1 }}
       >
         <div className="mb-4">
-          <label className="block text-md font-semibold text-[#502214]">
+          <label className="block text-md  font-semibold text-[#502214]">
             Mobile Number
           </label>
           <input
@@ -626,7 +533,7 @@ function Cart() {
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
             placeholder="Enter your mobile number to order"
-            className="mt-1 block w-full px-3 py-2 border border-[#502214] border-opacity-25 placeholder:text-[#502214] text-[#502214] placeholder:text-opacity-55 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+            className="mt-1 block w-full bg-[#f8f1e7] px-3 py-2 border border-[#502214] border-opacity-25 placeholder:text-[#502214] text-[#502214] placeholder:text-opacity-55 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
             required
           />
         </div>
@@ -674,7 +581,7 @@ function Cart() {
 
           <motion.button
             onClick={clearCart}
-            className="w-full bg-white hover:bg-red-50 text-red-500 border border-red-500 font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
+            className="w-full bg-white hover:bg-[#f8f1e7] text-[#502214] border border-[#502214] font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

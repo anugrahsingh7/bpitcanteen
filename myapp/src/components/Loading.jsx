@@ -1,7 +1,7 @@
 function Loading() {
   return (
-    <div className="flex justify-center items-center min-h-[60vh]">
-      <div className="animate-spin">
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div className="animate-spin -mt-20">
         <i className="fas fa-hamburger text-6xl text-[#502214]"></i>
       </div>
     </div>

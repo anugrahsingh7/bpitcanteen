@@ -20,12 +20,12 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4 text-[#e9b52a]">Site Developers</h3>
             <ul className="space-y-2">
               <li>
-                <a href="" className="  text-white text-opacity-75 hover:text-opacity-100 font-bold text-sm transition-colors duration-300">
+                <a href="https://www.linkedin.com/in/-vaibhav-sinha?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" className="  text-white text-opacity-75 hover:text-opacity-100 font-bold text-sm transition-colors duration-300">
                   Vaibhav Sinha
                 </a>
               </li>
               <li>
-                <a href="" className="  text-white text-opacity-75 hover:text-opacity-100 font-bold  text-sm transition-colors duration-300">
+                <a href="https://www.linkedin.com/in/anugrah-singh-161089266?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" className="  text-white text-opacity-75 hover:text-opacity-100 font-bold  text-sm transition-colors duration-300">
                  Anugrah Singh
                 </a>
               </li>
@@ -41,16 +41,20 @@ const Footer = () => {
           {/* Contact Info */}
           <div className="mb-4">
             <h3 className="text-xl font-semibold mb-4 text-[#e9b52a]">Contact Us</h3>
-            <ul className="space-y-2 text-sm   text-white text-opacity-75 hover:text-opacity-100">
-              <li className="flex items-center">
+            <ul className="space-y-2 text-sm   ">
+              <a href="https://maps.app.goo.gl/U1s58U7VAdrjh8xZ6" className="flex items-center text-white text-opacity-75 hover:text-opacity-100">
                 <i className="fa-solid fa-location-dot mr-2"></i>
                 BPIT, PSP-4, Dr. K.N. Katju Marg, Sector 17, Rohini, Delhi
-              </li>
-              <li className="flex items-center">
+              </a>
+              <li 
+              onClick={() => window.location.href = "tel:+910123456789"}
+              className="flex items-center text-white text-opacity-75 hover:text-opacity-100 cursor-pointer">
                 <i className="fa-solid fa-phone mr-2"></i>
-                +91 1234567890
+                +91 0123456789
               </li>
-              <li className="flex items-center">
+              <li
+               onClick={() => window.location.href = "mailto:canteen@bpitindia.com"}
+               className="flex items-center text-white text-opacity-75 hover:text-opacity-100 cursor-pointer">
                 <i className="fa-solid fa-envelope mr-2"></i>
                 canteen@bpitindia.com
               </li>
