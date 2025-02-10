@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
@@ -46,6 +46,12 @@ function Cart() {
     userId: user?._id,
   };
   const { mutateAsync: createOrder } = useCreateOrderByUser();
+  
+  useEffect(()=>{
+    if(cartItems.length == 0){
+      updateInstructions("");
+    }
+  },[cartItems,updateInstructions])
 
   const handleInstructionChange = (value) => {
     updateInstructions(value);
@@ -88,7 +94,7 @@ function Cart() {
           if (verificationResponse.data.success) {
             toast.success("Payment successful!");
             // setShowReceipt(true); // Show receipt
-            navigate("/Bill");
+            navigate(`/Bill?id=${verificationResponse.data.order._id}`)
             clearCart(); // Clear the cart
           } else {
             toast.error("Payment verification failed!");
@@ -609,6 +615,7 @@ function Cart() {
             className="mt-1 block w-full bg-[#f8f1e7] px-3 py-2 border border-[#502214] border-opacity-25 placeholder:text-[#502214] text-[#502214] placeholder:text-opacity-55 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
             required
           />
+          
         </div>
         <div className="flex justify-between items-center text-xl mb-6">
           <span className="font-bold text-2xl text-[#502214]">
