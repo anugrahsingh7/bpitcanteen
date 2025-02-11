@@ -74,7 +74,8 @@ function Cart() {
         key: "rzp_test_Kko9Iq18fapOjW", // Razorpay Key ID
         amount: amount,
         currency: "INR",
-        name: "BPIT CANTEEN",
+        name: "CANTEEN - BPIT",
+        image: "/logo/ICON.png",
         description: "Test Transaction",
         order_id: orderId,
         handler: async function (response) {
@@ -98,7 +99,9 @@ function Cart() {
             clearCart(); // Clear the cart
           } else {
             toast.error("Payment verification failed!");
-          }
+          };
+        
+        
         },
         prefill: {
           name: user?.name || "Guest",
@@ -106,7 +109,7 @@ function Cart() {
           contact: mobileNumber || "9999999999",
         },
         theme: {
-          color: "#faa038",
+          color: "#502214",
         },
       };
 
