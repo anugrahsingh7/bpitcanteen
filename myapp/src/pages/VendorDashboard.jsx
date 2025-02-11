@@ -6,6 +6,10 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { useGetAllOrders } from "../lib/useOrderApi";
 import Loading from "../components/Loading";
+import { MdDelete } from "react-icons/md";
+import { IoMdAddCircle } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 
 // Helper function to get formatted time
 
@@ -108,7 +112,7 @@ function VendorDashboard() {
 
     // Header
     doc.setFontSize(22);
-    doc.setTextColor(241, 90, 35); // Orange color
+    doc.setTextColor(80, 34, 20, 1); // Orange color
     doc.text("BPIT CANTEEN", 15, 20);
 
     doc.setFontSize(16);
@@ -120,7 +124,7 @@ function VendorDashboard() {
     doc.setTextColor(100);
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 40);
     doc.text(`Total Orders: ${orders.length}`, 15, 45);
-    doc.text(`Vendor Name: ${vendorName}`, 15, 50);
+    
 
     let yPos = 70; // Starting y position for orders
 
@@ -133,8 +137,8 @@ function VendorDashboard() {
       }
 
       // Order Header
-      doc.setFillColor(241, 90, 35);
-      doc.setDrawColor(241, 90, 35);
+      doc.setFillColor(80, 34, 20, 1);
+      doc.setDrawColor(80, 34, 20, 1);
       doc.rect(15, yPos, 180, 8, "F");
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(12);
@@ -147,16 +151,16 @@ function VendorDashboard() {
 
       const details = [
         [
-          `Order No.: ${order.id}`,
-          `Time: ${order.orderTime || getFormattedTime(order.timestamp)}`,
+          `Order No.: ${order._id}`,
+          `Time: ${order.createdAt || getFormattedTime(order.timestamp)}`,
         ],
         [
           `Transaction ID: ${order.transactionId || "N/A"}`,
           `Status: ${order.status}`,
         ],
-        [`Customer: ${order.name}`, `Phone: ${order.phoneNumber}`],
+        [`Customer: ${order.user.name}`, `Phone: ${order.phoneNumber}`],
         [
-          `Payment Status: ${order.paymentStatus}`,
+          
           `Total Amount: Rs. ${order.totalAmount}`,
         ],
       ];
@@ -208,51 +212,38 @@ function VendorDashboard() {
       animate={{ opacity: 1 }}
       className="p-2 sm:p-4 md:p-6 lg:p-8 max-w-7xl mx-auto  min-h-screen"
     >
-      <motion.h1
+            <motion.h1
         className="text-xl sm:text-2xl md:text-3xl font-bold mb-0 md:mb-1 lg:mb-2 text-gray-800"
         initial={{ y: -20 }}
         animate={{ y: 0 }}
       >
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <div className="flex items-end">
-            <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
-              <img
-                className="w-auto h-20"
-                src="/logo/logo-removebg.png"
-                alt="logo"
-              />
+            <span className="text-md font-bold tracking-tight flex bg-transparent p-1">
+              <img className="w-auto h-20" src="/logo/logo-removebg.png" alt="logo" />
             </span>
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
-            {vendorName && (
-              <div className="text-base text-gray-700 flex items-center gap-2 mb-2 sm:mb-0">
-                <FaUser className="text-[#502214]" />
-                <span className="font-medium">{vendorName}</span>
-                <div className="flex items-center gap-1.5 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
-                  <motion.div
-                    variants={pulseAnimation}
-                    animate="animate"
-                    className="w-2 h-2 rounded-full bg-green-500"
-                  />
-                  <span className="text-green-700 text-sm font-medium">
-                    LIVE
-                  </span>
-                </div>
-              </div>
-            )}
-            <div className="flex gap-2  w-full sm:w-auto">
+
+          {/* Buttons Section */}
+          <div className="flex flex-col md:flex-row md:justify-end lg:flex-row gap-2 sm:gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
+
+            {/* Live & Toggle Button */}
+            <div className="flex gap-2 justify-center md:justify-end w-full sm:w-auto">
               <label className="inline-flex items-center cursor-pointer">
                 <input type="checkbox" value="" className="sr-only peer" />
-                <span className="hidden peer-checked:block ms-3 text-lg font-medium text-green-500 shadow-md me-2 bg-black bg-opacity-10 px-3 py-0 rounded-lg">
+                <span className="hidden peer-checked:block ms-3 text-lg font-medium text-green-500 shadow-sm me-2 bg-white bg-opacity-80 px-3 py-0 rounded-lg">
                   Live
                 </span>
                 <div className="relative w-11 h-6 shadow-md bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
               </label>
+            </div>
 
+            {/* Download Report Button */}
+            <div className="flex gap-2 justify-center md:justify-end w-full sm:w-auto">
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={downloadPDF}
-                className="flex-1 sm:flex-none   text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 sm:px-4 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1 sm:gap-2"
+                className="flex-1 sm:flex-none text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 sm:px-4 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1 sm:gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -268,10 +259,20 @@ function VendorDashboard() {
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-
                 <span className="whitespace-nowrap">Download Report</span>
               </motion.button>
             </div>
+
+            {/* Add & Remove Items Buttons (Always Centered) */}
+            <div className="flex gap-2 justify-center w-full sm:w-auto">
+              <Link to="/AddItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
+                <IoMdAddCircle />Items
+              </Link>
+              <Link to="/RemoveItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
+                <MdDelete />Items
+              </Link>
+            </div>
+
           </div>
         </div>
       </motion.h1>
@@ -307,21 +308,14 @@ function VendorDashboard() {
                     >
                       <div className="flex justify-between items-start mb-1 sm:mb-2">
                         <div>
-                          <div className="font-medium text-black">
-                            Order No.
-                          </div>
-                          <div className="font-bold break-all">{order.id}</div>
+                         
+                          <div className="font-bold break-all text-red-500">{order._id}</div>
 
                           <div className="mt-1">
-                            <div className="font-medium text-black">
-                              Order Time
-                            </div>
+                           
                             <div className="text-gray-700 group relative cursor-help">
                               {getFormattedTime(order.createdAt)}
-                              <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                {order.createdAt ||
-                                  new Date(order.timestamp).toLocaleString()}
-                              </div>
+                              
                             </div>
                           </div>
                         </div>
@@ -342,46 +336,49 @@ function VendorDashboard() {
                         <div className="flex items-center gap-1">
                           <FaUser className="text-black text-xs" />
                           <span className="font-medium">
-                            {order.customerName || undefined}
+                            {order.user.name || undefined}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-1">
                           <FaPhone className="text-black text-xs" />
-                          <span className="group relative cursor-help">
-                            {order?.phoneNumber?.slice(0, 10)}
-                            <div className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-[10px] rounded-md py-1 px-2 -mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                              {order.phoneNumber || undefined}
-                            </div>
-                          </span>
+                          <a 
+    href={`tel:${order.phoneNumber}`} 
+    className="group  relative cursor-pointer hover:underline hover:text-blue-500"
+>
+    {order.phoneNumber}
+</a>
                         </div>
 
                         <div className="border-t pt-1">
-                          <div className="font-medium mb-1">Items:</div>
+                          <div className="font-medium mb-1 underline ">Items:-</div>
                           {order.items.map((item) => (
                             <div
                               key={item._id}
                               className="text-[10px] sm:text-xs py-1"
                             >
-                              <div className="flex justify-between">
-                                <span>{item.name}</span>
-                                <span className="text-black">
+                              <div className="flex  justify-between">
+                                <span className="font-medium">{item.name}</span>
+                                <span className="text-red-500">
                                   x{item.quantity}
                                 </span>
                               </div>
-                              {item.instructions && (
-                                <div className="text-red-500 italic">
-                                  ➤ {item.instructions}
-                                </div>
-                              )}
+                             
                             </div>
                           ))}
                         </div>
 
-                        <div className="flex justify-between items-center border-t pt-1">
+                        <div className="flex-col justify-between items-center border-t pt-1">
+                        <div className="space-y-1 font-semibold text-red-500">
+                                {order.instructions || (
+                                  <span className="text-gray-500 italic ">
+                                    No cooking instructions
+                                  </span>
+                                )}
+                              </div>
                           <div>
                             <div className="text-black">Total Amount</div>
-                            <div className="font-bold">
+                            <div className="font-bold text-green-500">
                               ₹{order.totalAmount}
                             </div>
                           </div>
@@ -478,54 +475,40 @@ function VendorDashboard() {
                             className="hover:bg-[#f8f1e7] transition-colors duration-150"
                           >
                             <td className="px-2 py-4 border-b group relative">
-                              <span className="cursor-help text-red-500 font-bold">
-                                {order._id.substring(0, 5)}
-                                <div
-                                  className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
-                                  whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                >
-                                  {order._id}
-                                </div>
+                              <span className=" text-red-500 font-bold">
+                                {order._id}
+                                
                               </span>
                             </td>
 
                             <td className="px-2 py-4 border-b">
-                              <span className=" group relative cursor-help">
+                              <span className=" group relative ">
                                 {getFormattedTime(order.createdAt)}
-                                <div
-                                  className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
-                                                                    whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 left-0"
-                                >
-                                  {order.orderTime ||
-                                    new Date(order.timestamp).toLocaleString()}
-                                </div>
+                                
                               </span>
                             </td>
                             <td className="px-2 py-4 border-b text-sm font-medium">
                               {order.user.name}
                             </td>
                             <td className="px-2 py-4 border-b">
-                              <span className="group text-sm relative cursor-help">
-                                {order?.phoneNumber?.slice(0, 10)}
-                                <div
-                                  className="invisible group-hover:visible absolute z-10 bg-gray-900 text-white text-sm rounded-md py-1 px-2 -mt-1 
-                                                                    whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                >
-                                  {order.phoneNumber}
-                                </div>
-                              </span>
+                            <a 
+    href={`tel:${order.phoneNumber}`} 
+    className="group text-sm relative cursor-pointer hover:underline hover:text-blue-500"
+>
+    {order.phoneNumber}
+</a>
                             </td>
                             <td className="px-2 py-4 border-b">
                               <div className="space-y-1">
                                 {order.items.map((item) => (
                                   <div
                                     key={item._id}
-                                    className="text-sm font-semibold text-red-500"
+                                    className="text-sm font-semibold "
                                   >
-                                    <span className="font-medium">
+                                    <span className="font-medium hover:underline">
                                       {item.name}
                                     </span>
-                                    <span className="text-black font-bold ml-2">
+                                    <span className=" font-bold ml-2 text-red-500">
                                       x{item.quantity}
                                     </span>
                                   </div>
@@ -536,12 +519,12 @@ function VendorDashboard() {
                               <div className="space-y-1 font-medium text-red-500">
                                 {order.instructions || (
                                   <span className="text-gray-500 italic text-sm">
-                                    No special instructions
+                                    No cooking instructions
                                   </span>
                                 )}
                               </div>
                             </td>
-                            <td className="px-2 py-4 border-b font-medium">
+                            <td className="px-2 py-4 border-b font-bold text-green-500">
                               ₹{order.totalAmount}
                             </td>
 

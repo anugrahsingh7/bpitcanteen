@@ -1,13 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-
 import VendorLogin from "./pages/VendorLogin";
 import VendorDashboard from "./pages/VendorDashboard";
 import Snacks from "./pages/Snacks";
 import SouthIndian from "./pages/SouthIndian";
 import Cart from "./pages/Cart";
-
 import Chinese from "./pages/Chinese";
 import Beverages from "./pages/Beverages";
 import AppLayout from "./ui/AppLayout";
@@ -15,7 +13,8 @@ import PageNotFound from "./pages/PageNotFound";
 import toast, { Toaster } from "react-hot-toast";
 import { CartProvider } from "./context/CartContext";
 import ForgetPassword from "./pages/ForgetPassword";
-
+import AddItems from "./pages/AddItems";
+import RemoveItems from "./pages/RemoveItems";
 import { UserProvider, useUser } from "./context/userContext";
 import { useEffect, useState } from "react";
 import IndianItems from "./pages/IndianItems";
@@ -58,10 +57,10 @@ function App() {
         <UserProvider>
           <Routes>
             <Route path="/" element={<Login />} />
-
             <Route path="/vendor-login" element={<VendorLogin />} />
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-
+            <Route path="/AddItems" element={<AddItems />} />
+            <Route path="/RemoveItems" element={<RemoveItems />} />
             <Route
               element={
                 <ProtectedRoute>
@@ -71,13 +70,11 @@ function App() {
             >
               <Route path="/snacks" element={<Snacks />} />
               <Route path="/SouthIndian" element={<SouthIndian />} />
-
               <Route path="/Chinese" element={<Chinese />} />
               <Route path="/IndianItems" element={<IndianItems />} />
               <Route path="/Mess" element={<Mess />} />
               <Route path="/Deserts" element={<Deserts />} />
-
-              <Route path="/beverages" element={<Beverages />} />
+               <Route path="/beverages" element={<Beverages />} />
             </Route>
             <Route
               path="bill"
@@ -103,7 +100,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
             <Route path="/login" element={<Login />} />
             <Route path="/forgetpassword" element={<ForgetPassword />} />
             <Route path="/SignUp" element={<SignUp />} />
