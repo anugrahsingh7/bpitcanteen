@@ -42,7 +42,7 @@ const EditItems = () => {
             />
           </div>
 
-          <div className="mt-2 text-2xl flex items-center justify-center font-semibold text-[#502214]">
+          <div className="mt-2 text-md flex items-center justify-center font-bold text-[#502214]">
           Edit ₹Price of any Item from the <MdOutlineRestaurantMenu  className="ms-1"/> Menu
           </div>
           <Link

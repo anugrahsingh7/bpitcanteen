@@ -37,7 +37,7 @@ const AddItems = () => {
 
 
 
-                    <div className="mt-2 text-2xl flex justify-center font-semibold text-[#502214] items-center">Add Food Items to the<MdOutlineRestaurantMenu className="mx-1"/>  Menu</div>
+                    <div className="mt-2 text-xl flex justify-center font-bold text-[#502214] items-center">Add Food Items to the<MdOutlineRestaurantMenu className="mx-1"/>  Menu</div>
                     <Link to="/vendor-dashboard" className="mt-1 text-sm flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "><IoMdArrowRoundBack className="me-1"/>Back to the Dashboard</Link>
 
  
