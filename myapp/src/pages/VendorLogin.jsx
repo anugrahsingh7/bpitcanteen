@@ -55,8 +55,8 @@ function VendorLogin() {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex bg-[#592e1f] justify-center items-center p-2 fade-in" style={{ opacity: 0, transform: 'translateY(50px)' }}>
-      <div className="w-full max-w-sm p-6 m-auto mx-auto bg-[#f8f1e7] rounded-lg shadow-md ]">
+    <div className="w-screen h-screen flex bg-[#f8f1e7] justify-center items-center p-2 fade-in" style={{ opacity: 0, transform: 'translateY(50px)' }}>
+      <div className="w-full max-w-sm p-6 m-auto mx-auto bg-[#f8f1e7] border border-[#592e1f] border-opacity-40 rounded-lg shadow-md ]">
       <div className="flex justify-center mx-auto">
           <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="" />
         </div>

@@ -84,7 +84,7 @@ const EditItems = () => {
               placeholder="Enter new price"
               value={formData.price}
               onChange={handleChange}
-              className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 "
+              className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 placeholder:text-[#502214] placeholder:text-opacity-50 "
             />
           </div>
 
