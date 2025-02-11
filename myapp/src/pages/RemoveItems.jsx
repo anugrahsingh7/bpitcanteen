@@ -2,6 +2,8 @@ import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { MdEdit } from "react-icons/md";
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 
 const RemoveItems = () => {
     const [formData, setFormData] = useState({
@@ -36,8 +38,8 @@ const RemoveItems = () => {
                     </div>
 
 
-
-                    <div className="mt-2 text-2xl flex justify-center font-semibold text-[#502214]">Delete Items from Menu</div>
+ 
+                    <div className="mt-2 text-2xl flex justify-center font-semibold text-[#502214] items-center">Delete Items from the <MdOutlineRestaurantMenu  className="ms-1"/>Menu</div>
                     <Link to="/vendor-dashboard" className="mt-1 text-sm flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "><IoMdArrowRoundBack className="me-1"/>Back to the Dashboard</Link>
 
                     
@@ -47,7 +49,8 @@ const RemoveItems = () => {
                   
 
                     <div className=" mt-4">
-                    <select id="countries" className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
+                    <label className="text-[#502214] " >Select Item:-</label>
+                    <select id="countries" className= "mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
                     <option selected>idli</option>
                     <option value="US">Paneer Patties</option>
                     <option value="CA">Dosa</option>
@@ -69,6 +72,13 @@ const RemoveItems = () => {
                     <button className="w-full flex items-center justify-center px-6 py-3 mt-6 text-white bg-red-600 rounded-lg shadow-md hover:opacity-75 space-x-1 ">
                     <MdDelete  />  Delete Item
                     </button>
+                    <Link
+            to="/EditItems"
+            className="mt-2 text-md flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "
+          >
+            <MdEdit  className="me-1" />
+            Or Edit Price of any Item from the Menu
+          </Link>
                 </form>
             </div>
         </section>

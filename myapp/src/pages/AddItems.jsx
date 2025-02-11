@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 
 const AddItems = () => {
     const [formData, setFormData] = useState({
@@ -36,7 +37,7 @@ const AddItems = () => {
 
 
 
-                    <div className="mt-2 text-2xl flex justify-center font-semibold text-[#502214]">Add Items to Menu</div>
+                    <div className="mt-2 text-2xl flex justify-center font-semibold text-[#502214] items-center">Add Food Items to the<MdOutlineRestaurantMenu className="mx-1"/>  Menu</div>
                     <Link to="/vendor-dashboard" className="mt-1 text-sm flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "><IoMdArrowRoundBack className="me-1"/>Back to the Dashboard</Link>
 
  
@@ -47,7 +48,8 @@ const AddItems = () => {
                   
 
                     <div className=" mt-4">
-                    <select id="countries" className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
+                    <label className="text-[#502214] " >Select Food Category:-</label>
+                    <select id="countries" className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
                     <option selected>Snacks</option>
                     <option value="US">Chinese</option>
                     <option value="CA">South Indian</option>
@@ -65,11 +67,11 @@ const AddItems = () => {
                     
                         <input
                             type="text"
-                            name="username"
+                            name="name"
                             value={formData.username}
                             onChange={handleChange}
                             className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70"
-                            placeholder="Username"
+                            placeholder="Item Name"
                         />
                     </div>
 
@@ -79,7 +81,7 @@ const AddItems = () => {
                     <div className="mt-4">
     
     <input type="text" id="large-input" 
-    placeholder="Description"
+    placeholder="Item Description"
     className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" />
 </div>
 
@@ -92,7 +94,7 @@ const AddItems = () => {
  id="number-input" 
  aria-describedby="helper-text-explanation" 
  className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" 
- placeholder="Price" 
+ placeholder="Item Price" 
  required />
 </div>
 
@@ -107,8 +109,8 @@ const AddItems = () => {
                         <input id="dropzone-file"  type="file" className="hidden" onChange={handleFileChange} />
                     </label>
                     {/* Submit Button */}
-                    <button className="w-full px-6 py-3 mt-6 text-white bg-[#502214] rounded-lg shadow-md hover:opacity-75 ">
-                        Upload Details
+                    <button className="w-full px-6 py-3 mt-6 text-white bg-green-600 rounded-lg shadow-md hover:opacity-75 ">
+                        Upload Item
                     </button>
                 </form>
             </div>

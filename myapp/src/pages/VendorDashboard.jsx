@@ -10,6 +10,7 @@ import { MdDelete } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { AiFillEdit } from "react-icons/ai";
 
 // Helper function to get formatted time
 
@@ -268,8 +269,8 @@ function VendorDashboard() {
               <Link to="/AddItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
                 <IoMdAddCircle />Items
               </Link>
-              <Link to="/RemoveItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
-                <MdDelete />Items
+              <Link to="/EditItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
+              <AiFillEdit />Items
               </Link>
             </div>
 

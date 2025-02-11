@@ -23,6 +23,7 @@ import Mess from "./pages/Mess";
 import OrderHistory from "./pages/OrderHistory";
 import Bill from "./pages/Bill";
 import CanteenClosed from "./pages/CanteenClosed";
+import EditItems from "./pages/EditItems";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -60,6 +61,7 @@ function App() {
             <Route path="/vendor-login" element={<VendorLogin />} />
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
             <Route path="/AddItems" element={<AddItems />} />
+            <Route path="/EditItems" element={<EditItems />} />
             <Route path="/RemoveItems" element={<RemoveItems />} />
             <Route
               element={
