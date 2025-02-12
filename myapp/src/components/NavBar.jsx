@@ -19,7 +19,7 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false); // Controls mobile menu
   const [isProfileOpen, setIsProfileOpen] = useState(false); // Controls profile dropdown
   const { cartItems } = useCart();
-  const { setIsLoggedIn } = useUser();
+  const { isLoggedIn, setIsLoggedIn } = useUser();
   const navigate = useNavigate();
 
   // Dummy user data (Replace with actual user data from context or API)
@@ -117,35 +117,39 @@ const NavBar = () => {
               </button>
 
               {/* Profile Dropdown Menu */}
-              {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-68 top-8 bg-[#ffffff] bg-opacity-95 backdrop-blur-sm shadow-lg rounded-lg p-4 overflow-hidden transition-all duration-300 ease-in-out">
-                  <p className="text-[#502214] font-bold text-lg break-words">
-                    {user.name}
-                  </p>
-                  <p className="text-[#502214] font-medium text-opacity-70 text-sm break-words">
-                    {user.email}
-                  </p>
-                  <hr className="my-4 border-[#502214]  border-opacity-30" />
-                  <Link to="OrderHistory">
+              {isLoggedIn ? (
+                isProfileOpen && (
+                  <div className="absolute right-0 mt-2 w-68 top-8 bg-[#ffffff] bg-opacity-95 backdrop-blur-sm shadow-lg rounded-lg p-4 overflow-hidden transition-all duration-300 ease-in-out">
+                    <p className="text-[#502214] font-bold text-lg break-words">
+                      {user.name}
+                    </p>
+                    <p className="text-[#502214] font-medium text-opacity-70 text-sm break-words">
+                      {user.email}
+                    </p>
+                    <hr className="my-4 border-[#502214]  border-opacity-30" />
+                    <Link to="OrderHistory">
+                      <button
+                        onClick={() => navigate("/order-history")}
+                        className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] py-2 rounded-md text-sm font-semibold"
+                      >
+                        View Order History
+                      </button>
+                    </Link>
+                    <Link to="ForgetPassword">
+                      <button className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] mt-2 py-2 rounded-md text-sm font-semibold">
+                        Change Password
+                      </button>
+                    </Link>
                     <button
-                      onClick={() => navigate("/order-history")}
-                      className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] py-2 rounded-md text-sm font-semibold"
+                      onClick={handleLogout}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md text-sm font-bold mt-2"
                     >
-                      View Order History
+                      Log Out
                     </button>
-                  </Link>
-                  <Link to="ForgetPassword">
-                    <button className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] mt-2 py-2 rounded-md text-sm font-semibold">
-                      Change Password
-                    </button>
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md text-sm font-bold mt-2"
-                  >
-                    Log Out
-                  </button>
-                </div>
+                  </div>
+                )
+              ) : (
+                <Link to="/login">Please login to view</Link>
               )}
             </div>
 

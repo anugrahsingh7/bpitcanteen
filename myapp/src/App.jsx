@@ -24,11 +24,12 @@ import OrderHistory from "./pages/OrderHistory";
 import Bill from "./pages/Bill";
 import CanteenClosed from "./pages/CanteenClosed";
 import EditItems from "./pages/EditItems";
+import { useLive } from "./context/LiveContext";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
   const [redirecting, setRedirecting] = useState(false); // ✅ Prevent state update in render phase
-
+  const { isLive } = useLive();
   useEffect(() => {
     if (!loading && !isLoggedIn) {
       toast.error("Please log in !");
@@ -46,7 +47,7 @@ const ProtectedRoute = ({ children }) => {
     ); // Show a loading screen while verifying
 
   if (redirecting) return <Navigate to="/login" />;
-
+  if (!isLive) return <Navigate to="/CanteenClosed" replace />;
   return children;
 };
 
@@ -63,20 +64,14 @@ function App() {
             <Route path="/AddItems" element={<AddItems />} />
             <Route path="/EditItems" element={<EditItems />} />
             <Route path="/RemoveItems" element={<RemoveItems />} />
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
+            <Route element={<AppLayout />}>
               <Route path="/snacks" element={<Snacks />} />
               <Route path="/SouthIndian" element={<SouthIndian />} />
               <Route path="/Chinese" element={<Chinese />} />
               <Route path="/IndianItems" element={<IndianItems />} />
               <Route path="/Mess" element={<Mess />} />
               <Route path="/Deserts" element={<Deserts />} />
-               <Route path="/beverages" element={<Beverages />} />
+              <Route path="/beverages" element={<Beverages />} />
             </Route>
             <Route
               path="bill"

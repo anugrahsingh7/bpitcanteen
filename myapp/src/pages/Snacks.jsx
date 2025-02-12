@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { useUser } from "../context/userContext";
 import { useMenuApi } from "../lib/useMenu";
 import Loading from "../components/Loading";
+import { useLive } from "../context/LiveContext";
 function Snacks() {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const { vendorInfo } = useLive();
   const [snackItems, setSnackItems] = useState([]);
   const { data, isLoading } = useMenuApi("Snack");
   useEffect(() => {
@@ -14,7 +16,7 @@ function Snacks() {
     }
   }, [data]);
   if (isLoading) return <Loading />;
-
+  console.log(vendorInfo);
   return (
     <div className="container  mx-auto px-4 sm:px-6 lg:px-8 py-1 pb-4 max-w-7xl">
       <div className="w-full text-[#502214] text-opacity-95 justify-center font-semibold items-center flex text-4xl pb-7">

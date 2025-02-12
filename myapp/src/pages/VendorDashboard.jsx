@@ -11,6 +11,9 @@ import { IoMdAddCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { AiFillEdit } from "react-icons/ai";
+import { useLive } from "../context/LiveContext";
+import axios from "axios";
+import { useUpdateVendor, useVendor } from "../lib/useVendorApi";
 
 // Helper function to get formatted time
 
@@ -58,6 +61,9 @@ const orderIdHasher = {
 function VendorDashboard() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { vendorInfo = {}, setVendorInfo, isLive, setIsLive } = useLive();
+  const { data, isLoading: vendorLoading } = useVendor();
+  const { mutate: updateStatus } = useUpdateVendor();
   const [vendorName, setVendorName] = useState("");
   const { data: getOrders, isLoading } = useGetAllOrders();
   useEffect(() => {
@@ -65,21 +71,26 @@ function VendorDashboard() {
       const sortedOrders = getOrders.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
-      const hashedOrders = sortedOrders.map((el) => {
-        return {
-          ...el,
-          _id: orderIdHasher.hashOrderId(el._id),
-        };
-      });
-      setOrders(hashedOrders);
-      console.log(getOrders.map((order) => console.log(order.user)));
+      // const hashedOrders = sortedOrders.map((el) => {
+      //   return {
+      //     ...el,
+      //     _id: orderIdHasher.hashOrderId(el._id),
+      //   };
+      // });
+
+      setOrders(sortedOrders);
     }
     setLoading(false);
   }, [getOrders]);
+  useEffect(() => {
+    if (data) {
+      setVendorInfo(data[0]);
+    }
+  }, [setVendorInfo, data]);
 
   const audioRef = useRef(new Audio(notificationSound));
   const previousOrdersRef = useRef(new Set());
-  if (isLoading) return <Loading />;
+  if (isLoading && vendorLoading) return <Loading />;
 
   const handleReceiveOrder = (orderId) => {
     const updatedOrders = orders.map((order) =>
@@ -102,12 +113,18 @@ function VendorDashboard() {
     setOrders(updatedOrders);
     // localStorage.setItem("orders", JSON.stringify(updatedOrders));
   };
-
-  const handleClearAllOrders = () => {
-    setOrders([]);
-    // localStorage.setItem("orders", "[]");
+  const handleLiveChange = async () => {
+    console.log(vendorInfo.status);
+    if (!vendorInfo) return;
+    try {
+      await updateStatus({
+        status: !vendorInfo?.status,
+        id: vendorInfo?._id,
+      });
+    } catch (error) {
+      console.error("Error updating status", error);
+    }
   };
-
   const downloadPDF = () => {
     const doc = new jsPDF();
 
@@ -125,7 +142,6 @@ function VendorDashboard() {
     doc.setTextColor(100);
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 40);
     doc.text(`Total Orders: ${orders.length}`, 15, 45);
-    
 
     let yPos = 70; // Starting y position for orders
 
@@ -160,10 +176,7 @@ function VendorDashboard() {
           `Status: ${order.status}`,
         ],
         [`Customer: ${order.user.name}`, `Phone: ${order.phoneNumber}`],
-        [
-          
-          `Total Amount: Rs. ${order.totalAmount}`,
-        ],
+        [`Total Amount: Rs. ${order.totalAmount}`],
       ];
 
       details.forEach(([left, right]) => {
@@ -213,7 +226,7 @@ function VendorDashboard() {
       animate={{ opacity: 1 }}
       className="p-2 sm:p-4 md:p-6 lg:p-8 max-w-7xl mx-auto  min-h-screen"
     >
-            <motion.h1
+      <motion.h1
         className="text-xl sm:text-2xl md:text-3xl font-bold mb-0 md:mb-1 lg:mb-2 text-gray-800"
         initial={{ y: -20 }}
         animate={{ y: 0 }}
@@ -221,17 +234,25 @@ function VendorDashboard() {
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <div className="flex items-end">
             <span className="text-md font-bold tracking-tight flex bg-transparent p-1">
-              <img className="w-auto h-20" src="/logo/logo-removebg.png" alt="logo" />
+              <img
+                className="w-auto h-20"
+                src="/logo/logo-removebg.png"
+                alt="logo"
+              />
             </span>
           </div>
 
           {/* Buttons Section */}
           <div className="flex flex-col md:flex-row md:justify-end lg:flex-row gap-2 sm:gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
-
             {/* Live & Toggle Button */}
             <div className="flex gap-2 justify-center md:justify-end w-full sm:w-auto">
               <label className="inline-flex items-center cursor-pointer">
-                <input type="checkbox" value="" className="sr-only peer" />
+                <input
+                  type="checkbox"
+                  checked={vendorInfo?.status}
+                  onChange={handleLiveChange}
+                  className="sr-only peer"
+                />
                 <span className="hidden peer-checked:block ms-3 text-lg font-medium text-green-500 shadow-sm me-2 bg-white bg-opacity-80 px-3 py-0 rounded-lg">
                   Live
                 </span>
@@ -266,14 +287,21 @@ function VendorDashboard() {
 
             {/* Add & Remove Items Buttons (Always Centered) */}
             <div className="flex gap-2 justify-center w-full sm:w-auto">
-              <Link to="/AddItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
-                <IoMdAddCircle />Items
+              <Link
+                to="/AddItems"
+                className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1"
+              >
+                <IoMdAddCircle />
+                Items
               </Link>
-              <Link to="/EditItems" className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1">
-              <AiFillEdit />Items
+              <Link
+                to="/EditItems"
+                className="flex-1 text-[#502214] border border-[#502214] hover:bg-[#f8f1e7] px-3 py-2 rounded-md text-sm sm:text-sm font-medium shadow-md transition-colors duration-200 flex items-center justify-center gap-1"
+              >
+                <AiFillEdit />
+                Items
               </Link>
             </div>
-
           </div>
         </div>
       </motion.h1>
@@ -309,14 +337,13 @@ function VendorDashboard() {
                     >
                       <div className="flex justify-between items-start mb-1 sm:mb-2">
                         <div>
-                         
-                          <div className="font-bold break-all text-red-500">{order._id}</div>
+                          <div className="font-bold break-all text-red-500">
+                            {orderIdHasher.hashOrderId(order._id)}
+                          </div>
 
                           <div className="mt-1">
-                           
                             <div className="text-gray-700 group relative cursor-help">
                               {getFormattedTime(order.createdAt)}
-                              
                             </div>
                           </div>
                         </div>
@@ -343,16 +370,18 @@ function VendorDashboard() {
 
                         <div className="flex items-center gap-1">
                           <FaPhone className="text-black text-xs" />
-                          <a 
-    href={`tel:${order.phoneNumber}`} 
-    className="group  relative cursor-pointer hover:underline hover:text-blue-500"
->
-    {order.phoneNumber}
-</a>
+                          <a
+                            href={`tel:${order.phoneNumber}`}
+                            className="group  relative cursor-pointer hover:underline hover:text-blue-500"
+                          >
+                            {order.phoneNumber}
+                          </a>
                         </div>
 
                         <div className="border-t pt-1">
-                          <div className="font-medium mb-1 underline ">Items:-</div>
+                          <div className="font-medium mb-1 underline ">
+                            Items:-
+                          </div>
                           {order.items.map((item) => (
                             <div
                               key={item._id}
@@ -364,19 +393,18 @@ function VendorDashboard() {
                                   x{item.quantity}
                                 </span>
                               </div>
-                             
                             </div>
                           ))}
                         </div>
 
                         <div className="flex-col justify-between items-center border-t pt-1">
-                        <div className="space-y-1 font-semibold text-red-500">
-                                {order.instructions || (
-                                  <span className="text-gray-500 italic ">
-                                    No cooking instructions
-                                  </span>
-                                )}
-                              </div>
+                          <div className="space-y-1 font-semibold text-red-500">
+                            {order.instructions || (
+                              <span className="text-gray-500 italic ">
+                                No cooking instructions
+                              </span>
+                            )}
+                          </div>
                           <div>
                             <div className="text-black">Total Amount</div>
                             <div className="font-bold text-green-500">
@@ -477,27 +505,25 @@ function VendorDashboard() {
                           >
                             <td className="px-2 py-4 border-b group relative">
                               <span className=" text-red-500 font-bold">
-                                {order._id}
-                                
+                                {orderIdHasher.hashOrderId(order._id)}
                               </span>
                             </td>
 
                             <td className="px-2 py-4 border-b">
                               <span className=" group relative ">
                                 {getFormattedTime(order.createdAt)}
-                                
                               </span>
                             </td>
                             <td className="px-2 py-4 border-b text-sm font-medium">
                               {order.user.name}
                             </td>
                             <td className="px-2 py-4 border-b">
-                            <a 
-    href={`tel:${order.phoneNumber}`} 
-    className="group text-sm relative cursor-pointer hover:underline hover:text-blue-500"
->
-    {order.phoneNumber}
-</a>
+                              <a
+                                href={`tel:${order.phoneNumber}`}
+                                className="group text-sm relative cursor-pointer hover:underline hover:text-blue-500"
+                              >
+                                {order.phoneNumber}
+                              </a>
                             </td>
                             <td className="px-2 py-4 border-b">
                               <div className="space-y-1">

@@ -10,12 +10,13 @@ const menuRouter = require("./routes/menuRoute");
 const userRouter = require("./routes/userRoute");
 const authRouter = require("./routes/authRoute");
 const orderRouter = require("./routes/orderRoute");
+const vendorRouter = require("./routes/vendorRoute");
 connectDb();
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:5174"], // ✅ Set to frontend URL
     credentials: true, // ✅ Allow cookies & authorization headers
-    methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Allowed methods
+    methods: ["GET", "POST", "PATCH", "DELETE"], // ✅ Allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allowed headers
   })
 );
@@ -26,6 +27,7 @@ app.use("/api/menu", menuRouter);
 app.use("/api/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/vendor", vendorRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
