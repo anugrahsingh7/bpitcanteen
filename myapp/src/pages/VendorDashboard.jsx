@@ -1,18 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaUser, FaPhone, FaShoppingCart, FaMoneyBill } from "react-icons/fa";
-import notificationSound from "../assets/notification.mp3"; // Import the sound file
+import { AnimatePresence, motion } from "framer-motion";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { useGetAllOrders } from "../lib/useOrderApi";
-import Loading from "../components/Loading";
-import { MdDelete } from "react-icons/md";
+import { useEffect, useRef, useState } from "react";
+import { AiFillEdit } from "react-icons/ai";
+import { FaMoneyBill, FaPhone, FaShoppingCart, FaUser } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { MdOutlineRestaurantMenu } from "react-icons/md";
-import { AiFillEdit } from "react-icons/ai";
+import notificationSound from "../assets/notification.mp3"; // Import the sound file
+import Loading from "../components/Loading";
 import { useLive } from "../context/LiveContext";
-import axios from "axios";
+import { useGetAllOrders } from "../lib/useOrderApi";
 import { useUpdateVendor, useVendor } from "../lib/useVendorApi";
 
 // Helper function to get formatted time
@@ -82,6 +79,7 @@ function VendorDashboard() {
     }
     setLoading(false);
   }, [getOrders]);
+
   useEffect(() => {
     if (data) {
       setVendorInfo(data[0]);
@@ -113,18 +111,30 @@ function VendorDashboard() {
     setOrders(updatedOrders);
     // localStorage.setItem("orders", JSON.stringify(updatedOrders));
   };
-  const handleLiveChange = async () => {
-    console.log(vendorInfo.status);
-    if (!vendorInfo) return;
-    try {
-      await updateStatus({
-        status: !vendorInfo?.status,
-        id: vendorInfo?._id,
-      });
-    } catch (error) {
-      console.error("Error updating status", error);
-    }
-  };
+
+
+const handleLiveChange = async () => {
+  if (!vendorInfo) return;
+  try {
+    const newStatus = !vendorInfo.status;
+
+    // Assuming updateStatus sends the new status to the backend and updates it in the database
+    await updateStatus({
+      status: newStatus,
+      id: vendorInfo._id,
+    });
+
+    // Update vendorInfo state and persist it in localStorage
+    const updatedVendorInfo = { ...vendorInfo, status: newStatus };
+    setVendorInfo(updatedVendorInfo);
+    // localStorage.setItem("vendorInfo", JSON.stringify(updatedVendorInfo));
+  } catch (error) {
+    console.error("Error updating status", error);
+  }
+};
+
+
+
   const downloadPDF = () => {
     const doc = new jsPDF();
 
@@ -249,7 +259,7 @@ function VendorDashboard() {
               <label className="inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={vendorInfo?.status}
+                  checked={vendorInfo?.status ?? false}
                   onChange={handleLiveChange}
                   className="sr-only peer"
                 />
