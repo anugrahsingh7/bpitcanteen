@@ -78,12 +78,11 @@ const AddItems = () => {
 
                   {/* Description */}
 
-                    <div className="mt-4">
-    
+    <div className="mt-4">
     <input type="text" id="large-input" 
     placeholder="Item Description"
     className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" />
-</div>
+    </div>
 
 
 
@@ -117,5 +116,4 @@ const AddItems = () => {
         </section>
     );
 };
-
 export default AddItems;

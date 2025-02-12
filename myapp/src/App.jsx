@@ -25,11 +25,13 @@ import Bill from "./pages/Bill";
 import CanteenClosed from "./pages/CanteenClosed";
 import EditItems from "./pages/EditItems";
 import { useLive } from "./context/LiveContext";
+import { useVendor } from "./lib/useVendorApi";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
-  const [redirecting, setRedirecting] = useState(false); // ✅ Prevent state update in render phase
-  const { isLive } = useLive();
+  const { vendorInfo } = useLive();
+  const [redirecting, setRedirecting] = useState(false);
+
   useEffect(() => {
     if (!loading && !isLoggedIn) {
       toast.error("Please log in !");
@@ -44,14 +46,37 @@ const ProtectedRoute = ({ children }) => {
           <i className="fas fa-hamburger text-6xl text-orange-500"></i>
         </div>
       </div>
-    ); // Show a loading screen while verifying
+    );
 
   if (redirecting) return <Navigate to="/login" />;
-  if (!isLive) return <Navigate to="/CanteenClosed" replace />;
+  if (!vendorInfo?.status) return <Navigate to="/CanteenClosed" replace />;
+
   return children;
 };
 
-function App() {
+  function App() {
+    
+    const { isLive , vendorInfo,setVendorInfo} = useLive();
+    const { data, isLoading: vendorLoading } = useVendor();
+
+  // Load from localStorage on initial render
+  useEffect(() => {
+    const storedVendorInfo = localStorage.getItem("vendorInfo");
+    if (storedVendorInfo) {
+      setVendorInfo(JSON.parse(storedVendorInfo));
+    }
+  }, [setVendorInfo]);
+
+  // Update state and localStorage when data is fetched
+  useEffect(() => {
+    if (data) {
+      setVendorInfo(data[0]);
+      localStorage.setItem("vendorInfo", JSON.stringify(data[0]));
+    }
+  }, [data, setVendorInfo]);
+
+  console.log(vendorInfo);
+
   return (
     <CartProvider>
       <Toaster />
