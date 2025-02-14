@@ -43,7 +43,7 @@ const ProtectedRoute = ({ children }) => {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="animate-spin">
-          <i className="fas fa-hamburger text-6xl text-orange-500"></i>
+          <i className="fas fa-hamburger text-6xl text-[#592e1f]"></i>
         </div>
       </div>
     );
@@ -66,6 +66,7 @@ const ProtectedRoute = ({ children }) => {
       setVendorInfo(JSON.parse(storedVendorInfo));
     }
   }, [setVendorInfo]);
+  
 
   // Update state and localStorage when data is fetched
   useEffect(() => {

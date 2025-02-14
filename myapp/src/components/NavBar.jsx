@@ -32,7 +32,7 @@ const NavBar = () => {
   const toggleProfileMenu = () => {
     setIsProfileOpen(!isProfileOpen);
   };
-
+  
   const handleLogout = () => {
     Cookie.remove("token");
     toast.success("Successfully logged out");
@@ -59,6 +59,8 @@ const NavBar = () => {
             <NavLink
               to="snacks"
               onClick={handleNavClick}
+              
+              
               className="text-[#502214]   flex justify-center text-opacity-85 hover:text-opacity-100 items-center hover:scale-105  font-semibold transition-all duration-300 ease-in-out "
             >
               <IoFastFood className="me-[0.1rem] text-2xl" />

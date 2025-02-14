@@ -47,7 +47,7 @@ function CanteenClosed() {
                 onClick={handleCopy}
                 className="w-2/3 px-3 py-2 text-sm tracking-wide text-[#502214] transition-colors duration-200 rounded-lg shrink-0 sm:w-2/3 border border-[#502214] hover:bg-[#f8f1e7] shadow-md"
               >
-                Click to copy Website Link
+            Click to copy Website Link
               </button>
             </div>
           </div>

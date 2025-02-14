@@ -599,28 +599,6 @@ function Cart() {
           >
             PAY & PLACE ORDER
           </motion.button>
-
-          {/* <motion.button
-            onClick={() => handlePaymentAndOrder()}
-            disabled={isProcessing}
-            className={`w-full ${
-              isProcessing
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-500 hover:bg-green-600"
-            } text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200`}
-            whileHover={{ scale: isProcessing ? 1 : 1.02 }}
-            whileTap={{ scale: isProcessing ? 1 : 0.98 }}
-          >
-            {isProcessing ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-t-2 border-white border-solid rounded-full animate-spin mr-2"></div>
-                Processing...
-              </div>
-            ) : (
-              "Proceed to Payment"
-            )}
-          </motion.button> */}
-
           <motion.button
             onClick={clearCart}
             className="w-full bg-white hover:bg-[#f8f1e7] text-[#502214] border border-[#502214] font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
