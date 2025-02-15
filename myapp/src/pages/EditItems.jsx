@@ -43,7 +43,8 @@ const EditItems = () => {
           </div>
 
           <div className="mt-2 text-md flex items-center justify-center font-bold text-[#502214]">
-          Edit ₹Price of any Item from the <MdOutlineRestaurantMenu  className="ms-1"/> Menu
+            Edit ₹Price of any Item from the{" "}
+            <MdOutlineRestaurantMenu className="ms-1" /> Menu
           </div>
           <Link
             to="/vendor-dashboard"
@@ -56,7 +57,19 @@ const EditItems = () => {
           {/* Menu categories */}
 
           <div className=" mt-4">
-          <label className="text-[#502214] " >Select Item:-</label>
+            <label className="text-[#502214] ">Select Category : </label>
+            <select
+              id="countries"
+              className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 "
+            >
+              <option selected>idli</option>
+              <option value="US">Paneer Patties</option>
+              <option value="CA">Dosa</option>
+              <option value="FR">Spring Roll</option>
+              <option value="DE">Chowmien</option>
+              <option value="DE">Lemon Ice Tea</option>
+            </select>
+            <label className="text-[#502214] ">Select Item:-</label>
             <select
               id="countries"
               className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 "
@@ -70,14 +83,14 @@ const EditItems = () => {
             </select>
           </div>
           <div className="mt-4">
-          <label className="text-[#502214] ms-0" >Current Price:-</label>
-          <div className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5  cursor-not-allowed" >
-          ₹ 10
+            <label className="text-[#502214] ms-0">Current Price:-</label>
+            <div className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5  cursor-not-allowed">
+              ₹ 10
             </div>
           </div>
 
           <div className="mt-4">
-            <label className="text-[#502214] " >New Price:-</label>
+            <label className="text-[#502214] ">New Price:-</label>
             <input
               type="number"
               name="price"
@@ -94,17 +107,16 @@ const EditItems = () => {
 
           {/* Submit Button */}
           <button className="w-full flex items-center justify-center px-6 py-3 mt-6 text-white bg-orange-600 rounded-lg shadow-md hover:opacity-75 space-x-1 ">
-            <AiFillEdit  className="me-1" /> Edit Price
+            <AiFillEdit className="me-1" /> Edit Price
           </button>
           <Link
             to="/RemoveItems"
             className="mt-2 text-md flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "
           >
-            
-            Or <MdDelete className="ms-1" /> Delete any Item from the <MdOutlineRestaurantMenu  className="ms-1"/> Menu
+            Or <MdDelete className="ms-1" /> Delete any Item from the{" "}
+            <MdOutlineRestaurantMenu className="ms-1" /> Menu
           </Link>
         </form>
-        
       </div>
     </section>
   );

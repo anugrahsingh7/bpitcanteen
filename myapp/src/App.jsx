@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useSearchParams,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import VendorLogin from "./pages/VendorLogin";
@@ -29,7 +35,7 @@ import { useVendor } from "./lib/useVendorApi";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
-  const { vendorInfo } = useLive();
+  // const { vendorInfo } = useLive();
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
@@ -49,15 +55,20 @@ const ProtectedRoute = ({ children }) => {
     );
 
   if (redirecting) return <Navigate to="/login" />;
+  // if (!vendorInfo?.status) return <Navigate to="/CanteenClosed" replace />;
+
+  return children;
+};
+const CanView = ({ children }) => {
+  const { vendorInfo } = useLive();
   if (!vendorInfo?.status) return <Navigate to="/CanteenClosed" replace />;
 
   return children;
 };
 
-  function App() {
-    
-    const { isLive , vendorInfo,setVendorInfo} = useLive();
-    const { data, isLoading: vendorLoading } = useVendor();
+function App() {
+  const { isLive, vendorInfo, setVendorInfo } = useLive();
+  const { data, isLoading: vendorLoading } = useVendor();
 
   // Load from localStorage on initial render
   useEffect(() => {
@@ -66,7 +77,6 @@ const ProtectedRoute = ({ children }) => {
       setVendorInfo(JSON.parse(storedVendorInfo));
     }
   }, [setVendorInfo]);
-  
 
   // Update state and localStorage when data is fetched
   useEffect(() => {
@@ -103,7 +113,9 @@ const ProtectedRoute = ({ children }) => {
               path="bill"
               element={
                 <ProtectedRoute>
-                  <Bill />
+                  <CanView>
+                    <Bill />
+                  </CanView>
                 </ProtectedRoute>
               }
             />
@@ -111,7 +123,9 @@ const ProtectedRoute = ({ children }) => {
               path="/cart"
               element={
                 <ProtectedRoute>
-                  <Cart />
+                  <CanView>
+                    <Cart />
+                  </CanView>
                 </ProtectedRoute>
               }
             />
