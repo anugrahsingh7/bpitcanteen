@@ -5,6 +5,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const passport = require("./controllers/authPassport");
 const connectDb = require("./db");
+const multer = require("multer");
+const ImageKit = require("imagekit");
 const app = express();
 const menuRouter = require("./routes/menuRoute");
 const userRouter = require("./routes/userRoute");
@@ -20,6 +22,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allowed headers
   })
 );
+
+
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(passport.initialize());

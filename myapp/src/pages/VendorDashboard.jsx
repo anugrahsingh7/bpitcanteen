@@ -68,14 +68,16 @@ function VendorDashboard() {
       const sortedOrders = getOrders.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
-      // const hashedOrders = sortedOrders.map((el) => {
-      //   return {
-      //     ...el,
-      //     _id: orderIdHasher.hashOrderId(el._id),
-      //   };
-      // });
-
-      setOrders(sortedOrders);
+      const today = new Date();
+      const todayOrders = sortedOrders.filter((order) => {
+        const orderDate = new Date(order.createdAt);
+        return (
+          orderDate.getDate() === today.getDate() &&
+          orderDate.getMonth() === today.getMonth() &&
+          orderDate.getFullYear() === today.getFullYear()
+        );
+      });
+      setOrders(todayOrders);
     }
     setLoading(false);
   }, [getOrders]);
@@ -136,6 +138,7 @@ const handleLiveChange = async () => {
 
 
   const downloadPDF = () => {
+    console.log(orders);
     const doc = new jsPDF();
 
     // Header
@@ -229,6 +232,7 @@ const handleLiveChange = async () => {
     // Save the PDF
     doc.save(`BPIT_Canteen_Orders_${new Date().toLocaleDateString()}.pdf`);
   };
+
 
   return (
     <motion.div
