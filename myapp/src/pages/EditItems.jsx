@@ -7,8 +7,10 @@ import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { useMenuApi, useUpdateMenu } from "../lib/useMenu";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const EditItems = () => {
+  const navigate = useNavigate();  // Initialize navigate
   const [formData, setFormData] = useState({
     _id: "",
     name: "",
@@ -16,17 +18,17 @@ const EditItems = () => {
     newPrice: "",
   });
   
-  const [category,setCategory] = useState("Snack");
-  const {data, isLoading} = useMenuApi(category);
-  const [items,setItems] = useState([]);
-  const [selected,setSelected] = useState(items[0]);
-  const {mutate: update} = useUpdateMenu();
+  const [category, setCategory] = useState("Snack");
+  const { data, isLoading } = useMenuApi(category);
+  const [items, setItems] = useState([]);
+  const [selected, setSelected] = useState(items[0]);
+  const { mutate: update } = useUpdateMenu();
 
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value)
+    setCategory(e.target.value);
   };
    
-  const handleitemSelected = (e)=>{
+  const handleitemSelected = (e) => {
     const item = items.find(item => item._id === e.target.value);
     setSelected(item);
 
@@ -35,32 +37,27 @@ const EditItems = () => {
       name: item.name,
       currentPrice: item.price,
     });
-  }
+  };
 
-  useEffect(()=>{
-    if(data?.data?.data){
-      console.log(data?.data?.data)
-     setItems(data?.data?.data)
+  useEffect(() => {
+    if (data?.data?.data) {
+      setItems(data.data.data);
+      const pastaItem = data.data.data.find((item) => item.name === "Pasta");
+      const initialItem = pastaItem || data.data.data[0];
 
-     const pastaItem = data.data.data.find((item) => item.name === "Pasta");
-     const initialItem = pastaItem || data.data.data[0];
-
-     if (pastaItem) {
-       setSelected(pastaItem);
-     } else {
-       setSelected(data.data.data[0]);
-     }
+      if (pastaItem) {
+        setSelected(pastaItem);
+      } else {
+        setSelected(data.data.data[0]);
+      }
      
-     setFormData({
-      _id: initialItem._id,
-      name: initialItem.name,
-      currentPrice: initialItem.price,
-    });
-     
+      setFormData({
+        _id: initialItem._id,
+        name: initialItem.name,
+        currentPrice: initialItem.price,
+      });
     }
-  },[data,category])
-
-
+  }, [data, category]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,11 +70,11 @@ const EditItems = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-
-    update({id: formData?._id, data : {price : formData.newPrice}})
-    toast.success("Form submitted successfully")
+    update({ id: formData?._id, data: { price: formData.newPrice } });
+    toast.success("Price changed successfully");
+    navigate("/vendor-dashboard");  // Redirect after successful form submission
   };
+
 
   return (
     <section className="  ">

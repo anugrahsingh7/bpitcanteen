@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { useCreateMenu } from "../lib/useMenu";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddItems = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
       category:"",
       name : " ",
@@ -13,7 +15,7 @@ const AddItems = () => {
       price:" ",
       image: null,
     });
-    const {mutate: creatItem } = useCreateMenu();
+    const { mutate: createItem } = useCreateMenu();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,7 +26,7 @@ const AddItems = () => {
         setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newData = new FormData();
         const cat = formData.category || "Snack";
@@ -33,14 +35,21 @@ const AddItems = () => {
         newData.append("description", formData.description);
         newData.append("price", formData.price);
         newData.append("image", formData.image);
-        creatItem(newData);
-        toast.success("Item added successfully!");
+
+        try {
+            const response = await createItem(newData);
+            toast.success("Item added successfully!");
+            navigate("/vendor-dashboard");  // Redirect after successful submission
+        } catch (error) {
+            toast.error("Failed to add item. Please try again.");
+        }
     };
+    
 
     return (
         <section className="  ">
             <div className="container bg-[#f8f1e7]  p-4  flex items-center justify-center min-h-screen px-6 mx-auto">
-                <form className="w-full bg-[#f8f1e7] max-w-md" onSubmit={handleSubmit}>
+                <form className="w-full bg-[#f8f1e7]   max-w-md" onSubmit={handleSubmit}>
                     {/* Logo */}
                     <div className="flex justify-center mx-auto">
                         <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="Logo" />

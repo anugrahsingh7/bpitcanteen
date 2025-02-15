@@ -573,14 +573,8 @@ const handleLiveChange = async () => {
                               <span
                                 className={`px-2 py-1 rounded-full text-sm font-medium
                                                                 ${
-                                                                  order.status ===
-                                                                  "prepared"
-                                                                    ? "bg-green-100 text-green-800"
-                                                                    : order.status ===
-                                                                      "Received"
-                                                                    ? "bg-yellow-100 text-yellow-800"
-                                                                    : order.status ===
-                                                                      "pending"
+                                                                   order.status ===
+                                                                      "Prepared"
                                                                     ? "bg-red-100 text-red-500"
                                                                     : "bg-gray-100 text-gray-800"
                                                                 }`}

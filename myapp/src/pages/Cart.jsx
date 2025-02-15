@@ -8,21 +8,7 @@ import jsPDF from "jspdf";
 import { useUser } from "../context/userContext";
 import { useCreateOrderByUser } from "../lib/useOrderApi";
 import axios from "axios";
-//TODO:  PHONE NUMBER ADD database
-
-//BUG: cart items screen displayed before razorpay
-
-// const generateTransactionId = () => {
-//   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-//   const length = 10;
-//   return (
-//     "TXN" +
-//     Array.from({ length }, () =>
-//       chars.charAt(Math.floor(Math.random() * chars.length))
-//     ).join("")
-//   );
-// };
-
+import { FaShoppingCart } from "react-icons/fa";
 function Cart() {
   const [mobileNumber, setMobileNumber] = useState("");
   const isMobileValid =
@@ -366,7 +352,7 @@ function Cart() {
           <h2 className="text-3xl font-bold text-[#502214] mb-2">
             Your Cart is Empty
           </h2>
-          <p className="text-[#502214] text-opacity-75 text-lg mb-8">
+          <p className="text-[#502214] text-opacity-75 text-lg mb-4">
             Add some delicious items to your cart!
           </p>
           <Link
@@ -390,6 +376,7 @@ function Cart() {
             Back to Menu
           </Link>
         </motion.div>
+        <div className="text-9xl flex justify-center items-center mt-4 text-[#502214] text-opacity-50 "><FaShoppingCart /></div>
       </div>
     );
   }
