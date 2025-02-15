@@ -34,3 +34,17 @@ export const getOrderByUser = async (id) => {
     console.error(error);
   }
 };
+
+export const updateOrder = async ({ id, status }) => {
+  try {
+    const response = await axios.patch(
+      `http://127.0.0.1:3000/api/order/${id}`,
+      {
+        status,
+      }
+    );
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};

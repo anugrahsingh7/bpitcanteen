@@ -7,6 +7,7 @@ const orderController = require("../controllers/orderController");
 router.post("/create-order", orderController.createOrder);
 router.get("/get-orders", orderController.getOrders);
 router.get("/:id", orderController.getOrder);
+router.patch("/:id", orderController.updateOrder);
 router.post("/verify-payment", orderController.verifyPayment);
 
 module.exports = router;

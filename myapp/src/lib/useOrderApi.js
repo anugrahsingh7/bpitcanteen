@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createOrder, getOrderByUser, getOrders } from "./orderApi";
+import {
+  createOrder,
+  getOrderByUser,
+  getOrders,
+  updateOrder,
+} from "./orderApi";
+import toast from "react-hot-toast";
 
 export const useOrderApi = (id) => {
   const { data, isLoading, isError, error } = useQuery({
@@ -32,4 +38,15 @@ export const useGetAllOrders = () => {
     queryFn: () => getOrders(),
   });
   return { data, isLoading, isError, error };
+};
+
+export const useUpdateOrder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }) => updateOrder({ id, status }),
+    onSuccess: () => {
+      toast.success("Order Prepared");
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
 };

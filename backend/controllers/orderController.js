@@ -102,3 +102,21 @@ exports.verifyPayment = async (req, res) => {
     res.status(400).json({ success: false, message: "Invalid signature" });
   }
 };
+
+exports.updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedOrder = await Order.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    return res.status(200).json({
+      status: "success",
+      data: updatedOrder,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};

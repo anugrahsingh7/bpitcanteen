@@ -9,7 +9,7 @@ const OrderSchema = new mongoose.Schema(
     razorpayOrderId: { type: String },
     status: {
       type: String,
-      enum: ["pending", "completed", "cancelled"],
+      enum: ["pending", "completed"],
       default: "pending",
     },
     phoneNumber: { type: String },

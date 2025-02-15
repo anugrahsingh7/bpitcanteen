@@ -1,15 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { FaMoneyBill, FaPhone, FaShoppingCart, FaUser } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
-import notificationSound from "../assets/notification.mp3"; // Import the sound file
 import Loading from "../components/Loading";
 import { useLive } from "../context/LiveContext";
-import { useGetAllOrders } from "../lib/useOrderApi";
+import { useGetAllOrders, useUpdateOrder } from "../lib/useOrderApi";
 import { useUpdateVendor, useVendor } from "../lib/useVendorApi";
 
 // Helper function to get formatted time
@@ -21,19 +20,6 @@ const getFormattedTime = (orderTime) => {
     minute: "2-digit",
     hour12: true,
   });
-};
-
-// Add this CSS at the top of your file or in your styles
-const pulseAnimation = {
-  animate: {
-    scale: [1, 1.2, 1],
-    opacity: [1, 0.8, 1],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  },
 };
 
 const orderIdHasher = {
@@ -58,16 +44,18 @@ const orderIdHasher = {
 function VendorDashboard() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { vendorInfo = {}, setVendorInfo, isLive, setIsLive } = useLive();
+  const { vendorInfo = {}, setVendorInfo } = useLive();
   const { data, isLoading: vendorLoading } = useVendor();
   const { mutate: updateStatus } = useUpdateVendor();
-  const [vendorName, setVendorName] = useState("");
+
+  const { mutate: updateOrder } = useUpdateOrder();
   const { data: getOrders, isLoading } = useGetAllOrders();
   useEffect(() => {
     if (getOrders) {
-      const sortedOrders = getOrders.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
+      const sortedOrders = getOrders.sort((a, b) => {
+        if (a.status === "pending" && b.status === "completed") return -1;
+        new Date(b.createdAt) - new Date(a.createdAt);
+      });
       const today = new Date();
       const todayOrders = sortedOrders.filter((order) => {
         const orderDate = new Date(order.createdAt);
@@ -88,54 +76,31 @@ function VendorDashboard() {
     }
   }, [setVendorInfo, data]);
 
-  const audioRef = useRef(new Audio(notificationSound));
-  const previousOrdersRef = useRef(new Set());
   if (isLoading && vendorLoading) return <Loading />;
 
   const handleReceiveOrder = (orderId) => {
-    const updatedOrders = orders.map((order) =>
-      order._id === orderId ? { ...order, status: "Received" } : order
-    );
-    setOrders(updatedOrders);
-    // localStorage.setItem("orders", JSON.stringify(updatedOrders));
+    updateOrder({ id: orderId, status: "completed" });
   };
 
-  const handlePreparedOrder = (orderId) => {
-    const updatedOrders = orders.map((order) =>
-      order.id === orderId ? { ...order, status: "prepared" } : order
-    );
-    setOrders(updatedOrders);
-    // localStorage.setItem("orders", JSON.stringify(updatedOrders));
+  const handleLiveChange = async () => {
+    if (!vendorInfo) return;
+    try {
+      const newStatus = !vendorInfo.status;
+
+      // Assuming updateStatus sends the new status to the backend and updates it in the database
+      await updateStatus({
+        status: newStatus,
+        id: vendorInfo._id,
+      });
+
+      // Update vendorInfo state and persist it in localStorage
+      const updatedVendorInfo = { ...vendorInfo, status: newStatus };
+      setVendorInfo(updatedVendorInfo);
+      // localStorage.setItem("vendorInfo", JSON.stringify(updatedVendorInfo));
+    } catch (error) {
+      console.error("Error updating status", error);
+    }
   };
-
-  const handleDeleteOrder = (orderId) => {
-    const updatedOrders = orders.filter((order) => order.id !== orderId);
-    setOrders(updatedOrders);
-    // localStorage.setItem("orders", JSON.stringify(updatedOrders));
-  };
-
-
-const handleLiveChange = async () => {
-  if (!vendorInfo) return;
-  try {
-    const newStatus = !vendorInfo.status;
-
-    // Assuming updateStatus sends the new status to the backend and updates it in the database
-    await updateStatus({
-      status: newStatus,
-      id: vendorInfo._id,
-    });
-
-    // Update vendorInfo state and persist it in localStorage
-    const updatedVendorInfo = { ...vendorInfo, status: newStatus };
-    setVendorInfo(updatedVendorInfo);
-    // localStorage.setItem("vendorInfo", JSON.stringify(updatedVendorInfo));
-  } catch (error) {
-    console.error("Error updating status", error);
-  }
-};
-
-
 
   const downloadPDF = () => {
     console.log(orders);
@@ -154,12 +119,18 @@ const handleLiveChange = async () => {
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 40);
-    doc.text(`Total Orders: ${orders.length}`, 15, 45);
+    doc.text(`Total Orders: ${orders?.length || 0}`, 15, 45);
 
     let yPos = 70; // Starting y position for orders
 
-    // For each order
-    orders.forEach((order, index) => {
+    // Ensure orders is an array
+    if (!Array.isArray(orders) || orders.length === 0) {
+      alert("No orders available to download.");
+      return;
+    }
+
+    // Loop through each order
+    orders.forEach((order) => {
       // Check if we need a new page
       if (yPos > 250) {
         doc.addPage();
@@ -172,7 +143,7 @@ const handleLiveChange = async () => {
       doc.rect(15, yPos, 180, 8, "F");
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(12);
-      doc.text(`Order #${index + 1}`, 20, yPos + 6);
+      doc.text(`Order #${orderIdHasher.hashOrderId(order._id)}`, 20, yPos + 6);
       yPos += 15;
 
       // Order Details
@@ -181,21 +152,31 @@ const handleLiveChange = async () => {
 
       const details = [
         [
-          `Order No.: ${order._id}`,
-          `Time: ${order.createdAt || getFormattedTime(order.timestamp)}`,
+          `Order No.: ${orderIdHasher.hashOrderId(order._id) || "N/A"}`,
+          `Time: ${
+            order.createdAt || order.timestamp
+              ? new Date(order.createdAt || order.timestamp).toLocaleString()
+              : "N/A"
+          }`,
         ],
         [
           `Transaction ID: ${order.transactionId || "N/A"}`,
-          `Status: ${order.status}`,
+          `Status: ${order.status || "Unknown"}`,
         ],
-        [`Customer: ${order.user.name}`, `Phone: ${order.phoneNumber}`],
-        [`Total Amount: Rs. ${order.totalAmount}`],
+        [
+          `Customer: ${order.user?.name || "Unknown"}`,
+          `Phone: ${order.phoneNumber || "N/A"}`,
+        ],
+        [`Total Amount: Rs. ${order.totalAmount || "0"}`],
       ];
 
       details.forEach(([left, right]) => {
-        doc.text(left, 20, yPos);
-        doc.text(right, 120, yPos);
-        yPos += 6;
+        if (left && right) {
+          // Prevent undefined values
+          doc.text(left.toString(), 20, yPos);
+          doc.text(right.toString(), 120, yPos);
+          yPos += 6;
+        }
       });
 
       yPos += 5;
@@ -204,12 +185,13 @@ const handleLiveChange = async () => {
       doc.autoTable({
         startY: yPos,
         head: [["Item", "Quantity", "Price (Rs.)", "Instructions"]],
-        body: order.items.map((item) => [
-          item.name,
-          item.quantity,
-          `${item.price || 0}`,
-          item.instructions || "No special instructions",
-        ]),
+        body:
+          order.items?.map((item) => [
+            item.name || "Unknown",
+            item.quantity?.toString() || "0",
+            `${item.price || 0}`,
+            item.instructions || "No special instructions",
+          ]) || [],
         styles: { fontSize: 9, cellPadding: 2 },
         headStyles: {
           fillColor: [241, 90, 35],
@@ -232,7 +214,6 @@ const handleLiveChange = async () => {
     // Save the PDF
     doc.save(`BPIT_Canteen_Orders_${new Date().toLocaleDateString()}.pdf`);
   };
-
 
   return (
     <motion.div
@@ -361,17 +342,6 @@ const handleLiveChange = async () => {
                             </div>
                           </div>
                         </div>
-                        <span
-                          className={`px-2 py-[2px] rounded-full text-[10px] sm:text-xs font-medium ${
-                            order.status === "prepared"
-                              ? "bg-green-100 text-green-800"
-                              : order.status === "Received"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-blue-100 text-blue-800"
-                          }`}
-                        >
-                          {order.status}
-                        </span>
                       </div>
 
                       <div className="space-y-1 sm:space-y-2">
@@ -431,42 +401,19 @@ const handleLiveChange = async () => {
                           {order.status === "pending" && (
                             <motion.button
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => handleReceiveOrder(order.id)}
+                              onClick={() => handleReceiveOrder(order._id)}
                               className="flex-1 bg-blue-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
                             >
                               Received
                             </motion.button>
                           )}
-                          {order.status === "Received" && (
+                          {order.status === "completed" && (
                             <motion.button
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => handlePreparedOrder(order.id)}
+                              // onClick={() => handlePreparedOrder(order._id)}
                               className="flex-1 bg-green-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm"
                             >
                               Prepared
-                            </motion.button>
-                          )}
-                          {order.status === "prepared" && (
-                            <motion.button
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handleDeleteOrder(order.id)}
-                              className="flex-1 bg-red-500 text-white py-1 rounded-md text-[10px] sm:text-xs font-medium shadow-sm flex items-center justify-center gap-1"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-3 w-3 sm:h-4 sm:w-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                              Delete
                             </motion.button>
                           )}
                         </div>
@@ -504,7 +451,6 @@ const handleLiveChange = async () => {
                           Total
                         </th>
                         <th className="px-2 py-4 text-left w-24">Status</th>
-                        <th className="px-2 py-4 text-left w-24">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -569,19 +515,6 @@ const handleLiveChange = async () => {
                               ₹{order.totalAmount}
                             </td>
 
-                            <td className="px-2 py-4 border-b">
-                              <span
-                                className={`px-2 py-1 rounded-full text-sm font-medium
-                                                                ${
-                                                                   order.status ===
-                                                                      "Prepared"
-                                                                    ? "bg-red-100 text-red-500"
-                                                                    : "bg-gray-100 text-gray-800"
-                                                                }`}
-                              >
-                                {order.status}
-                              </span>
-                            </td>
                             <td className="px-1 py-4 border-b">
                               <div className="flex items-center gap-2">
                                 {order.status === "pending" && (
@@ -596,40 +529,16 @@ const handleLiveChange = async () => {
                                     received
                                   </motion.button>
                                 )}
-                                {order.status === "Received" && (
+                                {order.status === "completed" && (
                                   <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    onClick={() =>
-                                      handlePreparedOrder(order.id)
-                                    }
+                                    // onClick={() =>
+                                    //   // handlePreparedOrder(order._id)
+                                    // }
                                     className="bg-gradient-to-r from-green-500 to-green-600 text-white px-2 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
                                   >
                                     Prepared
-                                  </motion.button>
-                                )}
-                                {order.status === "prepared" && (
-                                  <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => handleDeleteOrder(order.id)}
-                                    className="bg-gradient-to-r from-red-500 to-red-600 text-white px-2 py-2 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      className="h-4 w-4"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      stroke="currentColor"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                      />
-                                    </svg>
-                                    Delete
                                   </motion.button>
                                 )}
                               </div>
