@@ -13,7 +13,6 @@ const VALID_CREDENTIALS = {
 function VendorLogin() {
   const [email, setEmail] = useState("anugrahyashsingh2014@gmail.com");
   const [password, setPassword] = useState("Yash@1234");
-  const [vendorId, setVendorId] = useState("YASH@1234");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const duration = 1;
@@ -29,8 +28,8 @@ function VendorLogin() {
 
     if (
       email !== VALID_CREDENTIALS.email ||
-      password !== VALID_CREDENTIALS.password ||
-      vendorId !== VALID_CREDENTIALS.vendorId
+      password !== VALID_CREDENTIALS.password 
+      
     ) {
       toast.error("Invalid login credentials");
       return;
@@ -81,17 +80,8 @@ function VendorLogin() {
             />
           </div>
 
-          {/* Vendor ID */}
-          <div className="mt-2">
-          <label htmlFor="email" className="block text-md text-[#592e1f] ">Vendor Id</label>
-            <input
-              type="text"
-              value={vendorId}
-              onChange={(e) => setVendorId(e.target.value.toUpperCase())}
-              className="block w-full px-4 py-2 mt-2  bg-white border rounded-lg  border-[#592e1f] placeholder:text-[#592e1f] placeholder:text-opacity-40"
-              placeholder="Enter Vendor ID"
-            />
-          </div>
+         
+          
 
           {/* Password with Eye Icon */}
           <div className="mt-2">
@@ -121,7 +111,7 @@ function VendorLogin() {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full mt-6 px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b]"
+            className="w-full mt-6 px-6 py-2.5 text-sm flex justify-center items-center font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b]"
             disabled={isLoading}
           >
             {isLoading ? (
