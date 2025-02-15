@@ -1,23 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AiFillEdit } from "react-icons/ai";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
+import { useMenuApi, useUpdateMenu } from "../lib/useMenu";
+import toast from "react-hot-toast";
 
 const EditItems = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    profilePhoto: null,
+    _id: "",
+    name: "",
+    currentPrice: "",
+    newPrice: "",
   });
+  
+  const [category,setCategory] = useState("Snack");
+  const {data, isLoading} = useMenuApi(category);
+  const [items,setItems] = useState([]);
+  const [selected,setSelected] = useState(items[0]);
+  const {mutate: update} = useUpdateMenu();
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value)
+  };
+   
+  const handleitemSelected = (e)=>{
+    const item = items.find(item => item._id === e.target.value);
+    setSelected(item);
+
+    setFormData({
+      _id: item._id,
+      name: item.name,
+      currentPrice: item.price,
+    });
+  }
+
+  useEffect(()=>{
+    if(data?.data?.data){
+      console.log(data?.data?.data)
+     setItems(data?.data?.data)
+
+     const pastaItem = data.data.data.find((item) => item.name === "Pasta");
+     const initialItem = pastaItem || data.data.data[0];
+
+     if (pastaItem) {
+       setSelected(pastaItem);
+     } else {
+       setSelected(data.data.data[0]);
+     }
+     
+     setFormData({
+      _id: initialItem._id,
+      name: initialItem.name,
+      currentPrice: initialItem.price,
+    });
+     
+    }
+  },[data,category])
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, newPrice: value }));
   };
 
   const handleFileChange = (e) => {
@@ -27,6 +74,9 @@ const EditItems = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+
+    update({id: formData?._id, data : {price : formData.newPrice}})
+    toast.success("Form submitted successfully")
   };
 
   return (
@@ -59,43 +109,54 @@ const EditItems = () => {
           <div className=" mt-4">
             <label className="text-[#502214] ">Select Category : </label>
             <select
-              id="countries"
-              className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 "
+              id="categories"
+              value={category}
+              onChange={handleCategoryChange}
+
+              className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md rounded-lg block w-full p-2.5"
             >
-              <option selected>idli</option>
-              <option value="US">Paneer Patties</option>
-              <option value="CA">Dosa</option>
-              <option value="FR">Spring Roll</option>
-              <option value="DE">Chowmien</option>
-              <option value="DE">Lemon Ice Tea</option>
+              <option value="Snack">Snacks</option>
+              <option value="Chinese">Chinese</option>
+              <option value="South Indian">South Indian</option>
+              <option value="Meal Plan">Meal Plan</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Beverage">Beverage</option>
             </select>
+
+
+
             <label className="text-[#502214] ">Select Item:-</label>
             <select
-              id="countries"
+              id="items"
+              onChange={handleitemSelected}
               className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 "
             >
-              <option selected>idli</option>
-              <option value="US">Paneer Patties</option>
-              <option value="CA">Dosa</option>
-              <option value="FR">Spring Roll</option>
-              <option value="DE">Chowmien</option>
-              <option value="DE">Lemon Ice Tea</option>
+             { items.length>0 && items.map((item) => {
+              return (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              );
+             }) }
+
             </select>
           </div>
+
+
           <div className="mt-4">
             <label className="text-[#502214] ms-0">Current Price:-</label>
             <div className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5  cursor-not-allowed">
-              ₹ 10
+             {selected ? selected.price : 0 }
             </div>
           </div>
 
           <div className="mt-4">
             <label className="text-[#502214] ">New Price:-</label>
             <input
-              type="number"
+              type="Number"
               name="price"
               placeholder="Enter new price"
-              value={formData.price}
+              value={formData.newPrice}
               onChange={handleChange}
               className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 placeholder:text-[#502214] placeholder:text-opacity-50 "
             />

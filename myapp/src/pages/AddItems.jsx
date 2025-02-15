@@ -2,15 +2,18 @@ import { useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { useCreateMenu } from "../lib/useMenu";
+import toast from "react-hot-toast";
 
 const AddItems = () => {
     const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        profilePhoto: null
+      category:"",
+      name : " ",
+      description: " ",
+      price:" ",
+      image: null,
     });
+    const {mutate: creatItem } = useCreateMenu();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,12 +21,20 @@ const AddItems = () => {
     };
 
     const handleFileChange = (e) => {
-        setFormData((prev) => ({ ...prev, profilePhoto: e.target.files[0] }));
+        setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+        const newData = new FormData();
+        const cat = formData.category || "Snack";
+        newData.append("category", cat);
+        newData.append("name", formData.name);
+        newData.append("description", formData.description);
+        newData.append("price", formData.price);
+        newData.append("image", formData.image);
+        creatItem(newData);
+        toast.success("Item added successfully!");
     };
 
     return (
@@ -39,23 +50,21 @@ const AddItems = () => {
 
                     <div className="mt-2 text-xl flex justify-center font-bold text-[#502214] items-center">Add Food Items to the<MdOutlineRestaurantMenu className="mx-1"/>  Menu</div>
                     <Link to="/vendor-dashboard" className="mt-1 text-sm flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "><IoMdArrowRoundBack className="me-1"/>Back to the Dashboard</Link>
-
- 
-                    
-                   
-
                     {/* Menu categories */}
-                  
-
+                
                     <div className=" mt-4">
-                    <label className="text-[#502214] " >Select Food Category:-</label>
-                    <select id="countries" className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
-                    <option selected>Snacks</option>
-                    <option value="US">Chinese</option>
-                    <option value="CA">South Indian</option>
-                    <option value="FR">Indian</option>
-                    <option value="DE">Deserts</option>
-                    <option value="DE">Beverages</option>
+                    <label className="text-[#502214] " >Select Category:-</label>
+                    <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    id="category" className="mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
+                    <option value="Snack">Snacks</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="South Indian">South Indian</option>
+                    <option value="Meal Plan">Meal Plan</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Beverage">Beverage</option>
   </select>
                     </div>
 
@@ -64,7 +73,6 @@ const AddItems = () => {
                       {/* Name*/}
 
                     <div className="relative flex items-center mt-4">
-                    
                         <input
                             type="text"
                             name="name"
@@ -78,24 +86,28 @@ const AddItems = () => {
 
                   {/* Description */}
 
-    <div className="mt-4">
-    <input type="text" id="large-input" 
-    placeholder="Item Description"
-    className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" />
-    </div>
+                    <div className="mt-4">
+                    <input type="text" id="large-input" 
+                    name="description"
+                    placeholder="Item Description"
+                    onChange={handleChange}
+                    className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" />
+                    </div>
 
 
 
 
-{/* Price */}
-                <div className="mt-4">
-                <input type="number"
- id="number-input" 
- aria-describedby="helper-text-explanation" 
- className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" 
- placeholder="Item Price" 
- required />
-</div>
+                    {/* Price */}
+                    <div className="mt-4">
+                    <input type="number"
+                    id="number-input" 
+                    name="price"
+                    onChange={handleChange}
+                    aria-describedby="helper-text-explanation" 
+                    className="bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70" 
+                    placeholder="Item Price" 
+                    required />
+                    </div>
 
                     {/* Profile Photo Upload */}
                     <label htmlFor="dropzone-file" className="mt-4 relative bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-3 placeholder:text-[#502214] placeholder:text-opacity-70">

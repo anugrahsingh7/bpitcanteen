@@ -86,7 +86,6 @@ function App() {
     }
   }, [data, setVendorInfo]);
 
-  console.log(vendorInfo);
 
   return (
     <CartProvider>

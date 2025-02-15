@@ -1,31 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { useDeleteMenu, useMenuApi } from "../lib/useMenu";
+import toast from "react-hot-toast";
 
 const RemoveItems = () => {
     const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        profilePhoto: null
+       _id : " ",
+       name : " ",
     });
+    const [category,setCategory] = useState("Snack");
+    const {data, isLoading} = useMenuApi(category);
+    const [items,setItems] = useState([]);
+    const [selected,setSelected] = useState(items[0]);
+    const {mutate: deleteItem} = useDeleteMenu();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
 
-    const handleFileChange = (e) => {
-        setFormData((prev) => ({ ...prev, profilePhoto: e.target.files[0] }));
-    };
+    useEffect(() => {
+        if (data?.data?.data) {
+            setItems(data?.data?.data);
+    
+     const pastaItem = data.data.data.find((item) => item.name === "Pasta");
+     const initialItem = pastaItem || data.data.data[0];
+
+     if (pastaItem) {
+       setSelected(pastaItem);
+     } else {
+       setSelected(data.data.data[0]);
+     }
+     
+     setFormData({
+      _id: initialItem._id,
+      name: initialItem.name,
+    });
+}
+    }, [data]);
+
+
+    const handleitemSelected = (e)=>{
+        const item = items.find(item => item._id === e.target.value);
+        setSelected(item);
+    
+        setFormData({
+          _id: item._id,
+          name: item.name,
+        });
+      }
+
+    const handleCategoryChange = (e) => {
+        setCategory(e.target.value)
+      };
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData((prev) => ({ ...prev, [name]: value }));
+    // };
+
+    // const handleFileChange = (e) => {
+    //     setFormData((prev) => ({ ...prev, profilePhoto: e.target.files[0] }));
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+        deleteItem(formData._id);
+        toast.success("Items Deleted Successfully")
     };
 
     return (
@@ -46,17 +87,34 @@ const RemoveItems = () => {
                    
 
                     {/* Menu categories */}
-                  
+                    <div className=" mt-4">
+                    <label className="text-[#502214] " >Select Category:-</label>
+                    <select 
+                    value={category}
+                    onChange={handleCategoryChange}
+                    id="category" className= "mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
+                    <option value="Snack">Snacks</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="South Indian">South Indian</option>
+                    <option value="Meal Plan">Meal Plan</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Beverage">Beverage</option>
+                    </select>
+                    </div>
 
                     <div className=" mt-4">
                     <label className="text-[#502214] " >Select Item:-</label>
-                    <select id="countries" className= "mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
-                    <option selected>idli</option>
-                    <option value="US">Paneer Patties</option>
-                    <option value="CA">Dosa</option>
-                    <option value="FR">Spring Roll</option>
-                    <option value="DE">Chowmien</option>
-                    <option value="DE">Lemon Ice Tea</option>
+                    <select 
+                    onChange ={handleitemSelected}
+                    id="items" className= "mt-1 bg-white border border-opacity-70 h-12 border-[#502214] text-[#502214] text-md  rounded-lg block w-full p-2.5 ">
+                    { items.length>0 && items.map((item) => {
+                        return (
+                            <option key={item._id} value={item._id}>
+                            {item.name}
+                            </option>
+                        );
+                        }) }
+
   </select>
                     </div>
 
