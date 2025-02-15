@@ -13,6 +13,7 @@ const VALID_CREDENTIALS = {
 function VendorLogin() {
   const [email, setEmail] = useState("anugrahyashsingh2014@gmail.com");
   const [password, setPassword] = useState("Yash@1234");
+  const [vendorId, setVendorId] = useState("YASH@1234");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const duration = 1;

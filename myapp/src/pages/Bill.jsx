@@ -82,7 +82,7 @@ const Invoice = () => {
   return (
     <div className="w-screen min-h-max flex justify-center items-center py-4">
       <div
-        ref={invoiceRef} // Use ref to target the invoice content
+         // Use ref to target the invoice content
         className="bg-white min-h-max rounded-lg shadow-lg px-6 py-8 sm:px-8 sm:py-10 max-w-xl mx-auto invoice-content"
       >
         {/* Back to Menu Button */}
@@ -95,9 +95,11 @@ const Invoice = () => {
             Back to Menu
           </Link>
         </div>
-
+        
+        <div className="" ref={invoiceRef}>
         {/* Invoice Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4"
+        >
           <div className="flex items-center mb-4 sm:mb-0">
             <img
               className="h-20 w-auto mr-2"
@@ -157,6 +159,7 @@ const Invoice = () => {
           <div className="text-[#502214] mb-0">
             The total price includes all applicable taxes.
           </div>
+        </div>
         </div>
 
         {/* Button to Download PDF */}
