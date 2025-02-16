@@ -13,7 +13,6 @@ router.get(
   passport.authenticate("google", { session: false }),
   (req, res) => {
     const { user, token } = req.user;
-    
     if (!user) {
       return res.status(401).json({ message: "Authentication failed" });
     }
@@ -22,13 +21,15 @@ router.get(
     const userWithoutPassword = { ...user.toObject() };
     delete userWithoutPassword.password;
     // Return JWT token to the client
-    res.cookie("token", token, { secure: true, httpOnly: false });
+    res.cookie("token", token, {
+      secure: true,
+      httpOnly: false,
+    });
     res.redirect(
-      `https://bpitcanteen.vercel.app/snacks?user=${encodeURIComponent(
+      `${process.env.FRONTEND_URL}/snacks?user=${encodeURIComponent(
         JSON.stringify(userWithoutPassword)
       )}`
     );
-  
   }
 );
 
