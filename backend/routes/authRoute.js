@@ -24,7 +24,7 @@ router.get(
     // Return JWT token to the client
     res.cookie("token", token, { secure: false, httpOnly: false });
     res.redirect(
-      `http://localhost:5173/snacks?user=${encodeURIComponent(
+      `https://bpitcanteen.vercel.app/snacks?user=${encodeURIComponent(
         JSON.stringify(userWithoutPassword)
       )}`
     );
