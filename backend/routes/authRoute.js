@@ -22,9 +22,11 @@ router.get(
     delete userWithoutPassword.password;
     // Return JWT token to the client
     res.cookie("token", token, {
-      secure: true,
-      httpOnly: false,
+      secure: true, // ✅ Required for HTTPS
+      httpOnly: false, // ❌ If you need to read it in frontend JS, set to false
+      sameSite: "None", // ✅ Required for cross-site cookies
     });
+    
     res.redirect(
       `${process.env.FRONTEND_URL}/snacks?user=${encodeURIComponent(
         JSON.stringify(userWithoutPassword)
