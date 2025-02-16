@@ -45,6 +45,6 @@ export const updateOrder = async ({ id, status }) => {
     );
     return response.data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };

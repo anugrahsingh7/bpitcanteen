@@ -11,8 +11,6 @@ import { useLive } from "../context/LiveContext";
 import { useGetAllOrders, useUpdateOrder } from "../lib/useOrderApi";
 import { useUpdateVendor, useVendor } from "../lib/useVendorApi";
 
-// Helper function to get formatted time
-
 const getFormattedTime = (orderTime) => {
   const date = orderTime ? new Date(orderTime) : new Date();
   return date.toLocaleTimeString("en-US", {
@@ -26,14 +24,13 @@ const orderIdHasher = {
   hashOrderId: (orderId) => {
     let hash = 0;
 
-    // Generate hash from string
+ 
     for (let i = 0; i < orderId.length; i++) {
       const char = orderId.charCodeAt(i);
       hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
 
-    // Ensure positive number and limit to 4 digits
     hash = Math.abs(hash) % 10000;
 
     // Pad with leading zeros if less than 4 digits
@@ -54,7 +51,8 @@ function VendorDashboard() {
     if (getOrders) {
       const sortedOrders = getOrders.sort((a, b) => {
         if (a.status === "pending" && b.status === "completed") return -1;
-        new Date(b.createdAt) - new Date(a.createdAt);
+        if (a.status === "completed" && b.status === "pending") return 1; 
+        return new Date(b.createdAt) - new Date(a.createdAt);
       });
       const today = new Date();
       const todayOrders = sortedOrders.filter((order) => {
@@ -87,23 +85,19 @@ function VendorDashboard() {
     try {
       const newStatus = !vendorInfo.status;
 
-      // Assuming updateStatus sends the new status to the backend and updates it in the database
       await updateStatus({
         status: newStatus,
         id: vendorInfo._id,
       });
-
-      // Update vendorInfo state and persist it in localStorage
       const updatedVendorInfo = { ...vendorInfo, status: newStatus };
       setVendorInfo(updatedVendorInfo);
-      // localStorage.setItem("vendorInfo", JSON.stringify(updatedVendorInfo));
+     
     } catch (error) {
       console.error("Error updating status", error);
     }
   };
 
   const downloadPDF = () => {
-    console.log(orders);
     const doc = new jsPDF();
 
     // Header
@@ -121,9 +115,8 @@ function VendorDashboard() {
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 15, 40);
     doc.text(`Total Orders: ${orders?.length || 0}`, 15, 45);
 
-    let yPos = 70; // Starting y position for orders
+    let yPos = 70;
 
-    // Ensure orders is an array
     if (!Array.isArray(orders) || orders.length === 0) {
       alert("No orders available to download.");
       return;

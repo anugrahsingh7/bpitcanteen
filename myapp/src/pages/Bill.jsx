@@ -1,5 +1,5 @@
 import  { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import html2pdf from 'html2pdf.js';
 import { Link } from "react-router-dom";
@@ -51,9 +51,6 @@ const Invoice = () => {
   }, [id]);
 
   if(order.length === 0 ) return <Loading/>;
-  console.log(order);
-  const orderDate= order.order?.createdAt;
-
   const downloadPDF = () => {
     const element = invoiceRef.current;
 

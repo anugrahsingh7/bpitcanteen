@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useSearchParams,
 } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -31,11 +30,12 @@ import Bill from "./pages/Bill";
 import CanteenClosed from "./pages/CanteenClosed";
 import EditItems from "./pages/EditItems";
 import { useLive } from "./context/LiveContext";
-import { useVendor } from "./lib/useVendorApi";
+import { useVendor as useVendorLogin } from "./context/vendorContext"
+import {useVendor } from "./lib/useVendorApi"
+import { VendorProvider } from "./context/vendorContext";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
-  // const { vendorInfo } = useLive();
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
@@ -55,10 +55,17 @@ const ProtectedRoute = ({ children }) => {
     );
 
   if (redirecting) return <Navigate to="/login" />;
-  // if (!vendorInfo?.status) return <Navigate to="/CanteenClosed" replace />;
+ 
 
   return children;
 };
+
+const VendorProtected = ({children}) =>{
+  const { isLoggedIn } = useVendorLogin();
+   
+  return isLoggedIn ? children : <Navigate to="/vendor-login" />;
+}
+
 const CanView = ({ children }) => {
   const { vendorInfo } = useLive();
   if (!vendorInfo?.status) return <Navigate to="/CanteenClosed" replace />;
@@ -67,10 +74,10 @@ const CanView = ({ children }) => {
 };
 
 function App() {
-  const { isLive, vendorInfo, setVendorInfo } = useLive();
+  const { setVendorInfo } = useLive();
   const { data, isLoading: vendorLoading } = useVendor();
 
-  // Load from localStorage on initial render
+ 
   useEffect(() => {
     const storedVendorInfo = localStorage.getItem("vendorInfo");
     if (storedVendorInfo) {
@@ -78,7 +85,6 @@ function App() {
     }
   }, [setVendorInfo]);
 
-  // Update state and localStorage when data is fetched
   useEffect(() => {
     if (data) {
       setVendorInfo(data[0]);
@@ -92,13 +98,32 @@ function App() {
       <Toaster />
       <BrowserRouter>
         <UserProvider>
+          <VendorProvider>
+
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/vendor-login" element={<VendorLogin />} />
-            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-            <Route path="/AddItems" element={<AddItems />} />
-            <Route path="/EditItems" element={<EditItems />} />
-            <Route path="/RemoveItems" element={<RemoveItems />} />
+
+            <Route path="/vendor-dashboard" element={
+              <VendorProtected>
+                <VendorDashboard />
+              </VendorProtected>
+              } />
+            <Route path="/AddItems" element={
+              <VendorProtected>
+                <AddItems />
+              </VendorProtected>
+              } />
+            <Route path="/EditItems" element={
+              <VendorProtected>
+                <EditItems />
+              </VendorProtected>
+              } />
+            <Route path="/RemoveItems" element={
+              <VendorProtected>
+                <RemoveItems />
+              </VendorProtected>
+              } />
             <Route element={<AppLayout />}>
               <Route path="/snacks" element={<Snacks />} />
               <Route path="/SouthIndian" element={<SouthIndian />} />
@@ -127,7 +152,7 @@ function App() {
                   </CanView>
                 </ProtectedRoute>
               }
-            />
+              />
             <Route
               path="/OrderHistory"
               element={
@@ -135,13 +160,14 @@ function App() {
                   <OrderHistory />
                 </ProtectedRoute>
               }
-            />
+              />
             <Route path="/login" element={<Login />} />
             <Route path="/forgetpassword" element={<ForgetPassword />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/CanteenClosed" element={<CanteenClosed />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
+          </VendorProvider>
         </UserProvider>
       </BrowserRouter>
     </CartProvider>

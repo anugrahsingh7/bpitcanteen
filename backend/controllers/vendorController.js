@@ -13,11 +13,6 @@ exports.updateVendorInfo = async function (req, res) {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    console.log(status);
-    console.log(req.body);
-    // if (!status) {
-    //   return res.status(400).json({ message: "Status is required" });
-    // }
 
     const vendor = await Vendor.findByIdAndUpdate(
       id,

@@ -11,7 +11,6 @@ export const getVendor = async () => {
 
 export const updateVendor = async ({ status, id }) => {
   try {
-    console.log(status, id);
     const response = await axios.patch(
       `http://localhost:3000/api/vendor/${id}`,
       {

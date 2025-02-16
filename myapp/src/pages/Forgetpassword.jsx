@@ -69,8 +69,6 @@ function ForgetPassword() {
 
     setIsLoading(true);
     try {
-      // Add your API call here
-      console.log(email, token, newPassword);
       resetPassword({ email, token, newPassword });
       toast.success("Your password has been changed successfully!", {
         duration: 4000,
