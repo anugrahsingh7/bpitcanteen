@@ -10,12 +10,13 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  console.log("USER PROVIDER IS RUNNING ");
   useEffect(() => {
     const token = Cookies.get("token");
     const params = new URLSearchParams(location.search);
     const userData = params.get("user");
-
+    console.log("Token from Cookies:", token);
+    console.log("UserData from URL:", userData);
     if (userData) {
       const parsedUser = JSON.parse(decodeURIComponent(userData));
       localStorage.setItem("user", JSON.stringify(parsedUser));
@@ -32,7 +33,7 @@ export const UserProvider = ({ children }) => {
     }
 
     setLoading(false);
-  }, [location.search,navigate]);
+  }, [location.search, navigate]);
 
   return (
     <UserContext.Provider

@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import VendorLogin from "./pages/VendorLogin";
@@ -29,8 +24,8 @@ import Bill from "./pages/Bill";
 import CanteenClosed from "./pages/CanteenClosed";
 import EditItems from "./pages/EditItems";
 import { useLive } from "./context/LiveContext";
-import { useVendor as useVendorLogin } from "./context/vendorContext"
-import {useVendor } from "./lib/useVendorApi"
+import { useVendor as useVendorLogin } from "./context/vendorContext";
+import { useVendor } from "./lib/useVendorApi";
 import { VendorProvider } from "./context/vendorContext";
 import ForgetPassword from "./pages/ForgetPassword";
 
@@ -55,16 +50,15 @@ const ProtectedRoute = ({ children }) => {
     );
 
   if (redirecting) return <Navigate to="/login" />;
- 
 
   return children;
 };
 
-const VendorProtected = ({children}) =>{
+const VendorProtected = ({ children }) => {
   const { isLoggedIn } = useVendorLogin();
-   
+
   return isLoggedIn ? children : <Navigate to="/vendor-login" />;
-}
+};
 
 const CanView = ({ children }) => {
   const { vendorInfo } = useLive();
@@ -77,7 +71,6 @@ function App() {
   const { setVendorInfo } = useLive();
   const { data, isLoading: vendorLoading } = useVendor();
 
- 
   useEffect(() => {
     const storedVendorInfo = localStorage.getItem("vendorInfo");
     if (storedVendorInfo) {
@@ -92,81 +85,91 @@ function App() {
     }
   }, [data, setVendorInfo]);
 
-
   return (
     <CartProvider>
       <Toaster />
       <BrowserRouter>
         <UserProvider>
           <VendorProvider>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/vendor-login" element={<VendorLogin />} />
 
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/vendor-login" element={<VendorLogin />} />
-
-            <Route path="/vendor-dashboard" element={
-              <VendorProtected>
-                <VendorDashboard />
-              </VendorProtected>
-              } />
-            <Route path="/AddItems" element={
-              <VendorProtected>
-                <AddItems />
-              </VendorProtected>
-              } />
-            <Route path="/EditItems" element={
-              <VendorProtected>
-                <EditItems />
-              </VendorProtected>
-              } />
-            <Route path="/RemoveItems" element={
-              <VendorProtected>
-                <RemoveItems />
-              </VendorProtected>
-              } />
-            <Route element={<AppLayout />}>
-              <Route path="/snacks" element={<Snacks />} />
-              <Route path="/SouthIndian" element={<SouthIndian />} />
-              <Route path="/Chinese" element={<Chinese />} />
-              <Route path="/IndianItems" element={<IndianItems />} />
-              <Route path="/Mess" element={<Mess />} />
-              <Route path="/Deserts" element={<Deserts />} />
-              <Route path="/beverages" element={<Beverages />} />
-            </Route>
-            <Route
-              path="bill"
-              element={
-                <ProtectedRoute>
-                  <CanView>
-                    <Bill />
-                  </CanView>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/cart"
-              element={
-                <ProtectedRoute>
-                  <CanView>
-                    <Cart />
-                  </CanView>
-                </ProtectedRoute>
-              }
+              <Route
+                path="/vendor-dashboard"
+                element={
+                  <VendorProtected>
+                    <VendorDashboard />
+                  </VendorProtected>
+                }
               />
-            <Route
-              path="/OrderHistory"
-              element={
-                <ProtectedRoute>
-                  <OrderHistory />
-                </ProtectedRoute>
-              }
+              <Route
+                path="/AddItems"
+                element={
+                  <VendorProtected>
+                    <AddItems />
+                  </VendorProtected>
+                }
               />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgetpassword" element={<ForgetPassword/>} />
-            <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/CanteenClosed" element={<CanteenClosed />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+              <Route
+                path="/EditItems"
+                element={
+                  <VendorProtected>
+                    <EditItems />
+                  </VendorProtected>
+                }
+              />
+              <Route
+                path="/RemoveItems"
+                element={
+                  <VendorProtected>
+                    <RemoveItems />
+                  </VendorProtected>
+                }
+              />
+              <Route element={<AppLayout />}>
+                <Route path="/snacks" element={<Snacks />} />
+                <Route path="/SouthIndian" element={<SouthIndian />} />
+                <Route path="/Chinese" element={<Chinese />} />
+                <Route path="/IndianItems" element={<IndianItems />} />
+                <Route path="/Mess" element={<Mess />} />
+                <Route path="/Deserts" element={<Deserts />} />
+                <Route path="/beverages" element={<Beverages />} />
+              </Route>
+              <Route
+                path="bill"
+                element={
+                  <ProtectedRoute>
+                    <CanView>
+                      <Bill />
+                    </CanView>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <CanView>
+                      <Cart />
+                    </CanView>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/OrderHistory"
+                element={
+                  <ProtectedRoute>
+                    <OrderHistory />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgetpassword" element={<ForgetPassword />} />
+              <Route path="/SignUp" element={<SignUp />} />
+              <Route path="/CanteenClosed" element={<CanteenClosed />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
           </VendorProvider>
         </UserProvider>
       </BrowserRouter>
