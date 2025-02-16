@@ -136,7 +136,7 @@ const NavBar = () => {
                       </button>
                     </Link>
                     <Link to="ForgetPassword">
-                      <button className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] mt-2 py-2 rounded-md text-sm font-semibold">
+                      <button className="w-full  border border-[#502214] hover:bg-[#f8f1e7] text-[#502214] mt-2  py-2 rounded-md text-sm font-semibold">
                         Change Password
                       </button>
                     </Link>

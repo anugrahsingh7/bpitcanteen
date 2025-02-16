@@ -1,8 +1,9 @@
 import React from 'react';
 import { FaDoorClosed } from "react-icons/fa6";
-import { FaLocationDot } from "react-icons/fa6";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Link } from "react-router-dom"
 
 function CanteenClosed() {
   const handleCopy = () => {
@@ -35,19 +36,19 @@ function CanteenClosed() {
               <span>Sunday: Closed</span>
             </p>
 
-            <div className="flex items-center w-full mt-6 gap-x-1 shrink-0 sm:w-auto">
-              <a href="https://maps.app.goo.gl/U1s58U7VAdrjh8xZ6"
-                className="flex items-center justify-center w-1/3 px-3 py-2 text-sm text-white transition-colors duration-200 bg-[#502214] border rounded-lg gap-x-2 sm:w-1/3 shadow-md hover:bg-[#2f140c]"
+            <div className="flex justify-center items-center w-full mt-6 gap-x-1 shrink-0 sm:w-auto">
+            <Link to="/Snacks"
+                className="flex justify-center gap-1 items-center w-1/2 px-3 py-2 text-sm tracking-wide text-[#502214] transition-colors duration-200 rounded-lg shrink-0 sm:w-2/3 border border-[#502214] hover:bg-[#f8f1e7] shadow-md"
               >
-                <FaLocationDot />
-                <span>Address</span>
-              </a>
+              <IoMdArrowRoundBack />
+              Browse Menu
+              </Link>
 
               <button 
                 onClick={handleCopy}
-                className="w-2/3 px-3 py-2 text-sm tracking-wide text-[#502214] transition-colors duration-200 rounded-lg shrink-0 sm:w-2/3 border border-[#502214] hover:bg-[#f8f1e7] shadow-md"
+                className="w-1/2 px-3 py-2 text-sm tracking-wide text-[#502214] transition-colors duration-200 rounded-lg shrink-0 sm:w-2/3 border border-[#502214] hover:bg-[#f8f1e7] shadow-md"
               >
-            Click to copy Website Link
+              Website Link
               </button>
             </div>
           </div>

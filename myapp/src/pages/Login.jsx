@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import gsap from "gsap";
+import { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import { useLogin } from "../lib/login";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useGoogleLogin } from "../lib/useGoogleLogin";
-import { useEffect } from "react";
-import gsap from "gsap";
+import Loading from "../components/Loading";
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -18,8 +16,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
   const { mutate: login, isLoading } = useLogin();
   const { mutate: googleLogin } = useGoogleLogin();
 
@@ -124,7 +120,7 @@ const Login = () => {
               }
             >
                {isLoading ? (
-                <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                <Loading/>
               ) : (
                 "Log In"
               )}
