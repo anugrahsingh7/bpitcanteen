@@ -1,48 +1,47 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
-import gsap from "gsap";
 
-const VALID_CREDENTIALS = {
-  email: "anugrahyashsingh2014@gmail.com", // Replace with actual vendor email
-  vendorId: "YASH@1234", // Replace with actual vendor ID
-  password: "Yash@1234", // Replace with actual vendor password
-};
+import gsap from "gsap";
+import { useVendor } from "../context/vendorContext"
 
 function VendorLogin() {
-  const [email, setEmail] = useState("anugrahyashsingh2014@gmail.com");
-  const [password, setPassword] = useState("Yash@1234");
-  const [vendorId, setVendorId] = useState("YASH@1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const {login} = useVendor();
   const duration = 1;
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email.trim() || !password.trim() || !vendorId.trim()) {
+    if (!email.trim() || !password.trim() ) {
       toast.error("Please fill all fields");
       return;
     }
 
     if (
-      email !== VALID_CREDENTIALS.email ||
-      password !== VALID_CREDENTIALS.password 
+      email !== import.meta.env.VITE_VENDOR_EMAIL ||
+      password !== import.meta.env.VITE_VENDOR_PASSWORD
       
     ) {
       toast.error("Invalid login credentials");
       return;
     }
 
-    setIsLoading(true);
-    setTimeout(() => {
-      localStorage.setItem("vendorEmail", email);
-      toast.success("Vendor Login successful!");
-      navigate("/vendor-dashboard", { replace: true });
-      setIsLoading(false);
-    }, 1500);
+    login(); 
+    toast.success("Vendor login successfully!");
+    navigate("/vendor-dashboard");
+    // setIsLoading(true);
+    // setTimeout(() => {
+    //   localStorage.setItem("vendorEmail", email);
+    //   toast.success("Vendor Login successful!");
+    //   navigate("/vendor-dashboard", { replace: true });
+    
+    // }, 1500);
   };
   useEffect(() => {
     // GSAP animation to fade in the content when the page loads

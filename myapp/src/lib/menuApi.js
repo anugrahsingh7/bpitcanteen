@@ -1,6 +1,5 @@
 import axios from "axios";
 export const getMenuItem = async function (category) {
-  console.log(category);
   const data = await axios({
     method: "GET",
     url: `http://127.0.0.1:3000/api/menu?category=${category}`,
@@ -9,7 +8,6 @@ export const getMenuItem = async function (category) {
 };
 
 export const createMenuItem = async function ( data ) {
-  console.log(data);
   try{
     const res = await axios({
       method: "POST",
@@ -18,7 +16,7 @@ export const createMenuItem = async function ( data ) {
     });
     return res;
   }catch(e){
-    console.log(e);
+    throw new Error("Failed to create menu item",e);
   }
 };
 
