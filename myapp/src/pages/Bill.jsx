@@ -39,7 +39,7 @@ const Invoice = () => {
     const getOrder = async () => {
       if (!id) return;
       try {
-        const res = await axios.get(`http://localhost:3000/api/order/${id}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/order/${id}`);
         
         setOrder(res.data);
       } catch (error) {

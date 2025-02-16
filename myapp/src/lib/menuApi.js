@@ -2,7 +2,7 @@ import axios from "axios";
 export const getMenuItem = async function (category) {
   const data = await axios({
     method: "GET",
-    url: `http://127.0.0.1:3000/api/menu?category=${category}`,
+    url: `${import.meta.env.VITE_BACKEND_URL}/api/menu?category=${category}`,
   });
   return data;
 };
@@ -11,7 +11,7 @@ export const createMenuItem = async function ( data ) {
   try{
     const res = await axios({
       method: "POST",
-      url: "http://127.0.0.1:3000/api/menu",
+      url: `${import.meta.env.VITE_BACKEND_URL}/api/menu`,
       data: data,
     });
     return res;
@@ -23,7 +23,7 @@ export const createMenuItem = async function ( data ) {
 export const updateMenuItem = async function ({ id, data }) {
   const res = await axios({
     method: "PATCH",
-    url: `http://127.0.0.1:3000/api/menu/${id}`,
+    url: `${import.meta.env.VITE_BACKEND_URL}/api/menu/${id}`,
     data: data,
   });
   return res;
@@ -32,7 +32,7 @@ export const updateMenuItem = async function ({ id, data }) {
 export const deleteMenuItems = async function (id){
   const res = await axios({
     method: "DELETE",
-    url: `http://127.0.0.1:3000/api/menu/${id}`,
+    url: `${import.meta.env.VITE_BACKEND_URL}/api/menu/${id}`,
   });
   return res;
 }
