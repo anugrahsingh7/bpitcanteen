@@ -17,7 +17,6 @@ import AppLayout from "./ui/AppLayout";
 import PageNotFound from "./pages/PageNotFound";
 import toast, { Toaster } from "react-hot-toast";
 import { CartProvider } from "./context/CartContext";
-import ForgetPassword from "./pages/ForgetPassword";
 import AddItems from "./pages/AddItems";
 import RemoveItems from "./pages/RemoveItems";
 import { UserProvider, useUser } from "./context/userContext";
@@ -33,6 +32,7 @@ import { useLive } from "./context/LiveContext";
 import { useVendor as useVendorLogin } from "./context/vendorContext"
 import {useVendor } from "./lib/useVendorApi"
 import { VendorProvider } from "./context/vendorContext";
+import ForgetPassword from "./pages/ForgetPassword";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -162,7 +162,7 @@ function App() {
               }
               />
             <Route path="/login" element={<Login />} />
-            <Route path="/forgetpassword" element={<ForgetPassword />} />
+            <Route path="/forgetpassword" element={<ForgetPassword/>} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/CanteenClosed" element={<CanteenClosed />} />
             <Route path="*" element={<PageNotFound />} />
