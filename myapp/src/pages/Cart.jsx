@@ -67,7 +67,7 @@ function Cart() {
         handler: async function (response) {
           // Step 3: Verify payment on the backend
           const verificationResponse = await axios.post(
-            "http://localhost:3000/api/order/verify-payment",
+            `${import.meta.env.VITE_BACKEND_URL}/api/order/verify-payment`,
             {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,

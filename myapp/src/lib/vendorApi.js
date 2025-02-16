@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getVendor = async () => {
   try {
-    const vendorData = await axios.get("http://localhost:3000/api/vendor");
+    const vendorData = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/vendor`);
     return vendorData.data.vendor;
   } catch (e) {
     console.error(e);
@@ -12,7 +12,7 @@ export const getVendor = async () => {
 export const updateVendor = async ({ status, id }) => {
   try {
     const response = await axios.patch(
-      `http://localhost:3000/api/vendor/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/vendor/${id}`,
       {
         status,
       }

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function login(userDetails) {
   const res = await axios.post(
-    "http://localhost:3000/api/users/login",
+    `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
     userDetails,
     {
       withCredentials: true, // 🔥 Ensure cookies are included
@@ -12,7 +12,7 @@ export async function login(userDetails) {
 }
 export async function signup(formData) {
   const res = await axios.post(
-    "http://localhost:3000/api/users/signup",
+    `${import.meta.env.VITE_BACKEND_URL}/api/users/signup`,
     formData
   );
   return res.data;
@@ -20,7 +20,7 @@ export async function signup(formData) {
 
 export async function forgotPassword(email) {
   const res = await axios.post(
-    "http://localhost:3000/api/users/forgotPassword",
+    `${import.meta.env.VITE_BACKEND_URL}/api/users/forgotPassword`,
     { email }
   );
   return res.data;
@@ -28,19 +28,19 @@ export async function forgotPassword(email) {
 
 export async function resetPassword({ email, token, newPassword }) {
   const res = await axios.post(
-    `http://localhost:3000/api/users/resetPassword/${token}`,
+    `${import.meta.env.VITE_BACKEND_URL}/api/users/resetPassword/${token}`,
     { email, newPassword }
   );
   return res.data;
 }
 
 export async function fetchUser() {
-  const res = await axios.get("http://localhost:3000/auth/google/callback", {
+  const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/google/callback`, {
     withCredentials: true,
   });
   return res.data;
 }
 
 export async function googleLogin() {
-  window.location.href = "http://localhost:3000/auth/google"; // Redirect to Google OAuth
+  window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`; // Redirect to Google OAuth
 }
