@@ -16,7 +16,7 @@ const vendorRouter = require("./routes/vendorRoute");
 connectDb();
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174","https://bpitcanteen.vercel.app/"], // ✅ Set to frontend URL
+    origin: ["http://localhost:5173", "http://localhost:5174","https://bpitcanteen.vercel.app"], // ✅ Set to frontend URL
     credentials: true, // ✅ Allow cookies & authorization headers
     methods: ["GET", "POST", "PATCH", "DELETE"], // ✅ Allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allowed headers
