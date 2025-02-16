@@ -28,7 +28,7 @@ router.get(
     });
     
     res.redirect(
-      `${process.env.FRONTEND_URL}/snacks?user=${encodeURIComponent(
+      `${process.env.FRONTEND_URL}/snacks?token=${token}&user=${encodeURIComponent(
         JSON.stringify(userWithoutPassword)
       )}`
     );
