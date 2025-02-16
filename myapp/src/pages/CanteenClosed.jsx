@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function CanteenClosed() {
   const handleCopy = () => {
-    const textToCopy = "http://localhost:5173/"; // Replace with your text
+    const textToCopy = "https://bpitcanteen.vercel.app/"; // Replace with your text
     navigator.clipboard.writeText(textToCopy)
       .then(() => toast.success('Link copied to clipboard!'))
       .catch((err) => toast.error('Failed to copy text.'));
