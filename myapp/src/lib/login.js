@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "./authApi";
 import toast from "react-hot-toast";
 import { useUser } from "../context/userContext";
+import Cookies from "js-cookie";
 
 export const useLogin = () => {
   const { setUser, setIsLoggedIn } = useUser();
@@ -13,6 +14,12 @@ export const useLogin = () => {
     onSuccess: (data) => {
       toast.success("Login successful");
       const { password, ...userWithoutPassword } = data.data.user;
+
+      const token = data.token;
+
+      // ✅ Save token in cookies (SameSite=None for cross-site)
+      Cookies.set("token", token, { secure: true, sameSite: "None", path: "/" });
+
       setUser(userWithoutPassword);
       setIsLoggedIn(true);
 

@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  console.log("USER PROVIDER IS RUNNING ");
+
 
 
   useEffect(() => {
