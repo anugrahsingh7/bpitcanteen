@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
     }
 
     setLoading(false);
-  }, []);
+  }, [location.search,navigate]);
 
   return (
     <UserContext.Provider

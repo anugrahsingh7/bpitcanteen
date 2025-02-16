@@ -22,7 +22,7 @@ router.get(
     const userWithoutPassword = { ...user.toObject() };
     delete userWithoutPassword.password;
     // Return JWT token to the client
-    res.cookie("token", token, { secure: false, httpOnly: false });
+    res.cookie("token", token, { secure: true, httpOnly: false });
     res.redirect(
       `https://bpitcanteen.vercel.app/snacks?user=${encodeURIComponent(
         JSON.stringify(userWithoutPassword)
