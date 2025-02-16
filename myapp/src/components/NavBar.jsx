@@ -109,12 +109,12 @@ const NavBar = () => {
           <div className="flex items-center space-x-1 relative">
             {/* Profile Button */}
             <div className="relative flex justify-center items-center">
-              <button
+              {isLoggedIn && <button
                 className="text-[#502214] text-[1.95rem] p-[0.3rem] rounded-full hover:bg-opacity-10 hover:bg-black font-bold cursor-pointer"
                 onClick={toggleProfileMenu}
               >
                 <CgProfile />
-              </button>
+              </button>}
 
               {/* Profile Dropdown Menu */}
               {isLoggedIn ? (
@@ -149,7 +149,8 @@ const NavBar = () => {
                   </div>
                 )
               ) : (
-                <Link to="/login">Please login to view</Link>
+
+                <Link to="/login" className="border border-[#502214] px-2 py-1 text-[#502214] rounded-lg flex items-center justify-center me-1 hover:bg-[#502214] hover:text-white transition-all  ease-in-out duration-100">Login</Link>
               )}
             </div>
 
