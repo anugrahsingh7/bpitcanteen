@@ -17,7 +17,7 @@ function Beverages() {
 
     return (
         <div className="container  mx-auto px-0 sm:px-2 lg:px-4 py-1 pb-4 max-w-7xl">
-            <div className="w-full text-[#502214] text-opacity-95 justify-center font-semibold items-center flex text-4xl pb-7">BEVERAGES</div>
+            <div className="w-full text-[#502214] text-opacity-95 justify-center font-semibold items-center flex text-3xl pb-7">BEVERAGES</div>
            
             
             {loading ? (

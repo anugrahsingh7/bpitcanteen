@@ -119,7 +119,7 @@ const NavBar = () => {
               {/* Profile Dropdown Menu */}
               {isLoggedIn ? (
                 isProfileOpen && (
-                  <div className="absolute right-0 mt-2 w-68 top-8 bg-[#ffffff] bg-opacity-95 backdrop-blur-sm shadow-lg rounded-lg p-4 overflow-hidden transition-all duration-300 ease-in-out">
+                  <div className="absolute -right-12  mt-2 w-68 top-8 bg-[#ffffff] bg-opacity-95 backdrop-blur-sm shadow-lg rounded-lg p-4 overflow-hidden transition-all duration-300 ease-in-out">
                     <p className="text-[#502214] font-bold text-lg break-words">
                       {user.name}
                     </p>
