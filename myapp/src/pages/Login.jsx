@@ -70,6 +70,24 @@ const Login = () => {
             </button>
           </div>
         </form>
+        <div className="flex items-center justify-between mt-4">
+          <span className="w-1/5 border-b border-[#592e1f] lg:w-1/5"></span>
+
+          <div className="text-xs text-center  uppercase text-[#592e1f] opacity-75">
+            or continue with 
+          </div>
+
+          <span className="w-1/5 border-b border-[#592e1f] lg:w-1/5 opacity-75"></span>
+        </div>
+
+        <div className="flex items-center mt-6 -mx-2">
+          <button
+          onClick={() => googleLogin()}
+           type="button" className="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-[#592e1f] transition-colors duration-300 transform border border-[#592e1f] rounded-lg hover:bg-[#ffffff] border-opacity-75 ">
+            <FcGoogle className='text-lg' />
+            <span className=" mx-2 ">Sign in with Google</span>
+          </button>
+        </div>
         <p className="mt-8 text-xs text-center text-[#592e1f]">Don't have an account? <Link to="/SignUp" className="font-medium hover:underline">Create One</Link></p>
       </div>
     </div>
