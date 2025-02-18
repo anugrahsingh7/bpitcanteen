@@ -168,13 +168,7 @@ function SignUp  ()  {
               type="submit"
               disabled={isLoading}
               
-              className={`w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b] 
-                ${
-                    isLoading
-                      ? "opacity-100 "
-                      : "opacity-80 cursor-not-allowed"
-                  }
-                `}
+              className="w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg   bg-[#592e1f] hover:bg-[#50291b] "
               
             >
                {isLoading ? "Creating Account..." : "Create Account"}

@@ -94,7 +94,7 @@ const NavBar = () => {
               className="text-[#502214] flex justify-center text-opacity-85 hover:text-opacity-100  items-center  hover:scale-105 font-bold transition-all duration-300 ease-in-out"
             >
               {" "}
-              <GiCakeSlice className="me-[0.1rem] text-2xl" /> DESERT
+              <GiCakeSlice className="me-[0.1rem] text-2xl" /> DESSERT
             </NavLink>
             <NavLink
               to="beverages"
@@ -238,7 +238,7 @@ const NavBar = () => {
               className="text-[#502214]  text-xl  text-opacity-85 hover:text-opacity-100 pb-2 border-opacity-15 font-medium border-b border-[#502214] flex items-center"
             >
               <GiCakeSlice className="me-[0.1rem] text-2xl" />
-              DESERTS
+              DESSERTS
             </NavLink>
             <NavLink
               to="beverages"

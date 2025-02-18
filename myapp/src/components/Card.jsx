@@ -88,7 +88,7 @@ const Card = ({ id, image, name, price, description }) => {
 
       {/* Modal */}
       {isModalOpen && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+  <div className="fixed inset-0 flex items-center justify-center bg-black rounded-lg bg-opacity-50 z-20">
     <div className="bg-[#f8f1e7] w-11/12 sm:w-4/5 md:w-3/4 lg:w-2/3 p-5 rounded-lg shadow-lg relative max-h-[60vh] overflow-y-auto">
       <button
         onClick={() => setIsModalOpen(false)}
