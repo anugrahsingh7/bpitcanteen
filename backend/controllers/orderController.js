@@ -4,7 +4,6 @@ const Order = require("../models/orderModel");
 const User = require("../models/userModel");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const whatsappService = require("../services/whatsappMetaService");
 
 // Initialize Razorpay instance
 const razorpay = new Razorpay({
@@ -89,16 +88,6 @@ exports.verifyPayment = async (req, res) => {
       // Link order to user
       await User.findByIdAndUpdate(userId, { $push: { orders: order._id } });
 
-      // Send WhatsApp confirmation message
-      try {
-        const populatedOrder = await Order.findById(order._id).populate('user', 'name email');
-        await whatsappService.sendOrderConfirmationMessage(populatedOrder);
-        console.log(`WhatsApp confirmation message sent for order ${order._id}`);
-      } catch (whatsappError) {
-        console.error('WhatsApp confirmation message error:', whatsappError);
-        // Don't fail the order if WhatsApp fails
-      }
-
       res.status(200).json({
         success: true,
         message: "Payment verified, order saved",
@@ -119,27 +108,9 @@ exports.updateOrder = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     
-    // Get the current order to check if status is changing to completed
-    const currentOrder = await Order.findById(id);
-    
     const updatedOrder = await Order.findByIdAndUpdate(id, req.body, {
       new: true,
     }).populate('user', 'name email');
-
-    // Send WhatsApp message if order status is changed to "completed"
-    if (status === "completed" && currentOrder && currentOrder.status !== "completed") {
-      try {
-        const messageSent = await whatsappService.sendOrderCompletionMessage(updatedOrder);
-        if (messageSent) {
-          console.log(`WhatsApp message sent for order ${id}`);
-        } else {
-          console.log(`Failed to send WhatsApp message for order ${id}`);
-        }
-      } catch (whatsappError) {
-        console.error('WhatsApp service error:', whatsappError);
-        // Don't fail the order update if WhatsApp fails
-      }
-    }
 
     return res.status(200).json({
       status: "success",
@@ -153,29 +124,4 @@ exports.updateOrder = async (req, res) => {
   }
 };
 
-// Test WhatsApp service endpoint
-exports.testWhatsApp = async (req, res) => {
-  try {
-    const { phoneNumber, message } = req.body;
-    
-    if (!phoneNumber || !message) {
-      return res.status(400).json({
-        status: "error",
-        message: "Phone number and message are required"
-      });
-    }
 
-    const result = await whatsappService.sendMessage(phoneNumber, message);
-    
-    return res.status(200).json({
-      status: "success",
-      message: result ? "WhatsApp message sent successfully" : "Failed to send WhatsApp message",
-      result: result
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: error.message,
-    });
-  }
-};

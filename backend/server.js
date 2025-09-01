@@ -13,7 +13,6 @@ const userRouter = require("./routes/userRoute");
 const authRouter = require("./routes/authRoute");
 const orderRouter = require("./routes/orderRoute");
 const vendorRouter = require("./routes/vendorRoute");
-const whatsappRouter = require("./routes/whatsappRoute");
 connectDb();
 app.use(
   cors({
@@ -34,7 +33,6 @@ app.use("/api/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/vendor", vendorRouter);
-app.use("/api/whatsapp", whatsappRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
