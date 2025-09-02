@@ -8,16 +8,19 @@ const ChatbotWrapper = () => {
   const shouldShow = useMemo(() => {
     const allowed = new Set([
       '/snacks',
-      '/Chinese',
-      '/SouthIndian',
-      '/IndianItems',
-      '/Deserts',
+      '/chinese',
+      '/southindian',
+      '/indianitems',
+      '/deserts',
       '/beverages',
-      '/OrderHistory',
+      '/orderhistory',
       '/cart',
       '/bill',
     ]);
-    return allowed.has(location.pathname);
+    const normalizedPath = (location.pathname || '/')
+      .replace(/\/$/, '')
+      .toLowerCase();
+    return allowed.has(normalizedPath);
   }, [location.pathname]);
 
   if (!shouldShow) return null;
