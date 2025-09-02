@@ -52,7 +52,7 @@ const AddItems = () => {
                 <form className="w-full bg-[#f8f1e7]   max-w-md" onSubmit={handleSubmit}>
                     {/* Logo */}
                     <div className="flex justify-center mx-auto">
-                        <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="Logo" />
+                        <img className="w-auto h-24 sm:h-24" src="/logo/Canteen.png" alt="Logo" />
                     </div>
 
 

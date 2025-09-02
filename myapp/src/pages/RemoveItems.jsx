@@ -71,7 +71,7 @@ const RemoveItems = () => {
                 <form className="w-full bg-[#f8f1e7] max-w-md" onSubmit={handleSubmit}>
                     {/* Logo */}
                     <div className="flex justify-center mx-auto">
-                        <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="Logo" />
+                        <img className="w-auto h-24 sm:h-24" src="/logo/Canteen.png" alt="Logo" />
                     </div>
                     <div className="mt-2 text-xl flex justify-center font-bold text-[#502214] items-center">Delete Items from the <MdOutlineRestaurantMenu  className="ms-1"/>Menu</div>
                     <Link to="/vendor-dashboard" className="mt-1 text-sm flex  hover:underline font-normal text-[#502214] justify-center items-center cursor-pointer "><IoMdArrowRoundBack className="me-1"/>Back to the Dashboard</Link>

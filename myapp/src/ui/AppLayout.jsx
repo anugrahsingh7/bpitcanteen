@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+// Removed Chatbot from layout to control visibility per-route
 import { Outlet } from 'react-router-dom';
 
 const AppLayout = () => {

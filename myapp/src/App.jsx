@@ -28,6 +28,7 @@ import { useVendor as useVendorLogin } from "./context/vendorContext";
 import { useVendor } from "./lib/useVendorApi";
 import { VendorProvider } from "./context/vendorContext";
 import ForgetPassword from "./pages/ForgetPassword";
+import ChatbotWrapper from "./components/ChatbotWrapper";
 
 const ProtectedRoute = ({ children }) => {
   const { isLoggedIn, loading } = useUser();
@@ -170,6 +171,7 @@ function App() {
               <Route path="/CanteenClosed" element={<CanteenClosed />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
+            <ChatbotWrapper />
           </VendorProvider>
         </UserProvider>
       </BrowserRouter>

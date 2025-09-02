@@ -61,7 +61,7 @@ function Cart() {
         amount: amount,
         currency: "INR",
         name: "CANTEEN - BPIT",
-        image: "/logo/ICON.png",
+        image: "/logo/Canteen.png",
         description: "Test Transaction",
         order_id: orderId,
         handler: async function (response) {

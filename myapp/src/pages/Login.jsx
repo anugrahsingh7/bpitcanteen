@@ -45,8 +45,8 @@ const Login = () => {
   return (
     <div className="w-screen min-h-screen flex bg-[#f8f1e7] justify-center items-center p-2 fade-in" style={{ opacity: 0, transform: 'translateY(50px)' }}>
       <div className="w-full max-w-sm p-6 bg-[#f8f1e7] border border-[#592e1f] rounded-lg shadow-md">
-        <div className="flex justify-center"><img className="h-24" src="/logo/logo-removebg.png" alt="" /></div>
-        <p className="mt-1 text-xs text-center text-[#592e1f]"><Link to="/vendor-login" className="font-semibold hover:underline">Vendor Login</Link></p>
+        <div className="flex justify-center"><img className="h-24 mb-0" src="/logo/Canteen.png" alt="logo" /></div>
+       
         <form onSubmit={handleSubmit} className="mt-6">
           <div>
             <label className="block text-md text-[#592e1f]">Email</label>
@@ -88,7 +88,8 @@ const Login = () => {
             <span className=" mx-2 ">Sign in with Google</span>
           </button>
         </div>
-        <p className="mt-8 text-xs text-center text-[#592e1f]">Don't have an account? <Link to="/SignUp" className="font-medium hover:underline">Create One</Link></p>
+        <p className="mt-6 text-sm text-center text-[#592e1f] hover:text-[#502214]"><Link to="/vendor-login" className="font-semibold underline ">Vendor Login</Link></p>
+        <p className="mt-1 text-xs text-center text-[#592e1f] hover:text-[#502214]">Don't have an account? <Link to="/SignUp" className="font-medium underline">Create One</Link></p>
       </div>
     </div>
   );

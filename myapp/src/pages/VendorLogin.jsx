@@ -57,10 +57,10 @@ function VendorLogin() {
     <div className="w-screen min-h-screen overflow-hidden flex bg-[#f8f1e7] justify-center items-center p-2 fade-in" style={{ opacity: 0, transform: 'translateY(50px)' }}>
       <div className="w-full max-w-sm p-6 m-auto mx-auto bg-[#f8f1e7] border border-[#592e1f] border-opacity-40 rounded-lg shadow-md ]">
       <div className="flex justify-center mx-auto">
-          <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="" />
+      <img className="h-24 mb-0" src="/logo/Canteen.png" alt="logo" />
         </div>
         <p className="mt-1 -mb-5 text-xs font-light text-center text-[#592e1f]">
-          <Link to="/login" className="font-semibold opacity-85 hover:opacity-100 text-[#592e1f] hover:underline ">Customer Log In</Link>
+         
         </p>
         <form
           onSubmit={handleSubmit}
@@ -121,6 +121,8 @@ function VendorLogin() {
             )}
           </button>
         </form>
+       <div className="w-full flex justify-center mt-2">
+       <Link to="/login" className="font-semibold opacity-85 hover:opacity-100 text-[#592e1f] underline ">Customer Log In</Link></div> 
       </div>
     </div>
   );

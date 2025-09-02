@@ -12,7 +12,7 @@ const PageNotFound = () => {
          
           <div className="flex flex-col items-center max-w-lg mx-auto text-center">
           <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
-              <img className="w-auot h-20 mb-2" src="/logo/logo-removebg.png" alt="logo" /> 
+              <img className="w-auot h-20 mb-2" src="/logo/Canteen.png" alt="logo" /> 
             </span>
             <p className="text-3xl font-medium text-red-500 ">
               404 error

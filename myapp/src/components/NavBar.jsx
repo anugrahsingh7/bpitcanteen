@@ -47,8 +47,8 @@ const NavBar = () => {
           <NavLink to="/snacks" className="flex items-center space-x-3">
             <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
               <img
-                className="w-[8.2rem] h-12"
-                src="/logo/logo-removebg.png"
+                className="w-24 "
+                src="/logo/Canteen.png"
                 alt="logo"
               />
             </span>

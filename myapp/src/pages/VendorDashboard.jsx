@@ -224,7 +224,7 @@ function VendorDashboard() {
             <span className="text-md font-bold tracking-tight flex bg-transparent p-1">
               <img
                 className="w-auto h-20"
-                src="/logo/logo-removebg.png"
+                src="/logo/Canteen.png"
                 alt="logo"
               />
             </span>

@@ -84,7 +84,7 @@ const EditItems = () => {
           <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-24 sm:h-24"
-              src="/logo/logo-removebg.png"
+              src="/logo/Canteen.png"
               alt="Logo"
             />
           </div>

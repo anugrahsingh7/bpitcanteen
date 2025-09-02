@@ -19,7 +19,7 @@ function CanteenClosed() {
         <div className="container flex items-center justify-center px-6 py-10 mx-auto">
           <div className="flex flex-col items-center max-w-sm mx-auto text-center">
             <span className=" text-md font-bold tracking-tight flex bg-transparent p-1">
-              <img className="w-auto h-20 mb-2" src="/logo/logo-removebg.png" alt="logo" /> 
+              <img className="w-auto h-20 mb-2" src="/logo/Canteen.png" alt="logo" /> 
             </span>
             <p className="p-0 text-[1.7rem] flex font-semibold items-center  text-[#502214] rounded-full ">
               

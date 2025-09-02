@@ -100,7 +100,7 @@ const Invoice = () => {
           <div className="flex items-center mb-4 sm:mb-0">
             <img
               className="h-20 w-auto mr-2"
-              src="/logo/logo-removebg.png"
+              src="/logo/Canteen.png"
               alt="Logo"
             />
           </div>

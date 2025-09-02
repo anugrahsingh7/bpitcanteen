@@ -105,7 +105,7 @@ function ForgetPassword() {
       <div className="w-full max-w-sm p-6 m-auto mx-auto bg-[#f8f1e7] border border-[#592e1f] border-opacity-40 rounded-lg shadow-md ">
         
       <div className="flex justify-center mx-auto">
-          <img className="w-auto h-24 sm:h-24" src="/logo/logo-removebg.png" alt="" />
+          <img className="w-auto h-24 sm:h-24" src="/logo/Canteen.png" alt="" />
         </div>
         
 

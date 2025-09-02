@@ -57,7 +57,7 @@ const OrderHistory = () => {
       <div className="flex justify-center mx-auto">
         <img
           className="w-auto h-16 sm:h-16"
-          src="/logo/logo-removebg.png"
+          src="/logo/Canteen.png"
           alt=""
         />
       </div>
